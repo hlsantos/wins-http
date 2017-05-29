@@ -1,0 +1,54 @@
+@COMMENT@
+---------------------------------------------------------------------------
+File: UserNotLoggedIn.wct,  v6.3.452.8
+
+Notes:
+
+Including Login.wct will only display a login form if cookie login is
+enabled. If BASIC/AUTH was enabled, then login.wct will display
+errors.wct. If errors.wct doesn't exist, then the error is displayed
+here and logic.wct essentially does nothing.
+
+The main reason to include login.wct is because it will optionally
+include a header and footer, if defined.
+
+In theory, you don't need this UserNotLoggedIn.wct and you can delete
+it. But only do so, if errors.wct exist since it is the "catch all"
+for all errors.  If no error templates exist, the web server
+will display the error in raw form.
+
+---------------------------------------------------------------------------
+@ENDCOMMENT@
+
+<html>
+<head>
+<title>User Not Logged in</title>
+<meta HTTP-EQUIV="Pragma" content="no-cache">
+<meta HTTP-EQUIV="Cache-Control" content="no-cache">
+<meta HTTP-EQUIV="Cache-Control" content="no-store">
+<meta HTTP-EQUIV="Expires" content="-1">
+</head>
+<body>
+
+@if !exist "wc:\http\errors\errors.wct"@
+  @IF HTTP.HTTP_ERRORMSG <> ""@
+  <table width="60%" border="1" cellspacing="0" cellpadding="4" align="center">
+  <tr>
+  	<td align="center" nowrap>
+      <h2 style="color: Red;">@sub HTTP.http_errormsg@</h2>
+      @if http.Http_ErrorMsg2 <> ""@
+      <b>@sub HTTP.HTTP_ErrorMsg2@</b>
+      @endif@
+      </td>
+  </tr>
+  </table>
+  @ENDIF@
+@ENDIF@
+
+@ExistInclude wc:\http\public\login.wct@
+
+</body>
+</html>
+
+
+

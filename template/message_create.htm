@@ -1,0 +1,368 @@
+<!--
+message_create.htm: used by html-new message.wcx
+02/03/2007, 452.1e - major template/cleanup changes
+08/01/2007, 452.2e - add eol space to forward headers
+10/15/2007, 452.3l - fixd initial focus for IE
+
+@COMMENT@
+This following is the outline of the create mail box:
+
+   +-------------------------------------------------+
+   |+-----------------------------------------------+|
+   ||Create NEW/REPLY Message: conference name      ||
+   |+-----------------------------------------------+|
+   | Options:  conference attributes                 |  Optional
+   |+-----------------------------------------------+|
+   ||Conference: Pulldown List                      ||  Optional
+   |+-----------------------------------------------+|
+   |+-----------------------------------------------+|
+   ||From:       __________________________         ||
+   ||To:         __________________________         ||
+   ||cc:         __________________________         ||  Optional
+   ||Subject:    __________________________         ||
+   ||Attachment: __________________________ [Browse]||  Optional
+   |+-----------------------------------------------+|
+   | Private: [ ]  Receipt: [ ]                      |  Optional
+   | Type Your Message Box:                          |
+   |+-----------------------------------------------+|
+   ||                                               ||
+   ||                                               ||
+   ||                                               ||
+   |+-----------------------------------------------+|
+   | [ POST MESSAGE ]                                |
+   +-------------------------------------------------+
+
+Page Display Template Options:
+
+   UseDynaForum               1 for dynamic conference selection (1)
+   ShowConfAttr               1 to display conference attributes (0)
+   AlwaysShowPrivateBox       1 to always show private box (0)
+
+   The defaults are in parenthesis, see below to set them.
+
+Global Template Variables prepared by "html-new message.wcx"
+
+   AllowAttach                Conference.AllowAttach
+   AllowCarbon                Conference.AllowCarbon
+   Author                     From Name
+   AuthorAlias                Default From Field
+   AuthorAnonymous            Allow any FROM field
+   AuthorSelect               Select FROM from list
+   ChangeBtn                  Allow Conference Change
+   Conf.DefaultFromAddress    Conference.DefaultFromAddress
+   Conf.ReplyToAddress        Conference.ReplyToAddress
+   ConfAttr                   Conference Attributes spelled out
+   ConfName                   posting conf name (same as Conference.Name)
+   ConfNum                    posting conf # (same as Conference.Number)
+   ForcePrivate               True if forcing private message
+   ForcePublic                True if forcing public message
+   Msg.FidoFrom               fidonet from address
+   Msg.FidoFrom.Net
+   Msg.FidoFrom.Node
+   Msg.FidoFrom.Point
+   Msg.FidoFrom.Zone
+   Msg.FidoTo                 fidonet to address
+   Msg.FidoTo.Net
+   Msg.FidoTo.Node
+   Msg.FidoTo.Point
+   Msg.FidoTo.Zone
+   MsgType                    "New" or "Reply" or "Forward"
+   NetMail                    True if FidoNetmail
+   OrigConf                   original conf #
+   OrigParams                 original parameters
+   PostConf                   posting conf #
+   PrivateBox                 Allow Private Box
+   ReceiptBox                 Allow Receipt Box
+   SubjectReadOnly            read only SUBJECT field
+   ToMaxlen                   size of TO Field
+   ToReadOnly                 read only TO field
+   ToSize                     size of TO Field
+   ValidateNames              true if TO field will be validated
+   WhoTo                      Default TO field
+
+@ENDCOMMENT@
+-->
+
+@SETNODEACTIVITY "Creating message"@
+
+@SET UseDynaForum=1@
+@SET ShowConfAttr=0@
+@SET AlwaysShowPrivateBox=0@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>New message</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+<link rel="stylesheet" type="text/css" href="/template/mailclient.css">
+
+<script type="text/javascript">
+
+@if AllowCarbon@
+function showCCBox(onoff)
+{
+   var frm   = document.formMessageInput;
+   var ccbox = document.getElementById('ccbox');
+   frm.ccto.disabled     = !ccbox.style.display;
+@if Netmail@
+   frm.ccfidoto.disabled = frm.ccto.disabled;
+@endif@
+   ccbox.style.display = frm.ccto.disabled?"none":"";
+   return;
+}
+var ccCount = 0;
+function insCCBoxRow()
+{
+   ccCount++;
+   var r = document.getElementById('ccTable').insertRow(ccCount);
+   var c1=r.insertCell(0);
+   c1.align="right";
+   c1.innerHTML="<input name='ccto"+ccCount+"' class='newmsg_fvalue' maxlength=@SUB tomaxlen@ size=@SUB tosize@>@if netmail@ <b class='newmsg_fname'>FTN address: </b><input type='text' name='ccfidoto"+ccCount+"' class='newmsg_fvalue' maxlength='@SUB ftnaddrmaxlen@' size='@SUB ftnaddrsize@'>@endif@";
+}
+@endif@
+
+@if UseDynaForum@
+function changeForum(evt) {
+  var frm   = document.formMessageInput;
+  frm.command.value = "changeforum";
+  document.formMessageInput.submit();
+}
+@endif@
+
+function TrimLeft(s)
+{
+   while (s.substring(0,1) == ' ') {
+      s = s.substring(1, s.length);
+   }
+   return s;
+}
+
+function ValidateFields()
+{
+  var frm = document.formMessageInput;
+  frm.to.value = TrimLeft(frm.to.value);
+  if (frm.to.value == "") {
+    alert("Please enter a destination, To:");
+    frm.to.focus()
+    return;
+  }
+@if netmail@
+  frm.fidoto.value = TrimLeft(frm.fidoto.value);
+  if (frm.fidoto.value == "") {
+    alert("Please enter a FTN address");
+    frm.fidoto.focus()
+    return;
+  }
+@endif@
+  frm.subject.value = TrimLeft(frm.subject.value);
+  if (frm.subject.value == "") {
+    alert("Please enter a subject");
+    frm.subject.focus()
+    return;
+  }
+  if (confirm("Post Message?")) {
+     frm.submit();
+     return;
+  }
+  return;
+}
+</script>
+</head>
+<body>
+
+@include "wc:\http\template\pageheader.inc"@
+
+<form name="formMessageInput"
+      action="/code/html-create+message"
+      method="post"
+      enctype="multipart/form-data"
+      >
+
+<table align="center" border="0" class="newmsg">         <!----- outer table ----->
+<tr>                                                   <!----- outer table:row ----->
+<td>                                                   <!----- outer table:col ----->
+
+<table border="0" width="100%" frame="box" rules="none">
+  <tr>
+  <td width="100%" class="newmsg_title">Create @SUB msgtype@ message: Conference #@CONF.NUMBER@ - @CONF.NAME@</td>
+  </tr>
+</table>
+
+@if ShowConfAttr && ConfAttr@
+<table border="0">
+  <tr>
+   <td nowrap valign=top class="newmsg_fname"><b>Options: </b></td>
+   <td class="newmsg_attr">@SUB ConfAttr@</td>
+  </tr>
+</table>
+@endif@
+
+</td>                        <!----- outer table:col END ----->
+</tr>                        <!----- outer table:row END ----->
+
+<tr>                         <!----- outer table:row ----->
+<td>                         <!----- outer table:col ----->
+
+@if ChangeBtn@
+<table border="0" width="100%">
+  <tr>
+    <td align="left" "width=15%" class="newmsg_fname">Conference:</td>
+    <td align="left">
+      <select name="conference" class='newmsg_fvalue' @if UseDynaForum@ onchange='changeForum(event)'@endif@>
+          @loop conf@
+          <option value="@SUB confnum@" @IF postconf = confnum@selected@ENDIF@>@SUB confnum@ - @SUB confname@</OPTION>
+          @endloop@
+      </select>
+      <input type=@if UseDynaForum@hidden@else@submit@endif@ name="command" class="newmsg_fvalue" value="@if !UseDynaForum@Change Conference@endif@">
+    </td>
+  </tr>
+</table>
+@endif@
+
+<table border="0" class="newmsg_head" id="msgHeadTable" width="100%">
+  @if AuthorAnonymous@
+    <tr><td align=right class="newmsg_fname" width=15%>From:</td><td><input name="from" maxlength=@SUB tomaxlen@ size=@SUB tosize@ value="@sub author@"></td></tr>
+  @elseif AuthorSelect@
+    <tr><td align=right class="newmsg_fname" width=15%>From:</td>
+      <td>
+       <select name="from">
+           <option value="@SUB author@">@SUB author@</OPTION>
+           <option value="@SUB authoralias@">@SUB authoralias@</OPTION>
+       </select>
+      </td>
+    </tr>
+  @else@
+    <tr><td align=right width=15% class="newmsg_fname">From:</td><td class='newmsg_fvalue'>@sub author@@if netmail@<b> (@SUB Msg.FidoFrom@)</b>@endif@</td></tr>
+  @endif@
+  @if ToReadOnly@
+    <tr><td align=right width=15% class="newmsg_fname">To:</td><td  class='newmsg_fvalue'>@sub whoto@@if netmail@<b> (@SUB Msg.FidoTo@)</b>@endif@</td></tr>
+  @else@
+    <tr>
+      <td align=right width=15% class="newmsg_fname">@if AllowCarbon@<a href="javascript:showCCBox()" class='newmsg_to_cc' title='Show/Hide CC fields'>@endif@To:@if AllowCarbon@</a>@endif@</td>
+      <td class='newmsg_fvalue'><input name="to" maxlength=@SUB tomaxlen@ size=@SUB tosize@ value="@sub whoto@"  class='newmsg_fvalue'>@if netmail@ <b class="newmsg_fname">FTN address: </b><input type="text" name="fidoto" maxlength="@SUB ftnaddrmaxlen@" size="@SUB ftnaddrsize@" value="@SUB Msg.FidoTo@"  class='newmsg_fvalue'>@endif@</td>
+    </tr>
+    @if AllowCarbon@
+    <tr id="ccbox" style="display:none">
+      <td align=right valign=top width=15% class="newmsg_fname"><a href="javascript:insCCBoxRow()" class='newmsg_to_cc' title='add another cc'>cc:</a></td>
+      <td class='newmsg_fvalue'>
+        <table id="ccTable" border=0 cellpadding=0 rules=groups>
+         <tr>
+          <td class='newmsg_fvalue'><input name="ccto" maxlength=@SUB tomaxlen@ size=@SUB tosize@  class='newmsg_fvalue'>@if netmail@ <b class="newmsg_fname">FTN address: </b><input type="text" name="ccfidoto" maxlength="@SUB ftnaddrmaxlen@" size="@SUB ftnaddrsize@" class='newmsg_fvalue' >@endif@</td>
+         </tr>
+        </table>
+      </td>
+    </tr>
+    @endif@
+  @endif@
+
+  <tr><td align=right width=15% class="newmsg_fname">Subject:</td><td><input maxlength=71 size=71 name="subject" class='newmsg_fvalue' value="@sub msgsubject@"@if SubjectReadOnly@ ReadOnly@endif@></td></tr>
+
+  @if AllowAttach@
+  <tr>
+  <td align='right' width=15% class="newmsg_fname">Attachment:</td><td class='newmsg_fvalue'><input type="file" name="attach" size="60" maxsize="1024"  class='newmsg_fvalue'></td>
+  </tr>
+  @endif@
+</table>
+
+<!--- checkboxes --->
+@if AlwaysShowPrivateBox || ForcePrivate || ForcePublic || PrivateBox || ReceiptBox || NetMail@
+<table class="newmsg_checkboxes" border="0" width="100%">
+  <tr>
+@if ForcePrivate@
+    <td nowrap class='newmsg_pvtmsg'>Private Message</td>
+@elseif ForcePublic@
+    <td nowrap class='newmsg_pubmsg'>Public Message</td>
+@elseif AlwaysShowPrivateBox || PrivateBox@
+    <td nowrap class='newmsg_fname'>Private:</td><td><input type=checkbox name="private" class='newmsg_cb' value=1 @IF msg.private="yes"@checked@ENDIF@ @if !PrivateBox@ReadOnly DISABLED@Endif@></td>
+@endif@
+
+@if ReceiptBox@
+    <td nowrap class='newmsg_fname'>Receipt:</td><td><input type=checkbox name="receipt" class='newmsg_cb' value=1></td>
+@endif@
+
+@if Netmail@
+    <td nowrap class='newmsg_fname'>Crash:</td><td><input type=checkbox name="fidocrash" class='newmsg_cb' value=1 checked></td>
+    <td nowrap class='newmsg_fname'>Direct:</td><td><input type=checkbox name="fidodirect" class='newmsg_cb' value=1 checked></td>
+@endif@
+
+    <td width=100%></td>
+  </tr>
+</table>
+@endif@
+<!--- end of checkboxes --->
+
+</td>                        <!----- outer table:col END ----->
+</tr>                        <!----- outer table:row END ----->
+
+<tr>                         <!----- outer table:row ----->
+<td>                         <!----- outer table:col ----->
+
+<input type=hidden name="reference"   value="@MSG.ID@">
+<input type=hidden name="frames"      value="@sub query.frames@">
+<input type=hidden name="threads"     value="@sub query.threads@">
+<input type=hidden name="backto"      value="@sub query.backto@">
+<input type=hidden name="msgid"       value="@sub query.msgid@">
+<input type=hidden name="fwdorig"     value="@sub query.fwdorig@">
+<input type=hidden name="replyto"     value="@sub query.replyto@">
+<input type=hidden name="pg"          value="@sub query.pg@">
+<input type=hidden name="origconf"    value="@sub origconf@">
+<input type=hidden name="origparams"  value="@sub origparams@">
+<input type=hidden name="snoop"       value="@sub query.snoop@">
+@if ToReadOnly@
+<input type=hidden name="to"          value="@sub whoto@">
+@endif@
+@if netmail@
+<input type=hidden name="fidofrom"    value="@sub Msg.FidoFrom@">
+@endif@
+
+<b class="newmsg_fname">Type your message here:</b><br>
+@if msgtype = "forward"@
+<textarea cols="75" rows="15" name="body" wrap="hard" class="newmsg_text">
+                     -------- Forwarded Message ---------
+Original: DATE..... @MSG.DATE@
+Original: FROM..... @MSG.FROM.NAME@ @IF netmail@(@SUB origauthorftnaddr@)@endif@&nbsp;
+Original: TO....... @MSG.TO.NAME@ @IF netmail@(@SUB origwhotoftnaddr@)@endif@&nbsp;
+Original: SUBJECT.. @MSG.SUBJECT@
+Original: FORUM.... @MSG.CONFERENCE.NAME@
+Forwarded By....... @USER.NAME@ on @DATE@ @TIME@
+
+@SUB BODY@
+                     ----- End of Forwarded Message -----
+</textarea><br>
+@elseif msgtype = "reply"@
+<textarea cols="75" rows="15" name="body" wrap="hard" class="newmsg_text">
+On @MSG.DATE@, @MSG.FROM.NAME@ wrote to @MSG.TO.NAME@:
+
+@SUB body@
+</textarea><br>
+@else@
+<textarea cols="75" rows="15" name="body" wrap="hard" class="newmsg_text">
+@SUB body@
+</textarea><br>
+@endif@
+<button type=submit class='newmsg_btn_post' onClick="ValidateFields();return false;"><strong>Post Message</strong></button>
+</td>                        <!----- outer table:col END ----->
+</tr>                        <!----- outer table:row END ----->
+</table>                     <!----- outer table ----->
+
+</form>
+
+<script>
+@if msgtype = "reply"@
+   document.formMessageInput.body.focus();
+@elseif !ToReadOnly@
+   document.formMessageInput.to.focus();
+@elseif !SubjectReadOnly@
+   document.formMessageInput.subject.focus();
+@else@
+   document.formMessageInput.body.focus();
+@endif@
+</script>
+
+@include "wc:\http\template\pagefooter.inc"@
+
+</body>
+</html>

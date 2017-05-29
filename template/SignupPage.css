@@ -1,0 +1,46 @@
+div.ruler {
+   margin-top: 2%; margin-bottom: 1%; margin-left: 20%; margin-right: 20%;
+   width: auto; height: 4px; background: blue;
+   font-size: 4px;
+}
+
+.prmTitle {
+   font-family:arial;
+   font-size:12px;
+   font-weight:bold;
+   border: 1px solid gray;
+   color:Black;
+   background : Cyan;
+   font-style:normal;
+   text-decoration:none;
+}
+
+.divStatus {
+   font-family: verdana,tahoma,arial;
+   font-size : 8pt;
+   font-weight : Bold;
+   background : red;
+   margin : 0px;
+   padding : 2px;
+   border: 1px solid black;
+   color : white;
+}
+
+.btn_submit {
+   font-family: verdana,tahoma,arial;
+   font-size : 8pt;
+   font-weight : Bold;
+   background : #C0C0C0;
+   margin : 0px;
+   padding : 2px;
+   color : Black;
+}
+table.formSignup  {
+   background : #FFFDEA;
+   font-family: verdana,tahoma,arial;
+   font-size : 10pt;
+   color : Blue;
+   border: 3px solid black;
+   border-collapse: collapse;
+}
+table { border-collapse: collapse; }

@@ -1,0 +1,27 @@
+@if AllowPasswordChange@
+  <h3 class="propertyPageTitle">Password Change:</h3>
+  @IF PasswordError@
+  <div class="error">PASSWORD ERROR:<br>@SUB PasswordError@</div>
+  <br>
+  @ENDIF@
+  <form method="post" action="/code/html-personal">
+  <input type="hidden" name="save" value="@SUB QUERY.PAGE@"/>
+  <table class="propertyPageNoBorder" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  	<td>
+  		<table>
+  		<tr><td><b>Old password:</b></td><td><input type="password" name="OldPwd" size="31"/></td></tr>
+  		<tr><td><b>New password:</b></td><td><input type="password" name="NewPwd1" size="31"/></td></tr>
+  		<tr><td><b>Verify new password:</b></td><td><input type="password" name="NewPwd2" size="31"/></td></tr>
+  		</table>
+  	</td>
+  </tr>
+  </table>
+  <br>
+  <table border="0" cellspacing="0" cellpadding="2">
+  <tr><td><input type="Submit" value="Save"/><input type="Reset" value="Reset"/><td></tr>
+  </table>
+  </form>
+@ELSE@
+  <div class="error">You don't have authorization to change your password.</div>
+@ENDIF@

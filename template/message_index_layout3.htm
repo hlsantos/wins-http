@@ -1,0 +1,122 @@
+<!-- message_index_layout3.htm: used by html-list messages.wcx -->
+<html>
+<head>
+<title>Conference @CONF.NUMBER@ - @CONF.NAME@</title>
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/templates.css">
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/buttons.css">
+<script language="JavaScript" src="/template/wcmsglib.js"></script>
+</head>
+<body>
+
+@include "pageheader.inc"@
+
+<table width="95%" border="0" cellspacing="0" cellpadding="2" align="center">
+  <tr>
+    @if !FrameMode@
+	<td><img src="/public/graphics/c-msg.gif" width="211" height="50" alt="Messaging" border="0"></td>
+    @endif@
+	<td valign="bottom"><b>Conference @CONF.NUMBER@ - @CONF.NAME@</b></td>
+    <!-- Note: showing this might confuse people. -->
+   @if TRUE@
+	<td valign="bottom" align="right"><b>Messages @SUB indexfirst@ - @SUB indexlast@ of @SUB total@</b></td>
+	<td valign="bottom" align="right">
+      <a href="/code/html-read+message?frames=@SUB frames@&threads=n&conf=@CONF.NUMBER@&msgid=@sub lastreadid@&nextprev=1"@IF FrameMode@ target="body"@ENDIF@>
+   	<b>Last Read: @SUB lastread@</b>
+      </a>
+      <a href="/code/html-list+messages?@SUB bparm@&index=@SUB lastreadid@" class="item">&nbsp;TopLast&nbsp;</a>
+	</td>
+   @endif@
+  </tr>
+</table>
+
+@include "message_indexmenu.inc"@
+
+@if !ThreadMode@
+  <form name="list" action="/code/html-list+messages" method="post">
+    <input type="hidden" name="frames" value="@SUB frames@">
+    <input type="hidden" name="conf" value="@SUB conf@">
+    <input type="hidden" name="threads" value="@SUB threads@">
+    <input type="hidden" name="index" value="@SUB index@">
+    <input type="hidden" name="pg" value="r">
+    <input type="hidden" name="command" value="">
+
+    <table width="95%" border="0" cellspacing="1" align="center" class="msglisttable">
+      <tr>
+        <th class="msglisthdr"><input type="checkbox" name="msgall" title="Check or Uncheck all" onClick="msgToggleAll()" value="1"></th>
+        <th class="msglisthdr"><b>&nbsp;Msg#&nbsp;</b></th>
+        <th class="msglisthdr"><b>&nbsp;Date&nbsp;</b></th>
+        <th class="msglisthdr"><b>&nbsp;From (Author)&nbsp;</b></th>
+        <th class="msglisthdr"><b>&nbsp;To&nbsp;</b></td>
+        <th class="msglisthdr"><b>&nbsp;R&nbsp;</b></th>
+      </tr>
+
+      @LOOP@
+      @if !Deleted@
+        @if lastreadbreak@
+        <tr>
+          <td colspan=10 align="center" class="msglistmarker"><b>*** Last Read Message Position (Last Read: @SUB lastread@) ***</b></td>
+        </tr>
+        @endif@
+        <tr>
+          @if candelete@
+            <td valign=top rowspan=2 class="msglist@SUB ci@">
+            <input type="checkbox" class="msgitem" name="msg@MSG.ID@" value="@MSG.ID@">
+            </td>
+          @else@
+            <td rowspan=2 class="msglist@SUB ci@">&nbsp;</td>
+          @endif@
+          <td valign=top rowspan=2 class="msglist@SUB ci@">&nbsp;@MSG.NUMBER@&nbsp;</td>
+          <td valign=top rowspan=2 nowrap class="msglist@SUB ci@">&nbsp;@MSG.DATE@&nbsp;</td>
+          <td valign=top nowrap class="msglist@SUB ci@" width="50%">&nbsp;@SUB MSGFROM@&nbsp;</td>
+          <td valign=top nowrap class="msglist@SUB ci@" width="50%">&nbsp;@SUB MSGTO@&nbsp;</td>
+          <td valign=top nowrap class="msglist@SUB ci@" width="2%">@MSG.REPLYCOUNT@</td>
+          <tr>
+            <td valign=top colspan=10 wrap class="msglist@SUB ci@" width="90%">
+              <!--@IF msg.attachment@<img src="/images/attach.gif" alt="@MSG.ATTACHMENT@">@ENDIF@ -->
+              @IF New@<img src="/images/new.gif" alt="New @IF MSG.PRIVATE="Yes"@private @ENDIF@personal message">@ENDIF@
+              @IF Snoopable@<a href="/code/html-read+message?frames=@SUB frames@&threads=n&conf=@MSG.CONFERENCE.NUMBER@&msgid=@MSG.ID@&nextprev=1&snoop=1" @IF FrameMode@ target="body"@ENDIF@><img src="/images/snoop.gif" alt="Preview message in snoop mode" border=0></a>@ENDIF@
+              <a href="/code/html-read+message?frames=@SUB frames@&threads=n&conf=@MSG.CONFERENCE.NUMBER@&msgid=@MSG.ID@&nextprev=1"@IF FrameMode@ target="body"@ENDIF@><b>&nbsp;@SUB MSGSUBJECT@&nbsp;</b></a>
+            </td>
+          </tr>
+        </tr>
+      @endif@
+      @ENDLOOP@
+
+      @if HasMessages@
+        <tr>
+           <td colspan=10 class="itemgifrow" valign="bottom" align="left">
+            <a href="javascript:void msgAction('delete');" class="itemgif" title="delete checked message(s)">
+            <img src="/images/msgdelete.gif" align="middle" border="0">
+            &nbsp;Delete&nbsp;
+            </a>
+           </td>
+        </tr>
+      @else@
+        <tr>
+          <td colspan=10 align="center" class="msglistmarker">
+          <b>No New Messages</b>
+          </td>
+        </tr>
+      @endif@
+    </table>
+  </form>
+@ELSE@
+  @if Threadtpl@
+    <!-- this is an example of using a template to define the thread links -->
+    @LOOP THREAD@
+    <li>
+      @IF New@<img src="/images/new.gif">@ENDIF@
+      @IF MSG.PRIVATE@<img src="/images/pvtmsg.gif" alt="Private" border=""0"">@ENDIF@
+      @IF Snoopable@<a href="/code/html-read+message?frames=@SUB frames@&conf=@cub conf@&msgid=@MSG.ID@&i=@SUB index@&nextprev=1&threads=@SUB threads@&snoop=1" @IF FrameMode@ target="body"@ENDIF@><img src="images/snoop.gif" alt="Snoop" border=1></a>@ENDIF@
+                    <a href="/code/html-read+message?frames=@SUB frames@&conf=@SUB conf@&msgid=@MSG.ID@&i=@SUB index@&nextprev=1&threads=@SUB threads@" @IF FrameMode@target="body"@ENDIF@><b>@SUB MSGSUBJECT@</b></a> from @MSG.FROM.NAME@ at @MSG.DATE@
+    </li>
+    @ENDLOOP@
+  @else@
+    <!-- this is much faster than above! -->
+    @SUB FASTTHREADS@
+  @endif@
+@endif@
+@include "message_indexmenu.inc"@
+@include "pagefooter.inc"@
+</body>
+</html>

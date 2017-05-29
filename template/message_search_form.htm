@@ -1,0 +1,97 @@
+<!--
+@COMMENT@
+file:  message_search_form.htm
+date:  09/07/05, v6.1.451.5l
+about: called by html-searchform.wcx
+@ENDCOMMENT@
+-->
+
+<html>
+<head>
+<title>Message Search</title>
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/templates.css">
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/buttons.css">
+<LINK REL="stylesheet" TYPE="text/css" HREF="/public/styles.css">
+
+<script language="javascript">
+function FieldValidate(src) {
+  if (document.SearchForm.tarfrom.value == ""    &&
+      document.SearchForm.tarto.value == ""      &&
+      document.SearchForm.tarsubject.value == "" &&
+      document.SearchForm.tarbody.value == "") {
+      alert("Please fill out one or more of the search fields.");
+      return;
+  }
+  document.SearchForm.submit();
+  return;
+}
+</script>
+</head>
+
+<body>
+
+@set pagetitle="<b>Message Search:</b> Conference"+CONF.NUMBER+" - "+CONF.NAME@
+@include "pageheader.inc"@
+
+<br>
+<center>
+<table width="95%" border="0" cellspacing="0" cellpadding="2">
+<tr class="pagetitle">
+   <td class="pagetitle"><b>Message Search:</b> Conference @CONF.NUMBER@ - @CONF.NAME@</td>
+   @if HelpEnabled && FrameMode@
+   <td width="1%" align="right">
+   <a id="idHelp" href="@SUB JavaHelpUrl@" class="item" title="@sub JaveHelpTitle@">&nbsp;Help&nbsp;</a>
+   </td>
+   @endif@
+</tr>
+</table>
+</center>
+
+<center>
+<form name="SearchForm" method=get action="/code/html-search+messages">
+<input type=hidden name="threads" value="@SUB query.threads@">
+<input type=hidden name="frames" value="@SUB query.frames@">
+<input type=hidden name="conf" value="@SUB query.conf@">
+
+<table width="95%" border="0" bgcolor="#DDDDDD">
+<tr><td align=right><b>From:</b></td><td><input name=tarfrom size=50 value="@SUB tarfrom@"></td></tr>
+<tr><td align=right><b>To:</b></td><td><input name=tarto size=50 value="@SUB tarto@"></td></tr>
+<tr><td align=right><b>Subject:</b></td><td><input name=tarsubject size=50 value="@SUB tarsubject@"></td></tr>
+<tr><td align=right><b>Message body:</b></td><td><input name=tarbody size=50 value="@SUB tarbody@"></td></tr>
+<!--<tr> <td align=right><b>Date Since:</b></td><td><input name=tardate1> (format: mm/dd/yyyy)</td> </tr> -->
+<tr>
+  <td align=right><b>Listing Page Size:</b></td>
+  <td>
+  <input name=tarpagesize size=5 value=@SUB pagesize@>
+  &nbsp;<input name="nocache" type="checkbox"><b>Clear Previous Search Cache</b>
+  &nbsp;<input name="listall" type="checkbox"><b>List All</b>
+  </td>
+</tr>
+<tr>
+<td align="left">
+<input type=submit value="Start Search" onClick="FieldValidate(this); return false;">
+<input type=Reset value="Reset">
+</td>
+</tr>
+</table>
+</form>
+</center>
+
+<center>
+<table width="95%" border="0">
+<tr>
+<td>
+<p>Message Search uses a straight forward case insensitive sub-string
+search on each field provided above. If more than one field is searched,
+a binary AND logic is applied to each field result. <i>Please note
+performing a message body search will take longer than a header (From,
+To, Subject) search.</i></p>
+</td>
+</tr>
+</table>
+</center>
+
+@include "pagefooter.inc"@
+
+</body>
+</html>

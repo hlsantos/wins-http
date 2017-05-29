@@ -1,0 +1,97 @@
+.tipster-default {
+}
+
+#tipster-waitimage {
+  width: 43px;
+  height: 11px;
+  position: absolute;
+  background-image: url(/public/js/images/wait.gif);
+}
+
+.tipster-default #tipster-outer {
+  position: relative;
+  margin: 0px;
+  background: lightcyan;
+}
+
+.tipster-right-default {
+  background-image: url(/public/js/images/arrowleft.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-left: 10px;
+}
+.tipster-left-default {
+  background-image: url(/public/js/images/arrowright.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-right: 10px;
+}
+
+.tipster-top-default {
+  background-image: url(/public/js/images/arrowdown.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-bottom: 10px;
+}
+.tipster-bottom-default {
+  background-image: url(/public/js/images/arrowup.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-top: 10px;
+}
+
+.tipster-right-jtip {
+  background-image: url(/public/js/images/arrowleft.gif);
+  background-repeat: no-repeat;
+  padding-left: 10px;
+}
+.tipster-left-jtip {
+  background-image: url(/public/js/images/arrowright.gif);
+  background-repeat: no-repeat;
+  padding-right: 10px;
+}
+.tipster-top-jtip {
+  background-image: url(/public/js/images/arrowdown.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-bottom: 10px;
+}
+.tipster-bottom-jtip {
+  background-image: url(/public/js/images/arrowup.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-top: 10px;
+}
+
+#tipster-outer {
+  border: 2px solid #ccc;
+  position: relative;
+  background: lightcyan;
+}
+
+#tipster-inner {
+  padding: 10px;
+  overflow : hidden;
+}
+
+#tipster-title {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  font-weight: bold;
+  background-color: blue;
+  color: white;
+}
+
+h3#tipster-title {
+  margin: 0 0 5px;
+  padding: 2px 10px 4px;
+}
+
+span#tipster-close {
+  text-align: right;
+  margin: 0 5px 5px;
+  color: #900;
+}
+#tipster-close img {
+  border: 0;
+}

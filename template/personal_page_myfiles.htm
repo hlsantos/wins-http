@@ -1,0 +1,68 @@
+@COMMENT@
+
+File   : Personal_page_myfiles.htm
+Version: v6.3.452.6, 09/30/08 06:49 am
+
+This is called by the url: /code/html-personal.wcx?page=myfiles off the
+personal properties page.
+
+It sets the variable applet.name to define a script to run. In this case,
+/template/myfiles.wct to display the user's uploaded file in an iframe tag.
+
+Myfiles.wct is a stock template script, so its stored in the template folder.
+This allows customization by creating a copy in the template\custom folder.
+
+Note: If you do customize, there is no need to change the name of
+      applet.name variable because the web server will always look for
+      template files in the custom folder first before it fall backs to
+      the stock files in the template folder.
+
+History:
+
+10/15/08 03:16 pm
+- fixed for IE height
+01/31/09 10:56 pm
+- using IE height fix for all browsers
+
+@ENDCOMMENT@
+
+
+@SET applet.name = "/pwe/myfiles.php"@
+@SET applet.name = "/template/myfiles.wct"@
+
+@if !exist applet.name@
+   <p align="center">Feature not implemented</p>
+@else@
+
+<script>
+ document.write('<img id="idLoadWait" src="/public/js/images/wait.gif" />');
+ function ifDone(e) {
+   var lid = document.getElementById("idLoadWait");
+   if (lid) {
+@IF 1 || BROWSER.MSIE@
+       e.style.height = document.body.clientHeight * 0.80;
+@ENDIF@
+       lid.style.display = "none";
+   }
+ }
+@IF 1 || BROWSER.MSIE@
+ var critsect = 0;
+ function iframeBodyResizer(e) {
+   if (critsect) return;
+   critsect = 1;
+   e.style.height = document.body.clientHeight * 0.80;
+   critsect = 0;
+ }
+@ENDIF@
+</script>
+
+<iframe onLoad="ifDone(this);"
+@IF 1 || BROWSER.MSIE@
+   onresize="iframeBodyResizer(this)"
+@ENDIF@
+   src="@SUB applet.name@"
+   style = "border: 0px; width: 100%; height: 90%;">
+</iframe>
+
+@endif@
+

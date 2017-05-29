@@ -1,0 +1,31 @@
+/* Default Layout - non frame mode
+
+   +------------------+
+   |    HEADER        |
+   |----MAIN----------!
+   |MENU|   CONTENT   |
+   |------------------!
+   |    FOOTER        |
+   +------------------+
+
+*/
+
+body  {
+   margin: 1%;
+   color : Black;
+   background-color: #333333;
+   font-family: verdana,tahoma,arial; font-size : 8pt;
+}
+
+#layoutHeader,#layoutMenu,#layoutMain, #layoutContent,#layoutFooter { overflow:hidden;}
+#layoutHeader, #layoutFooter { width:100%;}
+#layoutMain {float:left;width:100%;}
+#layoutMenu {float:left;width:20%;}
+#layoutContent {float:left;width:80%;}
+#layoutFooter {clear:left; }
+
+#layoutMain {
+   background-color: #FFFACD;  /* very light biege */
+   height: auto;
+}
+

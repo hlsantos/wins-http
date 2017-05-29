@@ -1,0 +1,53 @@
+<!-- File: D:\wc5beta\http\public\warning-no-cookie.wct-->
+<html>
+<head>
+<script language="JavaScript">
+<!--
+function PopWindow(mylink, windowname)
+{
+    if (! window.focus)return true;
+    var href;
+    if (typeof(mylink) == 'string')
+       href=mylink;
+    else
+       href=mylink.href;
+    var helpWnd=window.open(href, windowname, 'width=550,height=400,scrollbars=no');
+    helpWnd.focus()
+    return false;
+}
+// -->
+</script>
+</head>
+<body>
+<center>
+<table border=0 cellspacing=1 cellpadding=1 width=60%>
+ <tr>
+  <td bgcolor=#3366cc>
+  <table bgcolor=#ffffff cellpadding=5 cellspacing=0 border=0 width=100%>
+   <tr bgcolor=#eeeeee>
+    <td align=center><img src=/public/graphics/warning.gif align=top></td>
+   </tr>
+   <tr bgcolor='red'>
+    <td>
+      <center>
+      <font face=arial,sans-serif size=-1>
+      <b>
+      Your cookies seem to be disabled. <br>
+      This system uses cookies for login access.<br>
+      </b>
+      <font size=-2>
+      <a href="/public/cookieshelp.htm" onClick="return PopWindow(this, 'Help')" class="pagebutton">&nbsp;Help&nbsp;</a><br>
+      <a href="/" target=_top>Home</a>
+      </font>
+      </font>
+      </center>
+    </td>
+   </tr>
+  </table>
+  </td>
+ </tr>
+</table>
+</body>
+</center>
+</html>
+

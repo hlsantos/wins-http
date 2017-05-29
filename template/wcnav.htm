@@ -1,0 +1,78 @@
+@//@ vinfo: wcnav.htm, v6.4.454.4
+@include "globalopts.inc"@
+<html>
+<head>
+<title>Wildcat! JavaChat Client</title>
+
+<style>
+#bodyWcChat         {margin: 0; background: DarkSeaGreen; font-family: verdana,tahoma,arial; font-size : 8pt; color : Blue;}
+#wcChatNotifyWindow {margin: 0; background: DarkSeaGreen; font-family: verdana,tahoma,arial; font-size : 8pt; color : Blue;}
+#tblChatApplet      {width: 100%; border-collapse: collapse; border: 1px solid black;}
+.Hide               {visibility: hidden;}
+.wcChatTitle        {text-align: center; padding: 0; margin: 0; font-family: tahoma,arial; letter-spacing: 2pt;}
+.divChatApplet      {background: #EFF6FF; font-family: verdana,tahoma,arial; font-size : 8pt; color : Blue; border: 2px solid black;}
+.btnClose           {background: Green; color: White; font-size: 8pt; }
+a.btnClose:link     {color: #3050FF; text-decoration: none}
+a.btnClose:visited  {color: #6080FF; text-decoration: none}
+a.btnClose:hover    {color: #000000; text-decoration: underline}
+.btnHome            {border: outset; padding: 3px; background: Blue; color: White;}
+a.btnHome:link      {color: White;  text-decoration: none}
+a.btnHome:visited   {color: White;  text-decoration: none}
+a.btnHome:hover     {color: Yellow; text-decoration: underline}
+</style>
+
+
+</head>
+
+<body id="bodyWcChat">
+
+<div id="divWcChatNotifyWindow">
+
+@IF Challenge = ""@
+
+  <h3 align="center"
+      id="WarningDisplay"
+      style="margin-top:5%; margin-left:20%; margin-right:20%;">
+      WCT CODING ERROR:<br>
+      User Credentials not passed! Using old version of Wildcat!
+  </h3>
+
+@ELSE@
+
+<table id="tblChatApplet" border="1" align="center">
+ <tr><td><h4 class="wcChatTitle">Wildcat! Chat Monitor</h4></td></tr>
+ <tr>
+   <td align="center">
+   <div class="divChatApplet">
+     <applet code="COM/winserver/wcnav/Wcnav.class"
+             codebase="/public/wcnav"
+             archive="/public/wcnav/wcnav.jar"
+             width="300" height="100" align="center"
+             alt="Problem running wcChat Java Module. You must have JAVA enabled on your system.">
+     <param name="codebase" value="/public/wcnav/wcnav.jar">
+     <param name="cabbase" value="/public/wcnav/wcnav.cab">
+     <param name="context" value="@CHALLENGE@">
+     <param name="client"  value="Chat:COM.winserver.wcnav.chat.Chat">
+        Your browser understands the &lt;APPLET&gt; tag but isn't running the
+        applet for some reason. Your browser is completely ignoring
+        the &lt;APPLET&gt; tag! Please check to see if you have Sun Java
+        v1.7+ minimum installed.
+     </applet>
+  </div>
+  </td>
+ </tr>
+</table>
+<br>
+
+<center>
+<script>
+  document.write('<a class="btnHome" href="#" onClick="parent.close();">&nbsp;Close&nbsp;</a>');
+</script>
+</center>
+
+@ENDIF@
+
+</div>
+
+</body>
+</html>

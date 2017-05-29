@@ -1,0 +1,11 @@
+<!--
+     Example WCT to save personal properties in the extended
+     user database. In this example, we are saving three options
+     in section [PageExample]
+-->
+
+@set User.Variable("PageExample","option1")=Query.Option1@
+@set User.Variable("PageExample","option2")=Query.Option2@
+@set User.Variable("PageExample","option3")=Query.Option3@
+
+@MODULE UTL REDIRECT /code/html-personal?page=example@

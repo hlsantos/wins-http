@@ -1,0 +1,48 @@
+<!-- File: file_error.htm
+     v6.3.453.1
+  -->
+<html>
+<head>
+<title>File Error</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+
+<style>
+</style>
+
+</head>
+<body>
+
+@include "pageheader.inc"@
+
+@if !FrameMode@<br>@endif@
+
+@if Result.Error@
+   <div id="ErrorDisplay">@get Result.Error@</div>
+@else@
+   <div id="BigBoxDisplay">@get Result@</div>
+@endif@
+
+@if backto@
+<center>
+   @if "history.back"?backto@
+     @if backto.comment = ""@@set backto.comment="Click your BACK button to return to the previous page."@@endif@
+     <script>
+       document.write('<a href="javascript:history.back();" class="niceButton">&nbsp;Back&nbsp;</a>');
+     </script>
+     <noscript>
+       <!-- Javascript is off! Have user directly use browser back button
+            so no form posting is lost -->
+       <b>@get backto.comment@</b>
+     </noscript>
+   @else@
+     <a href="@get backto@" class="niceButton">&nbsp;Back&nbsp;</a>
+   @endif@
+</center>
+@endif@
+
+@include "pagefooter.inc"@
+
+</body>
+</html>
+

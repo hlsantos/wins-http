@@ -1,0 +1,1 @@
+<a id="idHelp" href="@SUB JavaHelpUrl@" class="item" title="@sub JaveHelpTitle@">

@@ -1,0 +1,43 @@
+@COMMENT@
+file_search.htm: used by html-search files.wcx
+
+updated: v6.2.452.1g, 2007-02-21 12:09 AM
+updated: v6.3.453.4,  2010-07-31 05:11 pm
+@ENDCOMMENT@
+
+<html>
+<head>
+<title>File search - @SUB target@</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+</head>
+<body>
+
+@include "pageheader.inc"@
+
+@IF FSEARCH.TOTAL = 0@
+
+<div id="idFSearch">
+<p>File Search Result: @SUB FSEARCH.RESULT@</p>
+@IF !FrameMode@
+<p><a href="javascript:history.back();">Back</a></p>
+@ENDIF@
+</div>
+
+@ELSE@
+
+<h3 align=center>
+File search results: @SUB target@<br>
+Displaying files @SUB indexfirst@ - @SUB indexlast@ of @SUB total@ files found, sorted by area.
+</h3>
+@include "file_searchmenu.inc"@
+@include "file_list.inc"@
+@include "file_searchmenu.inc"@
+
+@include "pagefooter.inc"@
+
+@ENDIF@
+
+
+</body>
+</html>

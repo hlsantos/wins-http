@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>wcFlash - @FILE.NAME@</title>
+<link rel="stylesheet"           type="text/css" href="/public/wcflash/css/player.css" title="dark" media="screen" />
+<script type="text/javascript"   src="/public/js/soundmanager2.js"></script>
+
+<style type="text/css">
+
+body  {
+   color : Blue;
+   background: #EFF6FF;
+   font-family: verdana,tahoma,arial; font-size : 8pt;
+}
+
+</style>
+
+</head>
+
+<body>
+<h3>Play Audio - @FILE.NAME@</h3>
+
+@SET SMID="wcCatMusic"+RECNO@
+
+<script type="text/javascript">
+soundManager.onload = function() {
+  soundManager.createSound("@SUB SMID@","/public/stm/@FILE.NAME@");
+  soundManager.play("@SUB SMID@");
+  //soundManager.setVolume("@SUB SMID@",25);
+}
+</script>
+
+ <!-- start: player UI (bar) -->
+ <div id="player-template" class="sm2player">
+  <div class="ui">
+   <div class="right">
+    <div class="divider"></div>
+    <div class="time" title="Time">0:00</div>
+    <a href="#" title="Play" onclick="soundManager.togglePause('@SUB SMID@');return false"><span>Play</span></a>
+    <a href="#" title="Stop" onclick="soundManager.stop('@SUB SMID@');return false"><span>Stop</span></a>
+    <a href="#" title="Mute" onclick="soundManager.pause('@SUB SMID@');return false"><span>Mute</span></a>
+   </div>
+  </div>
+ </div>
+ <!-- end: player UI (bar) -->
+
+</body>
+</html>

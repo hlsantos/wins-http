@@ -1,0 +1,54 @@
+@COMMENT@
+file_frame_init.wct
+
+     This WCT is called by the frame system in file_areas.htm.
+     One parameter is passed: target=list|info
+
+history:
+
+     452.3g - adjusted centering of notice
+@ENDCOMMENT@
+
+<html>
+<head>
+<style>
+div.notice  {
+   color : Black;
+   background : #33FF66; @//@ AliceBlue
+   border: 1px solid Black; border-top-width: 2px; border-bottom-width: 2px;
+   font-family: verdana,tahoma,arial; font-size : 10pt;
+   margin-left:10%; margin-right:10%;
+   padding: 5px;
+   text-align: center;
+}
+h3 { color: Blue;}
+</style>
+</head>
+
+<body  class="image">
+
+@//@ Show target=list frame initial instructions
+
+@if query.target = "list"@
+   <br>
+   <div class="notice">
+   <h3>Welcome to the<br>@SYSTEM.BBSNAME@<br>File System</h3>
+   A list of files will be shown in this frame. To view a list of
+   files, select a file group and area on the left or you may
+   search or show new files.
+   </div>
+@endif@
+
+@//@ Show target=info frame initial instructions
+
+@if query.target = "info"@
+   <br>
+   <div class="notice">
+   To view file information, first show the file list above and
+   click the file information link.
+   </div>
+@endif@
+
+
+</body>
+</html>

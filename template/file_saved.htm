@@ -1,0 +1,23 @@
+<!-- File: D:\wc5beta\http\template\file_saved.htm-->
+<html>
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/templates.css">
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/buttons.css">
+<head><title>File Saved</title>
+</head>
+<body>
+
+@include "pageheader.inc"@
+
+<h2>File Saved</h2>
+<p>File <b>@FILE.NAME@</b> saved in area: @FILE.AREA@ - @SUB AREANAME@</p>
+
+@if response@@sub response@@endif@
+
+@if !FrameMode@
+<p><a href="/code/html-list+files?frames=n&area=@FILE.AREA@&ra=1">[Back to File List]</a></p>
+@endif@
+
+@include "pagefooter.inc"@
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+AUP: 454.4
+DATE: 05/12/12 02:33 pm
+- Updated Login Templates urls to /public/js
+- Updated SoundManager urls to /public/js
+- Added jquery.wcAutoSuggest.js
+- Added jquery.wcAutoSuggest.mini.js
+- Added jquery.autocomplete.js
+- Added jquery.autocomplete.mini.js
+
+AUP: 453.4
+DATE: 04/29/12 09:22 am
+- Updated Jquery to 1.4.2
+- added ui\ folder with jquery.ui.js 1.8.2
+- added jquery.form.js
+

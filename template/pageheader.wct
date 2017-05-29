@@ -1,0 +1,39 @@
+@COMMENT@
+File: PageHeader.wct
+
+This template is good for showing the pagheader in frame mode as  a TOP
+FRAME "Menu Bar"
+
+@ENDCOMMENT@
+
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+
+<style>
+body           { background: blue; }
+.pageheaderBar { border: 0px; }
+</style>
+
+<noscript>
+<style>
+#pageGoto { display: none; }
+</style>
+</noscript>
+
+</head>
+<body>
+
+@set PageHeaderTopBar=1@
+@include "pageheader.inc"@
+@Set PageHeaderTopBar=0@
+
+<br>
+<center>
+<h3><font color=Yellow size=24><i>Wildcat! @VERSION@</i></font></h3>
+<img align="center" border="0" src="/public/graphics/wcpower.gif">
+</center>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!-- Personal Property Page: User Audio -->
+
+@include "wcAudioPlay.inc"@
+
+<h3 class="propertyPageTitle">Audio Notification Options:</h3>
+<p width="70%" style="margin-left: 2.5%; margin-right: 2.5%;">
+If you are familar with the Wildcat! Navigator, audio sound
+notifications are available at various parts of the system. It is now
+part of the Web interface as well. You may choose to turn them on or
+off.
+</p>
+
+<noscript>
+<p width="70%" style="margin-left: 2.5%; margin-right: 2.5%; color: red;">
+Note: Your browser has Javascript disabled. In order to use Audio Notification,
+Javascript must be enabled by your browser.
+</p>
+</noscript>
+
+<form method=post action="/code/html-personal">
+<input type="hidden" name="save" value="@SUB QUERY.PAGE@">
+<table class="propertyPage" width="70%" border="0" cellspacing="1" cellpadding="2" style="margin-left: 2.5%">
+  <tr>
+	<td class="shade1">"Good to see you again."</td>
+	<td class="shade1"><a href="#" onClick="PlayAudioID('goodsee'); return;" title="Play Audio!"><img src="/images/audio.png" border=0></a></td>
+   <td class="shade1"><input type=radio name="Audio.GoodSee" value=1 @IF User.Profile("Audio.GoodSee",1)@checked@ENDIF@>Yes</td>
+   <td class="shade1"><input type=radio name="Audio.GoodSee" value=0 @IF !User.Profile("Audio.GoodSee,1)@checked@ENDIF@>No</td>
+  </tr>
+  <tr>
+	<td class="shade1">"You Have New Mail In Your Inbox."</td>
+	<td class="shade1"><a href="#" onClick="PlayAudioID('NewMail'); return;" title="Play Audio!"><img src="/images/audio.png" border=0></a></td>
+   <td class="shade1"><input type=radio name="Audio.NewMail" value=1 @IF User.Profile("Audio.NewMail",1)@checked@ENDIF@>Yes</td>
+   <td class="shade1"><input type=radio name="Audio.NewMail" value=0 @IF !User.Profile("Audio.Newmail,1)@checked@ENDIF@>No</td>
+  </tr>
+  <tr>
+	<td class="shade2">"Opening Inbox."</td>
+	<td class="shade2"><a href="#" onClick="PlayAudioID('OpeningInbox'); return;" title="Play Audio!"><img src="/images/audio.png" border=0></a></td>
+   <td class="shade2"><input type=radio name="Audio.OpeningInBox" value=1 @IF User.Profile("Audio.OpeningInBox",1)@checked@ENDIF@>Yes</td>
+   <td class="shade2"><input type=radio name="Audio.OpeningInBox" value=0 @IF !User.Profile("Audio.OpeningInBox",1)@checked@ENDIF@>No</td>
+  </tr>
+  <tr>
+	<td class="shade1">Instant Message Whistle.</td>
+	<td class="shade1"><a href="#" onClick="PlayAudioID('InstantMsg'); return;" title="Play Audio!"><img src="/images/audio.png" border=0></a></td>
+   <td class="shade1"><input type=radio name="Audio.InstantMsg" value=1 @IF User.Profile("Audio.InstantMsg",1)@checked@ENDIF@>Yes</td>
+   <td class="shade1"><input type=radio name="Audio.InstantMsg" value=0 @IF !User.Profile("Audio.InstantMsg",1)@checked@ENDIF@>No</td>
+  </tr>
+  <tr>
+	<td class="shade2">"File (uploaded) Received OK."</td>
+	<td class="shade2"><a href="#" onClick="PlayAudioID('UploadOk'); return;" title="Play Audio!"><img src="/images/audio.png" border=0></a></td>
+   <td class="shade2"><input type=radio name="Audio.UploadOk" value=1 @IF User.Profile("Audio.UploadOk",1)@checked@ENDIF@>Yes</td>
+   <td class="shade2"><input type=radio name="Audio.UploadOk" value=0 @IF !User.Profile("Audio.UploadOk",1)@checked@ENDIF@>No</td>
+  </tr>
+  <tr>
+	<td class="shade1">"Oops!"</td>
+	<td class="shade1"><a href="#" onClick="PlayAudioID('Oops'); return;" title="Play Audio!"><img src="/images/audio.png" border=0></a></td>
+   <td class="shade1"><input type=radio name="Audio.Oops" value=1 @IF User.Profile("Audio.Oops",1)@checked@ENDIF@>Yes</td>
+   <td class="shade1"><input type=radio name="Audio.Oops" value=0 @IF !User.Profile("Audio.Oops",1)@checked@ENDIF@>No</td>
+  </tr>
+  </table>
+  <br>
+  <table width="95%" border="0" cellspacing="0" cellpadding="2" align="center">
+  <tr><td><input type=Submit value="Save"><input type=Reset value="Reset"><td></tr>
+</table>
+</form>

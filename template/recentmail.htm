@@ -1,0 +1,195 @@
+@COMMENT@
+History
+
+  452.3f - birth
+  452.3g - cleaned up template for unobstrusive behavior
+  452.3i - now using wcTipster
+  452.3k - added lp=1 to force last read
+         - added pageheader/footer for non-public display
+  452.6c - minor change to prepare MSGFAV in the future (off for now)
+
+Template for HTML-RECENTMAIL.WCX
+
+  Global variables Created by WCX
+
+  RM.ISPUBLIC          = True if public access
+  RM.OPTS.DAYS         = days to scan
+  RM.OPTS.MP           = True (1) if Ajax Mail Preview is enabled
+  RM.LASTREAD          = Last Read Message ID
+  RM.LASTREAD.NUMBER   = Last Read Message Number
+  RM.LASTREAD.MARKER   = True if current message is the lastread
+  CONF                 = Current Conference Record
+  MSG                  = Current Message Header
+  RM.MSGS.TOTAL        = Total messages scanned
+  RM.CONFS.TOTAL       = Total Conferences Scanned
+  RM.MSG.TOTAL         = Total Displayable message count in conference
+
+  Optional you may set
+
+  RM.URL.MP            = URL to preview message
+  RM.URL.CP            = URL to preview conference
+  RM.CODEPATH          = "/CODE/" or "/PUBLIC/CODE/"
+  USE_MSGFAVS          = 1 or 0, if 1, Msg Favorites is enabled
+
+@ENDCOMMENT@
+
+@SET USE_MSGFAVS = 0@
+
+<html>
+<head>
+
+@if !RM.ISPUBLIC@
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+@endif@
+
+<style type="text/css">
+.tableTitle  {
+   color : Black;
+   background : #33FF66; /*AliceBlue;*/
+   background : LightSteelBlue;
+   border: 1px solid Black;
+   border-top-width: 2px;
+   border-bottom-width: 2px;
+   font-family: verdana,tahoma,arial; font-size : 10pt;
+   margin-top: 1em;
+   margin-left: 10%; margin-right: 10%;
+   width: 80%;
+   padding: 2px 4px 2px 4px;
+   text-align: left;
+}
+
+.recentMail {
+  font-family: verdana,tahoma,arial;
+  font-size : 8pt;
+  margin-left: 1%; margin-right: 1%;
+}
+
+div.confLink {
+   padding-left: 10px;
+   width: 98%;
+   font-weight: bold;
+   background: silver;
+}
+.tdPreview {
+   font-size: 8pt;
+   vertical-align: middle;
+   padding: 0;
+   margin: 0;
+}
+</style>
+
+@IF RM.OPTS.MP@
+
+<link rel="stylesheet" href="/public/js/wildcat.wctipster.css" type="text/css">
+<script type="text/javascript" src="/public/js/jquery.pack.js"></script>
+<script type="text/javascript" src="/public/js/jquery.wctipster.mini.js"></script>
+
+<script type='text/javascript'>
+$(window).load(function() {
+  $("a.wcpreview").wcTipster({
+    cacheEnabled: true,
+    enableWaitImage: true,
+@if !FrameMode@
+    width: 400,
+@endif@
+    onActivate: function(e) {
+        var cb = document.getElementById("cbPreview");
+        return !cb || cb.checked;
+    }
+  });
+});
+</script>
+@ENDIF@
+
+
+@if !RM.ISPUBLIC && USE_MSGFAVS@
+<script type='text/javascript'>
+   function markFav(e)
+   {
+     var f = e.getAttribute("fav");
+     if (f == 0) {
+        e.src = "/public/js/images/watched_y.gif";
+        e.setAttribute("fav","1");
+        $.get("/code/html-getmsgfav?fid="+e.id+"&cmd=add");
+     } else {
+        e.src = "/public/js/images/watched_n.gif";
+        e.setAttribute("fav","0");
+        $.get("/code/html-getmsgfav?fid="+e.id+"&cmd=rem");
+     }
+   }
+</script>
+@endif@
+
+</head>
+<body>
+
+@SET urlopts = "frames="USER.HTMLFRAMES"&threads="USER.HTMLTHREADS@
+
+@if !RM.ISPUBLIC@
+@include "pageheader.inc"@
+@endif@
+
+<table border="0" class="tableTitle">
+<tr>
+<td align="center"><b>Recent Messages (@SUB RM.OPTS.DAYS@ days old)</b></td>
+@IF RM.OPTS.MP@
+<script type='text/javascript'>
+  document.write('<td class="tdPreview" width="1%" nowrap><input id="cbPreview" type="checkbox" checked/></td>');
+  document.write('<td class="tdPreview" width="1%" nowrap >&nbsp;Preview</td>');
+</script>
+@ENDIF@
+</tr>
+</table>
+
+<div class="recentMail">
+
+@LOOP CONFS@
+  @LOOP MSGS@
+
+   @//@ Only show the conference bar for the first message, if any
+   @IF RM.MSG.TOTAL = 1@
+      <br>
+      <div class="confLink">
+      <a href="/code/html-list+messages?conf=@CONF.NUMBER@&@sub urlopts@"
+         title="Display forum message list."
+         id="conf@CONF.NUMBER@">Conference #@CONF.NUMBER@ - @CONF.NAME@</a>
+      </div>
+      <br>
+   @ENDIF@
+
+   @//@ Show Favorite Star if enabled
+   @if !RM.ISPUBLIC && USE_MSGFAVS@
+    @set favid=MSG.CONFERENCE.NUMBER"."MSG.ID@
+    <img id="fav@sub favid@"
+       @if exist "wc:\user\msgfav\fav"favid".fav"@
+         fav="1" src="/public/js/images/watched_y.gif"
+       @else@
+         fav="0" src="/public/js/images/watched_n.gif"
+       @endif@
+         onclick="markFav(this);"/>
+   @endif@
+
+    <a href="/code/html-read+message?conf=@MSG.CONFERENCE.NUMBER@&msgid=@MSG.ID@&nextprev=1&lp=1&@sub urlopts@"
+       id="tip@MSG.ID@"
+     @IF RM.OPTS.MP@
+       class="wcpreview"
+       rel="/public/code/html-getmsg.wcx?conf=@MSG.CONFERENCE.NUMBER@&msgid=@MSG.ID@&max=255"
+       titleTip="From: @MSG.FROM.NAME@"
+     @ENDIF@
+       title="Click to view message"
+       target="body">#@MSG.NUMBER@</a>&nbsp;@SUB RM.MSG.SMARTDATE@ - @MSG.SUBJECT@<br>
+     @IF RM.LASTREAD.MARKER@
+      <center><img src="/public/graphics/redbar.gif" height="3pt" width="50%" border=0></center>
+   @ENDIF@
+  @ENDLOOP@
+@ENDLOOP@
+
+</div>
+
+@if !RM.ISPUBLIC@
+@include "pagefooter.inc"@
+@endif@
+
+</body>
+</html>

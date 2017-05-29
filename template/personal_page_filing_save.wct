@@ -1,0 +1,15 @@
+<!--
+     WCT to save personal properties in the extended
+     user database.
+
+     452.6 08/19/08 11:37 am
+     - added user.htmlfilelistsort
+
+-->
+
+@set User.HtmlFilePageSize=Query.HtmlFilePageSize@
+@set User.HtmlFileListSort=Query.HtmlFileListSort@
+
+@UPDATEUSER@
+
+@MODULE UTL REDIRECT /code/html-personal?page=filing@

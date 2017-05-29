@@ -1,0 +1,70 @@
+@//@ file: LoginPage.WCT v6.3.454.4
+@//@--------------------------------------------------------------
+@//@ This is only needed if the registry WebLoginTimeoutSecs != 0
+@//@--------------------------------------------------------------
+@if HttpAuth.AllowPCISession@
+@module utl CreateWcSid@
+@endif@
+
+@//@-------------------------------------------------
+@//@ Check for HttpAuth.RequiredSSL redirection
+@//@-------------------------------------------------
+@if httpauth.requiressl && http.https <> "on"@
+    @set rurl = "https://" +http.host+http.url@
+    @module utl redirect {rurl}@
+    @exit@
+@endif@
+
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1">
+<title>Login: @SYSTEM.BBSNAME@</title>
+
+@include "wc:\http\template\LoginOptions.inc"@
+
+@if HttpAuth.AllowCookie && !Http.UsingBasicDigest@
+<link rel="stylesheet" type="text/css" href="/public/js/wclogin.css" id="wcLoginCSS">
+<script language="javascript" src="/public/js/md5.js"></script>
+<script language="javascript" src="/public/js/cookies.js"></script>
+<script language="javascript" src="/public/js/wclogin.js"></script>
+@endif@
+
+</head>
+<body>
+
+@ExistInclude "wc:\http\template\login-header.wct"@
+
+@if HttpAuth.AllowCookie && !Http.UsingBasicDigest@
+ <noscript>@ExistInclude "wc:\http\template\login-noscript.wct"@</noscript>
+ <script language="JavaScript">
+   // These login.* variables are set in loginoptions.inc
+   CaseSensitive          =  @sub Login.CaseSensitive@;
+   EnableSavePassword     =  @sub Login.BrowserSavePassword@;
+   EnableSignup           =  @sub Login.AllowSignup@;
+   EnableForgotPassword   =  @sub Login.ForgotPassword@;
+   LoginPageTarget        = "@sub Login.Target@";
+   EnableSecuredMode      =  @sub Login.AllowSecureMode@;
+   RequireSecuredAuth     =  @sub HttpAuth.RequireSSL@;
+   RequireSecuredConnect  =  @sub Session.SSL.Required@;
+   EnableWcNavMode        =  @sub Login.AllowWcNav@;
+   SystemHostName         = "@SYSTEM.BBSNAME@";
+   SiteLoginTitle         = "Site Login: "+SystemHostName;
+ </script>
+
+ @if exist Login.CustomForm@
+  @include Login.CustomForm@
+ @else@
+  <script language="JavaScript">
+  PrintLoginForm(SiteLoginTitle,"",CaseSensitive);
+  </script>
+ @endif@
+@else@
+  <!-- Cookie Authentication is disabled -->
+  @ExistInclude "wc:\http\errors\errors.wct"@
+@endif@
+
+@ExistInclude "wc:\http\template\login-footer.wct"@
+
+</body>
+</html>

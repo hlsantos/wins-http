@@ -1,0 +1,106 @@
+/*
+Sysop Client
+(c) copyright 2008 Santronics Software, Inc.
+*/
+
+.error  {
+   color : White;
+   background : Red;
+   border: 1px solid Black;
+   border-top-width: 2px;
+   border-bottom-width: 2px;
+   font-family: verdana,tahoma,arial; font-size : 12pt;
+	font-weight : Bold;
+   width: 80%;
+   margin:auto;
+   padding: 5px;
+   text-align: center;
+}
+
+div.sysopPage  {
+   color : Black;
+   background : AliceBlue;
+   border: 1px solid Black;
+   border-top-width: 2px;
+   border-bottom-width: 2px;
+   font-family: verdana,tahoma,arial; font-size : 10pt;
+   margin: 2%;
+}
+
+table.sysopPage  {
+   color : Black;
+   border: 1px solid Black;
+   border-top-width: 2px;
+   border-bottom-width: 2px;
+   margin-left: 1%;
+}
+
+table.sysopPageNoBorder  {
+   color : Black;
+   margin-left: 1%;
+}
+
+.sysopPageTitle {
+   margin-top: 0%; margin-left: 1%;  /* Top Left Title */
+   color: blue;
+}
+
+/*------------------------------------------*/
+/* Menu Buttons based on <ul><li><a> tags   */
+/*------------------------------------------*/
+
+.btnMenu {
+   padding: 0px;
+   width:90%;
+   margin: 5%;
+   text-decoration: none;
+   list-style-type: none;
+   /*font-family: verdana,tahoma,arial; */
+	font-family: "Trebuchet MS", Verdana, Helvetica, sans-serif;
+   font-weight: bold;
+   font-size : 10pt;
+
+}
+
+/* this div sizes the link margins and padding */
+
+.btnMenu div {
+   margin-top: 2px;
+   margin-bottom: 2px;
+   padding-top: 2px; padding-bottom: 2px;
+   padding-left: 0; padding-right: 0;
+}
+
+/* this li draws the buttons */
+
+.btnMenu li {
+   background-color: cyan;
+   text-align: center;
+   border: outset;             /*  3d effect */
+   margin-bottom: 2%;          /*  !! padding after each button */
+}
+
+.btnMenu a {
+    color: black;
+    text-decoration:none;
+    width:100%;                /* Needed for IE hover over region, not just text */
+}
+
+.btnMenu li.btnItemSelected {
+     color: yellow;
+     background-color: blue;
+}
+.btnMenu a.btnItemSelected {
+     color: yellow;
+     background-color: blue;
+     text-decoration:none;
+}
+
+.btnMenu li:hover, a.btnItemSelected:hover, a:hover {
+    color: black; background-color: pink;
+}
+
+.btnMenuLogo {
+   /*display: none; */
+}
+

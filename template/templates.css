@@ -1,0 +1,296 @@
+/***********************************************************/
+/* Wildcat! Interactive Net Server                         */
+/* (c) copyright 1998-2009 Santronics Software, Inc.       */
+/* Generic CSS template sheet for Wildcat! WEB site        */
+/***********************************************************/
+
+/***********************************************************/
+/* Basic HTML tags styles, corrections for browsers        */
+/***********************************************************/
+
+body  {
+   margin: 2pt;
+   color: black; background: white;
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+}
+
+form { margin: 0; padding: 0; }  /* Needed for IE adding extra line */
+td  { font-family : arial; font-size : 10pt; color : black;}
+h1  { font-family : arial; font-size : 16pt; color : black;}
+h2  { font-family : arial; font-size : 14pt; color : black;}
+h3  { font-family : arial; font-size : 12pt; color : black;}
+
+/***********************************************************/
+/* Your Custom Stuff                                       */
+/***********************************************************/
+
+h1.negro   { background : Black; color : White; font-family : Arial; font-size : 12pt; margin : 2pt;}
+.tablelist { border: 1px solid black; border-collapse: collapse;}
+.tabletitle {
+   text-align: left; text-decoration : none;
+   color : Yellow; background : blue;
+   font-family : Arial; font-size : 10pt; font-weight : Bold;
+}
+
+/***********************************************************/
+/* style for the pageheader.inc                            */
+/***********************************************************/
+
+.pageheaderBar { border: 1px solid black;}
+.pageheaderBar td, th { padding: 5px;}
+.pageheaderTitle {
+   color : Yellow; background : Blue;
+   text-decoration : none;
+   font-family : Arial; font-size : 10pt; font-weight: Bold;
+}
+.pageheaderUserInfo  {
+	color : Yellow; background : blue;
+	text-decoration : none;
+	font-family : Arial; font-size : 8pt;font-weight: Bold;
+}
+.pageheaderTime  {
+   color : white; background : blue;
+   text-decoration : none;
+   font-family : Arial; font-size : 8pt; font-weight: Bold;
+}
+.pageheaderButton td {
+   color : Black; background : blue;
+   text-decoration : none;
+   font-family : Arial; font-size : 8pt; font-weight : Bold;
+}
+.pageheaderButton a {
+   border: 2px outset;
+   color : Black; background : silver;
+   text-decoration : none;
+   font-family : Arial; font-size : 8pt; font-weight: Bold;
+}
+.pageheaderButton a:hover  {
+   border: 2px inset;
+   color : Black; background : Yellow;
+   text-decoration : none;
+   font-family : Arial; font-size : 8pt; font-weight: Bold;
+}
+.pageheaderEvent  {
+   color : White; background : Red;
+   text-decoration : none;
+   font-family : Arial; font-size : 10pt; font-weight: Bold;
+}
+#pageGoto { border: 1px groove black; padding-left: 5px; padding-right: 5px;}
+#pageGotoItem {
+   border: 1px groove black;
+   padding-left: 5px; padding-right: 5px;
+   background: yellow; color: black;
+}
+.pageheaderGotoMenu  {
+	color : Yellow; background : blue;
+	text-decoration : none;
+	font-family : Arial; font-size : 8pt;font-weight: Bold;
+}
+
+/*********************************************************/
+/* other link buttons                                    */
+/*********************************************************/
+
+.pagebutton {
+	color : Black; background : Silver;
+	text-decoration : none;
+	font-family : Arial; font-size : 8pt; font-weight: Bold;
+}
+
+.pagebutton:hover  {
+	color : Black; background : Yellow;
+	text-decoration : none;
+	font-family : Arial; font-size : 8pt; font-weight: Bold;
+}
+
+/**************************************************/
+/* Styles for Upload Form                         */
+/**************************************************/
+
+.uploadTable {
+   background: #dddddd;
+   border: 1px solid black;
+   border-collapse: collapse;
+   empty-cells: show;
+   margin-left: 2%; margin-right: 2%;
+}
+
+.uploadTable td {
+   padding-left: 4px;
+}
+
+.uploadTitle  {
+   color : Yellow; background : Blue;
+   text-decoration : none;
+   font-family: Arial; font-size: 10pt; font-weight: Bold;
+   padding: 3px;
+}
+
+/*********************************************************/
+/* Styles for File Info Display                          */
+/*********************************************************/
+
+.fileinfoTable {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+   empty-cells:show;
+   border: 1px solid black;
+}
+
+/*********************************************************/
+/* Styles for message display                            */
+/*********************************************************/
+
+.messagebody { background : white; color : Black; font-family : Arial; font-size : 10pt; margin : 8pt;}
+.messagebodysmall { background : white; color : Black; font-family : Arial; font-size : 8pt; margin : 8pt;}
+td.inboxTitle { color: Blue; }
+.bar        { background-color: #008040;}
+.frames     { border-color: #008040; }
+.msggroup   { font-weight : bold; font-family : Arial; font-size : 8pt;}
+.msggroup2  { background : Gray; font-weight : bold; font-family : Arial; font-size : 8pt;}
+.msgconfnum { font-size : 8pt;}
+.msgcount   { text-align : right; font-size : 8pt;}
+.msgconfname{ font-weight : bold; font-family : Arial; font-size : 8pt;}
+.msgconfname2  { font-weight : bold; font-family : Arial; font-size : 8pt; background : #DDDDDD;}
+.msgmainmenu   { text-align : center; font-size : 8pt;}
+.msglistbuttons{ border: 1px solid black; border-collapse: collapse;}
+.msglisttable  { border: 1px solid black; }
+.msglist   { background : #EEEEEE; font-family : Arial; font-size : 8pt;color : Black;}
+.msglisth  { background : #EEEEEE; font-family : Arial; font-size : 8pt; }
+.msglistl  { background : #DDDDDD; font-family : Arial; font-size : 8pt; }
+.msglistmarker { background : red; color : Black; font-family : Arial;font-size : 8pt;}
+.msglisthdr1   { background : #DDDDDD; color : Black; font-family : Arial;font-size : 8pt;}
+.msglisthdr { text-align : left; background : Blue; font-family : Arial; font-size : 8pt; color : Yellow;}
+.msglistpvt { background : #EEEEEE; font-family : Arial; font-size : 8pt; color : red;}
+.msgback    { background : #EEEEEE;}
+.msgheadp   { color : Black; background : #EEEEEE; font-family : Arial; font-size : 8pt; font-weight : bold; text-align : right;}
+.msgheadmenu { background : #FFFDEA; color : Black; font-family : Arial;font-size : 8pt;font-weight : bold;}
+.msghead     { background : #EEEEEE; font-family : Arial; font-size : 8pt; color : Black;}
+.msgbody     { background : #FFFDEA; font-family : Arial; font-size : 8pt; color : Black;}
+.inboxheader { color : White; font-family : Arial, Helvetica, sans-serif; background : #008040; font-size : 8pt;}
+.inboxbreak  { background : Green; color : White; font-family : Arial, Helvetica, sans-serif; font-size : 8pt; text-align : center;}
+.threadtable { background : #FFFDEA; font-family : Arial; font-size : 8pt; color : Black;}
+.threadparent{ background : #EEEEEE; font-family : Arial; font-size : 8pt; color : Black;}
+.threadchild { background : #DDDDDD; font-family : Arial; font-size : 8pt; color : Black;}
+.shade1      { background : #DDDDDD;}
+.shade2      { background : #EEEEEE;}
+
+.fname       { color : Black; font-family : Arial, Helvetica, sans-serif; font-size : 8pt; font-weight : Bold;}
+.fname_red   { color : red; font-family : Arial, Helvetica, sans-serif; font-size : 8pt; font-weight : Bold;}
+.fvalue      { color : Black; font-family : Arial, Helvetica, sans-serif; font-size : 8pt;}
+.fvalue_red  { color : red; font-family : Arial, Helvetica, sans-serif; font-size : 8pt; font-weight : Bold;}
+.fdisabled   { background : Silver; text-decoration : none; font-family : Arial; font-size : 8pt; font-weight : Bold;}
+.ffixed      { font-family : Courier; font-size : 8pt;}
+.specialnote { color:brown; font-weight:900; font-size:95%; font-family:sans-serif;}
+
+
+/*********************************************************/
+/* Styles for File Editor                                */
+/*********************************************************/
+
+.tableModifyFile { background: #dddddd;}
+.tableMoveFile   { background: #dddddd;}
+.tableShowFile   { background: #dddddd;}
+.tableViewFile   { background: #dddddd;}
+.tablePersonal   { background: #dddddd;}
+
+/* ssi copyright */
+#ssicr {text-align:center; margin-top:2%;}
+#ssicr a{text-decoration: none; font: bold 8px Verdana; color: #707070;}
+#ssicr a:hover{text-decoration: underline;}
+
+/*-- For Header and Footer --*/
+
+#pageheaderBreak { display:none; }
+#WarningDisplay  { margin:5px; background: Yellow; border: 2px solid black;}
+
+/*-- General Big Box displays --*/
+
+#BigBoxDisplay    {
+   padding: 10px;
+   border: 2px solid black;
+   border: outset;
+   margin:5px; margin-left:10%; margin-right:10%;
+   text-align: center;
+   color: black; background: white;
+   font-family : Arial, Helvetica, sans-serif;
+   font-size : 12pt;
+   font-weight : Bold;
+}
+
+#ErrorDisplay    {
+   padding: 10px;
+   border: 2px solid black;
+   border: outset;
+   margin:5px; margin-left:10%; margin-right:10%;
+   text-align: center;
+   color: Black; background: red;
+   font-family : Arial, Helvetica, sans-serif;
+   font-size : 12pt;
+   font-weight : Bold;
+}
+
+#NoteDisplay    {
+   padding: 10px;
+   border: 1px solid black;
+   margin:5px; margin-left:10%; margin-right:10%;
+   text-align: center;
+   color: Black; background: Yellow;
+   font-family : Arial, Helvetica, sans-serif;
+   font-size : 12pt;
+   font-weight : Bold;
+}
+
+#ResultDisplay    {
+   padding: 10px;
+   border: 2px solid black;
+   border: outset;
+   margin:5px; margin-left:10%; margin-right:10%;
+   text-align: center;
+   color: white; background: blue;
+   font-family : Arial, Helvetica, sans-serif;
+   font-size : 12pt;
+   font-weight : Bold;
+}
+
+.BBSName {
+   padding: 10px;
+   padding-top: 15px; padding-bottom: 15px;
+   border: 2px solid black;
+   border: outset;
+   margin:5px; margin-left:10%; margin-right:10%;
+   text-align: center;
+   color: blue; background: yellow;
+   font-family : Verdana, Arial, Helvetica, sans-serif;
+   font-size : 16pt; font-weight : Bold;
+}
+
+/* For ShowVars */
+#ShowVars {
+   font-size : 9pt;
+   border: 1px solid black;
+   background: pink; color: black;
+   margin: 1px; padding: 0;
+}
+#ShowVars pre {padding: 0; margin: 0; background: pink;}
+#ShowVars h3 {padding: 0; margin: 0; font-size : 9pt; /*display:none;*/}
+
+/* Print Media */
+
+@media print {
+  body {
+   background:none #fff;
+  	width:auto;
+  }
+  #main {	margin:0; padding:0; }
+  #header,#topnav,#smltopnav,#stdtopnav,.nav,#footnavbox,
+  #pagefooter,#footer,#sidebarbox,#sidebar,td#left-box,td#right-box,#rightbar,.noprint {display:none}
+  #titlebarbox { margin:0 0 0.5em 0; padding:0 0 0.5em 0; border-bottom:2pt solid #999}
+  #pagegroup {padding:0.3em 0.5em 0 0; font-size:16pt;}
+  #pagetitle {padding-bottom:0;	font-size:20pt;}
+  #content {margin:0;	padding:0;	font-size:12pt}
+  a {display:none;}
+  .buttontable {display:none;}
+}
+
+

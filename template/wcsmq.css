@@ -1,0 +1,45 @@
+<style>
+body {
+    margin: 2%;
+    font-family: verdana,helvetica,arial,sans-serif;
+    font-size : 10pt;
+}
+table.quetable {
+    border-collapse: collapse;
+    font-family: verdana,helvetica,arial,sans-serif;
+    font-size : 8pt;
+    background: whitesmoke;
+}
+th { background: lightgrey; font-weight: bold; text-align: left; padding: 2pt 4pt 2pt 4px;}
+td { padding: 2pt 4pt 2pt 4px;}
+#divBody    {
+   margin-top: 10pt;
+   margin-left: 20pt;
+   margin-right: 20pt;
+   padding: 0pt 5pt 5pt 5pt;
+   border: 3px outset silver;
+   background: whitesmoke;
+}
+table.queIntro  {
+   border-collapse: collapse;
+   vertical-align:top;
+   font-size: 8pt;
+   background: cyan;
+}
+table.queIntro tr th {
+   background:  Silver;
+}
+.queidx    { color:green; font-weight: bold;}
+.quefile   { color:black; font-weight: bold;}
+.queatts   { color:green; font-weight: bold;}
+.queFileAge { color:blue; }
+.quenext   { color:blue; }
+.quetime   { color:blue; }
+.quedest   { color:green; font-weight: bold;}
+.questatus { color:red;  font-weight: bold;}
+.quedesc   { }
+.quesum    { color:blue;  font-weight: bold;}
+button      { font-size : 8pt;}
+.quecmd     { font-size : 8pt;}
+.quecmdKill { background:red; }
+</style>

@@ -1,0 +1,75 @@
+/* who's online client style sheet */
+
+table.whoTable { border-collapse: collapse;}
+table#whoName  { border-collapse: collapse;}
+
+.whoTable, .whoHeader, .whoText, .whoOptions th, td, input {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size : 8pt;
+}
+
+.whoTable {
+   border: 1px solid black;
+}
+
+.whotable .whoHeader {
+   background : #EFF6FF; /* official */
+   background : #C0C0C0; /* greyish */
+}
+
+.whotable tr.whoHeader th{
+   text-align: left;
+   padding: 2pt;
+}
+
+.whoText {
+   color : Black;
+   padding: 2pt;
+}
+
+#whoName .whoText {
+   padding: 0pt;
+}
+
+.whoIcons {
+   color : Black;
+   padding: 0pt;
+}
+
+.whoOptions {
+   z-index: 1;
+   position: relative;
+   bottom: 0px;
+   margin-bottom: 0px;
+   border: 1px solid black;
+   background-color: #C0C0C0;
+   /* border: outset; */
+}
+
+.whoOptions th {
+   font-weight: normal;
+   color: blue;
+}
+
+#whoOptions td.whoRefreshError {
+   background:red;
+   color:white;
+   font-weight: bold;
+   text-align: center;
+}
+
+/* for IM box */
+.whoIM {
+    left: 0;
+    border: 1px solid Blue;
+    color: black;
+    margin: 0px;
+    padding: 1px;
+}
+
+/* for who bots */
+#whobot div {
+   /*---- each bot should have its own style. ---*/
+   /* overflow:auto; width: 450px; height: 200px; float: left */
+   /*---------------------------------------------*/
+}

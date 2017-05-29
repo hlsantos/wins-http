@@ -1,0 +1,19 @@
+/* style sheet for cookie-base login forms */
+img.SplashWindow { padding: 0; vertical-align: top; text-align: center; height: 220px; width:  auto; max-height: 220px; max-width:  440px;}
+#loginTable    { border-collapse: collapse; }
+#loginTitleBar { background: navy; color: white; }
+.boxSecured    { background: #FFFFCC; border: 2px solid black;}
+.boxNormal     { background: #CEE0CE; border: 2px solid black;}
+.btnGrey       { background-color:#ccc; border-width:1px; border-style:solid; border-color:#000000; font:bold 10.5px Verdana,Arial,Helvetica,sans-serif;cursor: pointer; }
+.btnGreyOn     { background-color:#666; border-width:1px; border-style:solid; border-color:#000000; color:#fff; font:bold 10.5px Verdana,Arial,Helvetica,sans-serif;cursor: pointer; }
+.btnGreen      { background-color:#9c6; border-width:1px; border-style:solid; border-color:#000000; font:bold 10.5px Verdana,Arial,Helvetica,sans-serif;cursor: pointer; }
+.btnGreenOn    { background-color:#693; border-width:1px; border-style:solid; border-color:#000000; color:#fff; font:bold 10.5px Verdana,Arial,Helvetica,sans-serif;cursor: pointer; }
+/*.InputError    { background: red; color: black; border: 2px solid black;  padding: 4px; font-weight: bold; text-align: center;}*/
+.inputError    { font-weight:bold; color : Red; }
+#loginUserPrm  { font-weight:bold;}
+#loginPassPrm  { font-weight:bold;}
+#loginModePrm  { font-weight:bold;}
+
+a.btn {background: Green; color: white; font-size: 10pt; border: 2px outset black; }
+a.btn { text-decoration: none;}
+a.btn:hover { color: yellow; background: blue;}

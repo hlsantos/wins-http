@@ -1,0 +1,53 @@
+@COMMENT@
+sysopclient.htm
+
+Sysop Menu (called from html-sysop)
+
+history:
+
+01/09/2009 v6.3.452.8
+- changed @INCLUDE to @RUNWCX HTML-WCT
+
+@ENDCOMMENT@
+
+@SetNodeActivity "Sysop Menu"@
+@module utl newmail@
+@if NewMail@
+@Set ProcessSystemEvent="<a href='/code/html-inbox' title='Read New Mail' target="_blank">You have new mail in your inbox!</a>"@
+@endif@
+@Set CurrentPage=Query.Page@
+@if CurrentPage=""@@Set CurrentPage="general"@@endif@
+
+<html>
+<head>
+<title>Sysop Menu</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+<link rel="stylesheet" type="text/css" href="/template/layout.css">
+<link rel="stylesheet" type="text/css" href="/template/sysopclient.css">
+</head>
+
+<body>
+
+<div id="layoutHeader">@include "pageheader.inc"@</div>
+<div id="layoutMain">
+  <div id="layoutMenu">@include "sysopmenu.inc"@</div>
+   <div id="layoutContent">
+      <div id="sysopPage" class="sysopPage">
+      @IF EXIST "sysop_page_"+CurrentPage+".htm"@
+         @//@Include "sysop_page_"+CurrentPage+".htm"@
+         @runwcx html-wct "wc:\http\template\sysop_page_{CurrentPage}.htm"@
+      @ELSE@
+         <center>
+         <span style="font-weight : Bold; color: black;">
+         Sysop Menu Page Not found: sysop_page_@SUB CurrentPage@.htm
+         </span>
+         </center>
+      @ENDIF@
+      </div>
+   </div>
+</div>
+<div id="layoutFooter">@include "pagefooter.inc"@</div>
+
+</body>
+</html>

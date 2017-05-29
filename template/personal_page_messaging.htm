@@ -1,0 +1,146 @@
+<!--
+v6.2.452.3f 09/25/07
+   - added MailOpts.Recentmail.MaxDays
+   - added MailOpts.Preview
+v6.3.453.2d 11/19/09 01:56 am
+   - using ACCESS.OID for some variables
+-->
+
+<style>
+table.propertyPageNoBorder {
+  border: 1px solid silver;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+</style>
+
+<h3 class="propertyPageTitle">Messaging Options:</h3>
+<form action="/code/html-personal" method="post">
+<input type="hidden" name="save" value="@SUB QUERY.PAGE@">
+<table class="propertyPageNoBorder" border="0" cellspacing="1" cellpadding="2"> <!-- outer table -->
+<tr><td>     <!-- outer table -->
+
+<table  width="100%" border=0 cellspacing="1" cellpadding="2" >  <!-- inner table -->
+<tr>
+	<td class="shade2"><b>Incoming Email Storage Mode</b><br>(for POP email clients):</td>
+	<td class="shade2"><input type=radio name=PreserveMimeMessages value=y @IF user.preservemimemessages="Yes"@checked@ENDIF@>Raw Mime Format</td>
+	<td class="shade2"><input type=radio name=PreserveMimeMessages value=n @IF user.preservemimemessages="No"@checked@ENDIF@>Wildcat Format</td>
+</tr>
+<tr>
+	<td class="shade1"><b>View network control lines</b>:</td>
+    <td class="shade1"><input type=radio name=ShowEmailHeaders value=y @IF user.showemailheaders="Yes"@checked@ENDIF@>Yes</td>
+    <td class="shade1"><input type=radio name=ShowEmailHeaders value=n @IF user.showemailheaders="No"@checked@ENDIF@>No</td>
+</tr>
+<tr>
+	<td class="shade2"><b>Follow Last Mail Read Position</b>:</td>
+	<td class="shade2"><input type=radio name=FollowLastRead value=y @IF user.followlastread="y"@checked@ENDIF@>Yes</td>
+	<td class="shade2"><input type=radio name=FollowLastRead value=n @IF user.followlastread="y"@@ELSE@checked@ENDIF@>No</td>
+</tr>
+<tr>
+	<td class="shade1"><b>Mail Listing Mode:</b></td>
+	<td class="shade1"><input type=radio name=HtmlThreads value=y @IF user.HtmlThreads="y"@checked@ENDIF@>Show Mail Threads</td>
+	<td class="shade1"><input type=radio name=HtmlThreads value=n @IF user.HtmlThreads="y"@@ELSE@checked@ENDIF@>Show Flat Listing</td>
+</tr>
+<tr>
+	<td class="shade2"><b>Number of Messages per Listing</b>:</td>
+	<td class="shade2"><input name="HtmlPageSize" size=4 value="@USER.HTMLPAGESIZE@"></td>
+	<td class="shade2">&nbsp;</td>
+</tr>
+
+<tr>
+	<td class="shade1"><b>Reply Quote Characters</b>:</td>
+	<td class="shade1"><input name="HtmlQuoteStr" maxlength=4 size=4 value="@USER.HTMLQUOTESTR@"></td>
+	<td class="shade1">&nbsp;</td>
+</tr>
+
+<tr>
+	<td class="shade2"><b>Inbox Mail Read Direction</b>:</td>
+	<td class="shade2"><input type=radio name=InboxReadForward value="-1" @IF user.InboxReadForward@checked@ENDIF@>Oldest to Newest</td>
+	<td class="shade2"><input type=radio name=InboxReadForward value="0" @IF !user.InboxReadForward@checked@ENDIF@>Newest to Oldest</td>
+</tr>
+
+<tr>
+	<td class="shade1"><b>Contact Email Address</b>:</td>
+@IF ACCESS.OID.OBJECTID_CHANGE_EMAILADDRESS@
+	<td class="shade1" colspan=2><input name="EmailAddress" maxlength=60 size=40 value="@USER.EMAILADDRESS@"></td>
+@ELSE@
+	<td class="shade1" colspan=2>&nbsp;@USER.EMAILADDRESS@</td>
+@ENDIF@
+</tr>
+
+<tr>
+	<td class="shade2"><b>Email Forwarding Address</b>:</td>
+@IF ACCESS.OID.OBJECTID_CHANGE_SMTPFORWARD@
+	<td class="shade2" colspan=2><input name="SmtpForward" maxlength=60 size=40 value="@USER.SMTPFORWARD@"></td>
+@ELSE@
+	<td class="shade2" colspan=2>&nbsp;@USER.SMTPFORWARD@</td>
+@ENDIF@
+</tr>
+
+<tr>
+	<td class="shade1"><b>Recent Mail Scan Days</b>:</td>
+	<td class="shade1"><input name="MailOpts.RecentMail.MaxDays" size=4 value="@SUB USER.PROFILE("MailOpts.RecentMail.MaxDays",7)@"></td>
+	<td class="shade1">&nbsp;</td>
+</tr>
+
+<tr>
+	<td class="shade2"><b>Enable Mail Popup Preview</b>:</td>
+   <td class="shade2"><input type=radio name=MailOpts.Preview value=1 @IF user.mailopts.preview<>"0" @checked@ENDIF@>Yes</td>
+   <td class="shade2"><input type=radio name=MailOpts.Preview value=0 @IF user.mailopts.preview="0"@checked@ENDIF@>No</td>
+</tr>
+
+</table>    <!-- inner table -->
+
+<br>
+@if ChangeEmailAddressRequest@
+<h3>Note: Your Email Address change request was sent to the sysop.</h3>
+@endif@
+
+@if ChangeSmtpForwardRequest@
+<h3>Note: Your Forwarding Address change request was sent to the sysop.</h3>
+@endif@
+</td></tr>  <!-- outer table -->
+
+<tr><td>   <!-- outer table -->
+<b>Favorite Conferences:</b>
+</td></tr>  <!-- outer table -->
+
+<tr><td>     <!-- outer table -->
+<table border=0 cellspacing="2" cellpadding="2" >
+<tr>
+  <td>
+  Select the mail conferences you would like to have show up in your 'Favorite Conferences' in the
+  message menu.  After clicking on 'Commit Changes', you will be shown this page again, with
+  the modifications you have made. <b>Note: You must 'Save Changes' before switching to a new group
+  listing.</b>
+  <dl>
+  @LOOP MAILGROUP@
+    @IF SelectedGroup@
+      <input type="hidden" name="group" value="@SUB groupnum@">
+        <li><a href="/code/html-personal?page=@SUB QUERY.PAGE@" name="group@SUB groupnum@">@SUB groupname@</a>
+      <dl>
+      @LOOP MAILAREA@
+        <li><input type="checkbox" name="conf@SUB confnum@" value="@SUB confnum@" @IF selected="y"@checked@ENDIF@>@SUB confnum@ - @SUB confname@<br>
+      @ENDLOOP@
+      </dl>
+    @ELSE@
+      <li><a href="/code/html-personal?page=@SUB QUERY.PAGE@&group=@SUB groupnum@#group@SUB groupnum@" name="group@SUB groupnum@">@SUB groupname@</a>
+    @ENDIF@
+  @ENDLOOP@
+  </dl>
+  </td>
+</tr>
+<tr>
+    <td>
+       <input type="submit" value="Save Changes" name="commit">
+       <input type=Reset value="Reset">
+    </td>
+</tr>
+</table>
+
+</td></tr>  <!-- outer table -->
+</table>    <!-- outer table -->
+</form>
+
+

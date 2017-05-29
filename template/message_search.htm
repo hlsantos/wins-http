@@ -1,0 +1,100 @@
+<!--
+@COMMENT@
+
+file:  message_search.htm
+date:  09/02/05, v6.1.451.5i
+about: called by html-search_message.wcx
+
+@ENDCOMMENT@
+-->
+
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+<link rel="stylesheet" type="text/css" href="/public/styles.css">
+<title>Conference @SUB confnumber@ - @SUB confname@</title>
+</head>
+
+<body>
+@include "pageheader.inc"@
+
+<p class="pagetitle">Messages found in conference @SUB confnumber@ - @SUB confname@</p>
+<b>@if total = 0@No Messages Found.@else@Displaying messages @SUB indexfirst@ - @SUB indexlast@ of @SUB total@ found in this conference, sorted newest first.@endif@</b><br>
+
+<table border=0>
+  <tr>
+  <td nowrap>
+  Jump to: <a href="/code/html-searchform?@SUB PARAMS@"  class="pagebutton">[Search Again]</a>
+  </td>
+@if total > 0@
+
+  @if indexbottom@
+  <td nowrap>
+  <a href="/code/html-search+messages?frames=@SUB query.frames@&conf=@SUB query.conf@&tarto=@SUB query.tarto@&tarfrom=@SUB query.tarfrom@&tarsubject=@SUB query.tarsubject@&tarbody=@SUB query.tarbody@&index=1" class="pagebutton">[Top]</a>
+  </td>
+  <td nowrap>
+  <a href="/code/html-search+messages?frames=@SUB query.frames@&conf=@SUB query.conf@&tarto=@SUB query.tarto@&tarfrom=@SUB query.tarfrom@&tarsubject=@SUB query.tarsubject@&tarbody=@SUB query.tarbody@&index=@SUB indexbottom@" class="pagebutton">[Bottom]</a>
+  </td>
+  @endif@
+
+  <td width=100 nowrap>
+  &nbsp;
+  @if indexprev@
+  <a href="/code/html-search+messages?frames=@sub query.frames@&conf=@sub query.conf@&tarto=@sub query.tarto@&tarfrom=@sub query.tarfrom@&tarsubject=@sub query.tarsubject@&tarbody=@sub query.tarbody@&index=@sub indexprev@" class="pagebutton">[Prev Page]</a>
+  @endif@
+  </td>
+
+  <td width=100 nowrap>
+  &nbsp;
+  @if indexnext@
+  <a href="/code/html-search+messages?frames=@sub query.frames@&conf=@sub query.conf@&tarto=@sub query.tarto@&tarfrom=@sub query.tarfrom@&tarsubject=@sub query.tarsubject@&tarbody=@sub query.tarbody@&index=@sub indexnext@" class="pagebutton">[Next Page]</a>
+  @endif@
+  </td>
+@endif@
+
+  </tr>
+</table>
+
+@if total > 0@
+<table border="0">
+  <tr>
+    <th class="msglisthdr">#</th>
+    <th class="msglisthdr">Date</th>
+    <th class="msglisthdr">Subject</th>
+    <th class="msglisthdr">From</th>
+    <th class="msglisthdr">To</th>
+    <th class="msglisthdr">R</th>
+  </tr>
+
+@LOOP@
+  <tr>
+    <td class="msglist">
+    &nbsp;<a href="/code/html-read+message?frames=@SUB query.frames@&conf=@MSG.CONFERENCE.NUMBER@&msgid=@MSG.ID@"@if FrameMode@ target="body"@endif@>@MSG.NUMBER@</a>&nbsp;
+    </td>
+    <td class="msglist" nowrap>&nbsp;@MSG.DATE@&nbsp;</td>
+    <td class="msglist">
+  @if new@
+    <img src="/images/new.gif">
+  @endif@
+    <a href="/code/html-read+message?frames=@SUB query.frames@&conf=@MSG.CONFERENCE.NUMBER@&msgid=@MSG.ID@"@if FrameMode@ target="body"@endif@>
+    &nbsp;@SUB MSGSUBJECT@@if MSG.SUBJECT == ""@No Subject@Endif@&nbsp;
+    </a>
+    </td>
+    <td class="msglist">&nbsp;@SUB MSGFROM@&nbsp;</td>
+    <td class="msglist">&nbsp;@SUB MSGTO@&nbsp;</td>
+    <td class="msglist">@MSG.REPLYCOUNT@</td>
+  </tr>
+@ENDLOOP@
+
+@endif@
+
+</table>
+
+@if !framemode@
+  <a href="/code/html-message?frames=@sub query.frames@&threads=@sub query.threads@" title="go back to conference list"><img src="/images/back.gif" alt="back" border=0></a>
+@endif@
+
+@include "pagefooter.inc"@
+</body>
+</html>

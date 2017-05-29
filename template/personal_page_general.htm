@@ -1,0 +1,105 @@
+  <h3 class="propertyPageTitle">General Account Information:</h3>
+  <form method=post action="/code/html-personal">
+  <input type="hidden" name="save" value="@SUB QUERY.PAGE@">
+  <table width="95%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+     <td valign=top align=right><b>Login Name:</b></td><td valign=top>@USER.NAME@</td>
+     <td valign=top align=right><b>Msgs written:</b></td><td valign=top>@USER.MSGSWRITTEN@</td>
+  </tr>
+  <tr>
+     <td valign=top align=right><b>Real Name:</b></td><td valign=top>@USER.REALNAME@&nbsp;</td>
+     <td valign=top align=right><b>No. of Calls:</b></td><td valign=top>@USER.TIMESON@</td>
+  </tr>
+  <tr>
+     <td valign=top align=right><b>From:</b></td><td valign=top><input name="FROM" size=20 value="@USER.FROM@"></td>
+     <td valign=top align=right><b>User since:</b></td><td valign=top>@USER.FIRSTCALL@</td>
+  </tr>
+  <tr>
+     <td valign=top align=right><b>Title:</b></td><td valign=top><input name="TITLE" size=20 value="@USER.TITLE@"></td>
+     <td valign=top align=right><b>Last call:</b></td><td valign=top>@USER.LASTCALL@</td>
+  </tr>
+  <tr>
+     <td valign=top align=right><b>Company:</b></td><td valign=top><input name="COMPANY" size=20 value="@USER.COMPANY@"></td>
+     <td valign=top align=right><b>Last new files:</b></td><td valign=top>@USER.LASTNEWFILES@</td>
+  </tr>
+  <tr>
+     <td valign=top align=right><b>Address:</b></td><td valign=top><input name="ADDRESS1" size=20 value="@USER.ADDRESS1@"></td>
+     <td valign=top align=right><b>Downloads:</b></td><td valign=top>@USER.DOWNLOADS@ Files, @USER.TOTALDOWNLOADKBYTES@K</td>
+  </tr>
+  <tr>
+     <td valign=top align=right><b>Address:</b></td><td valign=top><input name="ADDRESS2" size=20 value="@USER.ADDRESS2@"></td>
+     <td valign=top align=right><b>Uploads:</b></td><td valign=top>@USER.UPLOADS@ Files, @USER.TOTALUPLOADKBYTES@K</td>
+  </tr>
+  <tr>
+     <td valign=top align=right><b>City:</b></td><td valign=top><input name="CITY" size=20 value="@USER.CITY@"></td>
+     <td valign=top align=right><b>Expire date:</b></td><td valign=top>@USER.EXPIREDATE@</td>
+  </tr>
+  <tr>
+     <td valign=top align=right><b>State:</b></td><td valign=top><input name="STATE" size=20 value="@USER.STATE@"></td>
+     <td valign=top align=right><b>Account balance:</b></td><td valign=top>@USER.SUBSCRIPTIONBALANCE@</td>
+  </tr>
+  <tr>
+     <td valign=top align=right><b>Country:</b></td><td valign=top><input name="COUNTRY" size=20 value="@USER.COUNTRY@"></td>
+     <td valign=top align=right><b>Netmail balance:</b></td><td valign=top>@USER.NETMAILBALANCE@</td>
+  </tr>
+  <tr>
+     <td valign=top align=right><b>Zip:</b></td><td valign=top><input name="ZIP" size=20 value="@USER.ZIP@"></td>
+     <td valign=top align=right>&nbsp;</td><td valign=top>&nbsp;</td>
+  </tr>
+
+  <tr>
+     <td valign=top align=right><b>Phone Number:</b></td>
+     <td valign=top>
+@if ACCESS.OID.OBJECTID_CHANGE_PHONE@
+     <input name="PHONE" size=20 value="@USER.PHONENUMBER@">
+@else@
+     @USER.PHONENUMBER@
+@endif@
+     </td>
+     <td valign=top align=right>&nbsp;</td><td valign=top>&nbsp;</td>
+  </tr>
+
+  <tr>
+     <td valign=top align=right><b>Birthday:</b></td>
+     <td valign=top>
+@if ACCESS.OID.OBJECTID_CHANGE_BIRTHDATE@
+     <input name="BIRTHDATE" size=20 value="@USER.BIRTHDATE@">
+@else@
+     @USER.BIRTHDATE@
+@endif@
+     </td>
+     <td valign=top align=right>&nbsp;</td><td valign=top>&nbsp;</td>
+  </tr>
+
+  <tr>
+     <td valign=top align=right><b>Language:</b></td><td valign=top>
+     <select name="language">
+       @loop Languages@
+       <option value='@sub langidx@' @IF langitem = USER.LANGUAGE@selected@ENDIF@>&nbsp;@sub langitem@&nbsp;</option>
+       @endloop@
+     </select>
+     </td>
+     <td valign=top align=right>&nbsp;</td>
+     <td valign=top>&nbsp;</td>
+  </tr>
+
+  </table>
+  <br>
+
+@if ChangePhoneNumberRequest@
+<h3>Note: Your phone number change request has been submitted to the sysop for approval.</h3>
+@endif@
+
+@if ChangeBirthDateRequest@
+<h3>Note: Your birthdate change request has been submitted to the sysop for approval.</h3>
+@endif@
+
+@if ChangeBirthDateError@
+<h3 style="color:red">Note: Your birthdate was incorrect. Date was not changed.</h3>
+@endif@
+
+
+  <table width="95%" border="0" cellspacing="0" cellpadding="2" align="center">
+  <tr><td><input type=Submit value="Save"><input type=Reset value="Reset"><td></tr>
+  </table>
+  </form>

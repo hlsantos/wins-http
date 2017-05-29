@@ -1,0 +1,54 @@
+<!-- vinfo: file_info.htm 09/23/07 v6.2.452.3d -->
+<html>
+<head><title>File Info: @FILE.NAME@</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+
+<script type='text/javascript' src="/public/js/jquery.pack.js"></script>
+<script type='text/javascript'>
+$(document).ready(function(){
+  //----------------------------------------------------------
+  // - Click title row to toggle the remaing table rows.
+  //----------------------------------------------------------
+  var $f = $(".fileinfoTable tr:first");
+  $f.click(function() { $(this).siblings().toggle(); });
+  //$f.click();
+  //----------------------------------------------------------
+});
+</script>
+
+</head>
+<body>
+
+@include "pageheader.inc"@
+
+@if !FrameMode@<br>@endif@
+
+
+<table class="fileinfoTable"
+       width="96%"
+       border="1"
+       cellspacing="0" cellpadding="1"
+       align="center">
+
+<tr><td class="tabletitle" valign=top colspan=3><b>Information for file: @FILE.NAME@</b></td><tr>
+<tr>
+<td valign=top><b>Area #@FILE.AREA@</b></td><td valign=top>@SUB areaname@</td>
+<td class="ffixed"  width="50%" rowspan="8" valign="top"><pre>@SUB longdesc@</pre></td>
+<tr>
+<tr><td valign=top><b>Size</b></td><td valign=top>@FILE.SIZE@</td></tr>
+<tr><td valign=top><b>Downloads</b></td><td valign=top>@FILE.DOWNLOADS@</td></tr>
+<tr><td valign=top><b>Upload Date</b></td><td valign=top>@FILE.FILETIME@</td></tr>
+<tr><td valign=top><b>Last access</b></td><td valign=top>@FILE.LASTACCESSED@</td></tr>
+<tr><td valign=top><b>Cost</b></td><td valign=top>@if FILE.COST = "$0.00"@ Free @ELSE@ @FILE.COST@@ENDIF@</td></tr>
+@if UPLOADER.ID > 0 && FILE.UPLOADER<>""@
+<tr><td valign=top><b>Uploader</b></td><td valign=top>@IF UPLOADER.ID <> USER.ID@<a href="/code/html-new+message?frames=@Sub Query.Frames@&to=@FILE.UPLOADER@&subj=re: @FILE.NAME@" title="Write message to uploader">@ENDIF@@FILE.UPLOADER@@IF UPLOADER.ID <> USER.ID@</a>@ENDIF@</td></tr>
+@endif@
+</table>
+@existinclude "file_manager_options.inc"@
+
+@existinclude "File_Info_MediaWindow.inc"@
+
+@include "pagefooter.inc"@
+</body>
+</html>

@@ -1,0 +1,386 @@
+@COMMENT@
+--------------------------------------------------------------------
+
+File: whos_online.htm is used by HTML-WHO.WCX
+
+v6.1.451.9  10/09/2006 - New revamped version
+
+v6.2.452.1e 02/03/2007 - added email, user info links, new html-who.wcx
+
+v6.2.452.1f 02/07/2007 - corrections to 452.1e, documented variables
+
+v6.2.452.3e 08/09/2007 - typo fixes
+                       - Optional AJAX support
+
+v6.3.453.2  11/18/2009 - now using wcaudioplay.inc
+
+v6.3.453.3g 12/30/2009 - Added VDG support
+
+v6.3.453.3i 01/06/2010 - Added Info Icons, template\custom\who-infoicon-*.htm
+                       - Added More Info,  template\custom\who-moreinfo.htm
+                       - Added optional template\custom\who-options.wct override file
+
+--------------------------------------------------------------------
+
+o Template Options
+
+   The following are options you can set. The defaults are indicated:
+
+   Who.vdg                       1, activate VDG display options
+   Who.vdg.column                0, set 1 to show Host column (for master sysops set to 1)
+   Who.vdg.filter                1, domain filter 0-all, 1-current, 2-user, 3-accessible.
+   Who.Options.ListCallers       1, show last callers (html-lastcallers.wcx must exist)
+   Who.Options.AllowEdit         1, allow user to edit some options
+   Who.Options.Email             1, add write message to user icon
+   Who.Options.UserInfo          1, checks for info icon(s). template\who-infoicon-*.htm
+   Who.Options.MoreInfo          1, check for "more info" template\who-moreinfo.htm to display,
+
+   You may override any of the above by creating a template:
+
+   http\template\custom\who-options.wct
+
+o Global variables prepared by HTML-WHO.WCX:
+
+   VDG.COUNT                     Total VDG domains, set by HTML-WHO
+   WCN.NAME                      Set if using 452.1+ HTML-WHO.WCX
+   WCN.VERSION                   Set if using 452.1+ HTML-WHO.WCX
+
+   NODECOUNT                     Total nodes allocated
+   HASMODEMS                     TRUE or FALSE
+
+   WHO.INFOICONS.COUNT           number of http\template\who-infoicon-*.htm files
+   WHO.INFOICONS[i].HTML         name of  http\template\who-infoicon-*.htm file
+
+   The following variables are set during the @LOOP@ process for
+   each node found:
+
+   OTHERNODE.ACTIVE              TRUE if user is logged on
+   OTHERNODE.ACTIVITY            User's last actiivity.
+   OTHERNODE.CALLTYPE            node connection type
+   OTHERNODE.CALLTYPES           (FUTURE - NOT USED)
+   OTHERNODE.CID                 node's connection id
+   OTHERNODE.LOCATION            User's FROM where
+   OTHERNODE.NUMBER              Node number
+   OTHERNODE.SPEED               Device time or modem speed
+   OTHERNODE.STATUS              Down, Up, Signing On, Logged In
+   OTHERNODE.STATUS.NUMBER       0-down, 1-up, 2-signing on, 3-logged in,
+
+   OTHERNODE.DATE.LOGIN          Login Date in yyyy-mm-dd
+   OTHERNODE.TIME.LOGIN          Login time in HH:MM:SS format
+
+   OTHERNODE.TIME.ONLINE         Time online in HH:MM:SS format
+   OTHERNODE.TIME.ONLINE.MINS    Time online in minutes
+   OTHERNODE.TIME.ONLINE.SECS    Time online in seconds
+
+   OTHERNODE.TIME.IDLE           Idle time in HH:MM:SS format
+   OTHERNODE.TIME.IDLE.MINS      Idle time in minutes
+   OTHERNODE.TIME.IDLE.SECS      Idle time in seconds
+
+   OTHERNODE.USER.ID             User's ID  (without commas)
+   OTHERNODE.USER.NAME           User's name
+
+   OTHERUSER.XXXXXXXX            Node's user record (GlobalUserRecord).
+                                 The macros used here are:
+
+                                 OTHERUSER.FIRSTNAME
+
+   OTHERNODE.RPC.CALLS           # of WCSDK function calls for this session
+   OTHERNODE.IPADDRESS           User IP address
+   OTHERNODE.PEERADDRESS         client application IP address (wconline)
+   OTHERNODE.COMPUTER            client computer
+   OTHERNODE.PROCESS.NAME        client process name
+
+   The DEVICE variables are available only if the node is a modem
+   node (not an TCP/IP node)
+
+   OTHERNODE.DEVICE.DISABLED      TRUE if the modem device is disabled
+   OTHERNODE.DEVICE.COMPUTER      Name of computer for modem node
+   OTHERNODE.DEVICE.LINEID        TAPI ID for modem node
+   OTHERNODE.DEVICE.NAME          Name of modem profile
+   OTHERNODE.DEVICE.PORT          COMx or TAPI for modems, otherwise TCP/IP
+   OTHERNODE.DEVICE.PORT.DOOR     internal
+
+   VDG variables:
+
+   OTHERNODE.HOST.DOMAIN          session domain
+   OTHERNODE.HOST.ACCESS          true if access allowed
+
+   Useful session variables for VDG:
+
+   DefaultDomain                  default VDG domain
+   http.vhost  or http.host       request Host: domain
+
+o Older Whos_online.htm template
+
+   For compatibility with older WHOS_ONLINE.HTM templates, the
+   SUBx variables are also set:
+
+   SUB1      same as OTHERNODE.NUMBER
+   SUB2      same as OTHERNODE.SPEED
+   SUB3      same as OTHERNODE.USER.NAME
+   SUB4      same as OTHERNODE.LOCATION
+   SUB5      same as OTHERNODE.ACTIVITY
+   SUB6      same as OTHERNODE.TIME.ONLINE
+   SUB7      same as OTHERNODE.TIME.ONLINE.MINS        // 451.3
+   SUB8      same as OTHERNODE.TIME.ONLINE.SECS        // 452.1f
+
+@ENDCOMMENT@
+
+<!--[ Set activity ]-->
+
+@SetNodeActivity "Who's Online!"@
+
+<!--[ Set VDG Related Template Options ]-->
+
+@set Who.VDG        = 1@        @//@ set 1 to enable vdg support
+@set Who.VDG.Column = 0@        @//@ set 1 to show column
+@set Who.VDG.Filter = 1@        @//@ set 0 - show all, 1 - current, 2 - user, 3 - accessible
+
+@IF ACCESS.OID.OBJECTID_MASTER_SYSOP@  @//@ Allow Master Sysop to see everything
+   @set Who.VDG.Column = 1@
+   @set Who.VDG.Filter = 0@
+@ENDIF@
+
+<!--[ Set some options for who's online ]-->
+
+@set Who.Options.ListCallers    = 1@   @//@ option to show last callers
+@set Who.Options.AllowEdit      = 1@   @//@ option to allow user to edit some options
+@set Who.Options.Email          = 1@   @//@ option to write message to user
+@set Who.Options.UserInfo       = 1@   @//@ option to show user info
+@set Who.Options.MoreInfo       = 1@   @//@ option to show more info
+@if Who.Options.UserInfo && !exist "wc:\code\html-userinfo.wcx"@
+  @set Who.Options.UserInfo=0@
+@endif@
+@if Who.Options.MoreInfo && !exist "wc:\http\template\who-moreinfo.htm"@
+  @set Who.Options.MoreInfo=0@
+@endif@
+
+<!--[ Set some user options ]-->
+
+@SET Who.Options.Refresh        = User.Profile("UsersOnline.Refresh",60)@
+@SET Who.Options.Audio          = User.Profile("Audio.Enable",  1)@
+@SET Who.Options.NewMail        = User.Profile("Audio.NewMail", 1)@
+@SET Who.Options.CheckMail      = User.Profile("UsersOnline.CheckMail", 1)@
+
+<!--[ Optional Override of options ]-->
+
+@ExistInclude "wc:\http\template\who-options.wct"@
+
+<!--[ check for new mail: sets variable NewMail=1 ]-->
+
+@if Who.Options.CheckMail@
+@Module UTL NewMail@
+@endif@
+
+<html>
+<head>
+<title>Current User's Online</title>
+@if Who.Options.Refresh >= 30@
+<meta http-equiv="Refresh" content="@SUB Who.Options.Refresh@">
+@endif@
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/layout.css">
+<link rel="stylesheet" type="text/css" href="/template/whoclient.css">
+
+@if Who.Options.Audio && Who.Options.NewMail && NewMail@
+@include "wcAudioPlay.Inc"@
+@endif@
+
+</head>
+<body>
+
+@if !FrameMode@
+<div id="layoutHeader">@include "pageheader.inc"@</div>
+@endif@
+
+<div id="layoutMain"> <!-- start: layoutMain -->
+<center>
+<table width="96%" border="0" cellspacing="0" cellpadding="2" align="center">
+  <tr>
+   <td><img src="/public/graphics/c-who.gif" width="211" height="50"  alt="Current User's Online" border="0"></td>
+   @if NewMail@
+   <td>
+      @if Who.Options.Audio && Who.Options.NewMail@
+      <script language="JavaScript">PlayAudioID("NewMail");</script>
+      @endif@
+      <a href="/code/html-inbox" title="Read your new private mail!">
+      <img src="/images/flashnewmail.gif" alt="You have new mail!" border="0">
+      </a>
+   </td>
+   @endif@
+  </tr>
+</table>
+</center>
+
+<!--[ Dynamic Creation of Table ]-->
+
+@COMMENT@
+
+You can dynamically create your table columns by using the COL table
+array as shown below. Each row has three columns:
+
+Column #1  COL[][1]  contains the title for the table columns
+Column #2: COL[][2]  contains the OTHERNODE.XXX value name as the value
+Column #3: COL[][3]  optional: contains <td> attributes for cell tag
+
+The default table array COL is constructed below.  You may create your
+own columns by creating an optional custom template:
+
+   template\custom\who-columns.htm
+
+The template MUST create the COL array as in the same manner as shown
+below.
+
+@ENDCOMMENT@
+
+@if Exist "wc:\http\template\who-columns.htm"@
+  @include "wc:\http\template\who-columns.htm"@
+@else@
+    @SET COL[]=@
+  @IF WHO.VDG && WHO.VDG.COLUMN@
+    @ADD COL[] ["Host",     "OTHERNODE.HOST.DOMAIN", "style='width:1%;'"]@
+  @ENDIF@
+    @ADD COL[] ["Node",     "OTHERNODE.NUMBER",      "style='width:1%;'"]@
+    @ADD COL[] ["Port",     "OTHERNODE.DEVICE.PORT", "style='width:1%;'"]@
+    @ADD COL[] ["Online",   "OTHERNODE.TIME.ONLINE", "style='width:1%;'"]@
+    @ADD COL[] ["Idle",     "OTHERNODE.TIME.IDLE",   "style='width:1%;'"]@
+  @IF HASMODEMS@  @//@ only add speed column if modems exist
+    @ADD COL[] ["Speed",    "OTHERNODE.SPEED",       "style='width:1%;'"]@
+  @ENDIF@
+    @ADD COL[] ["Name",     "OTHERNODE.USER.NAME"]@
+    @ADD COL[] ["Location", "OTHERNODE.LOCATION"]@
+    @ADD COL[] ["Activity", "OTHERNODE.ACTIVITY"]@
+@endif@
+
+<!--[ Display the table ]-->
+
+<table class="whoTable" width="96%" border="1" cellspacing="0" cellpadding="2" align="center">
+  <tr class="whoheader" valign="bottom">
+  @FOR I = 1 to COL.COUNT@
+     <th align="left" @SUB COL[{I}][3]@>@SUB COL[{I}][1]@</th>
+  @NEXT@
+  </tr>
+@LOOP@
+  @IF WHO.VDG@
+     @//@ set 0 - show all, 1 - current only, 2 - user, 3 - accessible.
+     @IF WHO.VDG.FILTER = 1 && OTHERNODE.HOST.DOMAIN <> HTTP.VHOST@ @CONTINUE@ @ENDIF@
+     @IF WHO.VDG.FILTER = 2 && OTHERNODE.USER.ID <> USER.ID@ @CONTINUE@ @ENDIF@
+     @IF WHO.VDG.FILTER = 3 && !OTHERNODE.HOST.ACCESS@ @CONTINUE@ @ENDIF@
+  @ENDIF@
+  @SET ROWCOLOR=@
+  @IF USER.NAME = OTHERUSER.NAME@@SET ROWCOLOR="style='background:yellow;'@@ENDIF@
+  @IF NODE = OTHERNODE.NUMBER@@SET ROWCOLOR="style='background: #66FFCC;'@@ENDIF@
+  <tr valign="top" cellpadding="0" cellspacing="0" @SUB ROWCOLOR@>
+   @FOR I = 1 to COL.COUNT@
+     @IF COL[{I}][2] = "OTHERNODE.USER.NAME"@
+     <!-- Name cell -->
+     <td class="whoText">
+         <table border="0" id="whoName"
+              cellpadding="0" cellspacing="0"
+              style="width: 100%; border: 0px solid black; padding: 0; margin: 0;">
+         <tr valign="top">
+           <td class="whoText" @SUB COL[{I}][3]@>@SUB OTHERNODE.USER.NAME@</td>
+           @IF OTHERNODE.ACTIVE@
+           <td align="right" class="whoIcons">
+              @if Who.Options.Email && USER.NAME <> OTHERNODE.USER.NAME@
+              <a href="/code/html-new+message?direct=1&conf=0&uid=@SUB OTHERNODE.USER.ID@"
+                 title="Write private message to @OTHERUSER.FIRSTNAME@"
+                 target="_blank"><img border="0" src="/images/edit.gif"></a>
+              @endif@
+              @if Who.Options.UserInfo@
+              <a href="/code/html-userinfo?uid=@SUB OTHERNODE.USER.ID@&backto=who.wcn"
+                 title="See user information"
+                 target="_blank"><img border="0" src="/images/user.gif"></a>
+              @endif@
+              @FOR J=1 TO Who.InfoIcons.Count@
+                 @Include Who.InfoIcons[{J}].Html@
+              @NEXT@
+              @if Who.Options.IM@
+              <a href="#" onClick="DisplayIM('bx@SUB OTHERNODE.CID@'); return;"
+                 title="Instant Message to @OTHERUSER.FIRSTNAME@"><img border="0" src="/images/execute.gif"></a>
+              @endif@
+           </td>
+           @ENDIF@
+         </tr>
+
+         @IF Who.Options.MoreInfo@
+         <tr valign="top">
+           <td class="whoMoreInfo" @IF OTHERNODE.ACTIVE@colspan="2"@ENDIF@>
+           @INCLUDE "wc:\http\template\who-moreinfo.htm"@
+           </td>
+         </tr>
+         @ENDIF@
+
+       </table>
+     </td>
+     <!-- End of Name cell -->
+     @ELSE@
+     <td class="whoText" @SUB COL[{I}][3]@>@EVAL(COL[{I}][2])@</td>
+     @ENDIF@
+   @NEXT@
+  </tr>
+@ENDLOOP@
+</table>
+<!------------------------------------------------------------>
+
+@if Who.Options.AllowEdit@
+<br>
+<form action="/template/save_whos_online_options.wct">
+<table id="WhoOptions" class="WhoOptions" border="0" cellspacing="0" cellpadding="2" align="center">
+<tr>
+<th><a href="/client?who.wcn&frames=@if FrameMode@y@else@n@endif@">Refresh</a> Time (secs):</th><td><input type="edit"     name="UsersOnline.Refresh" value="@SUB Who.Options.Refresh@" size=2 maxlength=4 title="0 to turn off refresh or 30 seconds minimum."/></td>
+<th>Audio Notification:</th>
+   <td>
+   <input type="checkbox" name="Audio.Newmail" value="1" @if Who.Options.NewMail@Checked@endif@/>
+   </td>
+   <td><input type="submit" value="Save"/></td>
+   <td><input type="reset" value="Reset"/></td>
+</tr>
+@if User.UsersOnline.Error@
+<tr><td colspan=6 class="whoRefreshError">@SUB User.UsersOnline.Error@</td></tr>
+@set User.UsersOnline.Error=@
+@endif@
+</table>
+</form>
+@endif@
+
+@if Who.Options.ListCallers=1@
+<style>
+#whobot {
+   /*-----------------------------------------*/
+   /* if you want a vertical scroll, use this */
+   /*-----------------------------------------*/
+    overflow:auto;
+    float: left;
+    height: 25em;
+    max-height: 25em;
+   /*-----------------------------------------*/
+
+    width: 450px;
+    margin-left: 2%; margin-bottom: 2%;  margin-right: 2%;
+
+    /*-- to center table ----*/
+    float: none;
+    width: auto;
+    margin-left: 20%; margin-right: 20%;
+
+   /* debug only: use this just to check out the border area */
+   /* background: yellow; border: 1px solid; */
+
+}
+</style>
+
+ @if Exist "wc:\code\html-listcallers.wcx"@
+   <div id="whobot">
+   @RUNWCX "wc:\code\html-listcallers.wcx"@
+   </div>
+ @endif@
+
+@endif@
+
+</div> <!-- end: layoutMain -->
+
+<div id="layoutFooter">@include "pagefooter.inc"@</div>
+
+</body>
+</html>

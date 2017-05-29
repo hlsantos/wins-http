@@ -1,0 +1,124 @@
+/* mail client css */
+
+body {
+  margin-top: 5px;    margin-left: 10px;
+  margin-bottom: 5px; margin-right: 10px;
+  font-family: verdana,tahoma,arial;
+  line-height: 16px;
+  background: #EFF6FF;
+}
+
+.newmsg {
+   background : #70beff;
+   font-family: verdana,tahoma,arial;
+	font-size : 8pt;
+	color : Black;
+   border: 1px solid black;
+}
+
+.newmsg_checkboxes {
+   margin-top: 2px;
+   /*
+   border: 1px solid black;
+	background : SkyBlue;
+   */
+}
+
+.newmsg_title {
+   border: 1px solid black;
+	background : blue;
+	text-decoration : none;
+   font-family: verdana,tahoma,arial;
+	font-size : 10pt;
+	font-weight : Bold;
+	color : Yellow;
+}
+
+.newmsg_head  {
+   border: 1px solid black;
+	background : SkyBlue;
+   font-family: verdana,tahoma,arial;
+	font-size : 8pt;
+	color : Black;
+}
+
+.newmsg_attr {
+	color : Black;
+}
+
+.newmsg_text  {
+   background : #FFFDEA;
+   font-family: verdana,tahoma,arial;
+	font-size : 10pt;
+	color : Black;
+	color : Blue;
+}
+
+
+.newmsg_fname {
+	color : Black;
+   font-family: verdana,tahoma,arial;
+	font-size : 8pt;
+   font-weight : Bold;
+}
+
+.newmsg_fname_red {
+	color : red;
+   font-family: verdana,tahoma,arial;
+	font-size : 8pt;
+	font-weight : Bold;
+}
+
+.newmsg_fvalue {
+	color : Black;
+   font-family: verdana,tahoma,arial;
+	font-size : 8pt;
+}
+
+.newmsg_fvalue_red {
+	color : red;
+	font-size : 8pt;
+	font-weight : Bold;
+}
+
+.newmsg_btn_post {
+   font-family: verdana,tahoma,arial;
+	font-size : 8pt;
+	font-weight : Bold;
+	background : #C0C0C0;
+	margin : 0px;
+	padding : 2px;
+	color : White;
+	color : Black;
+}
+
+.newmsg_cb {
+   font-family: verdana,tahoma,arial;
+	font-size : 8pt;
+	font-weight : Bold;
+   text-align: left;
+   vertical-align: top;
+}
+
+.newmsg_pvtmsg {
+   border: 1px solid black;
+   font-family: verdana,tahoma,arial;
+	background : red;
+	font-weight : Bold;
+	color : white;
+}
+
+.newmsg_pubmsg {
+   border: 1px solid black;
+   font-family: verdana,tahoma,arial;
+	background : Green;
+	font-weight : Bold;
+	color : white;
+}
+
+.newmsg_to_cc {
+	background : RoyalBlue;
+	padding : 2px;
+	color : White;
+}
+

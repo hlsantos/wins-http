@@ -1,0 +1,54 @@
+@COMMENT@
+file_uploadok.htm: called by html-uploadprocess.wcx
+v6.2.451.1, 02/06/07 - added audio stuff
+v6.2.452.8, 02/06/09 - change SUB to GET
+                     - added file upload information table
+v6.3.453.2  11/18/09 - now using wcaudioplay.inc
+@ENDCOMMENT@
+<html>
+<head>
+<title>File Upload Successful</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+@include "wcaudioplay.inc"@
+<style>
+body  { margin: 10pt; }
+table.tablelist { font-size: 10pt; margin-left: 20pt; }
+table.tablelist th { text-align: left; }
+table.tablelist td { padding: 3px; }
+</style>
+</head>
+<body>
+
+@include "pageheader.inc"@
+
+@if !FrameMode@<br>@endif@
+
+<p>Your upload of <b>@FILE.NAME@</b> was successful!</p>
+
+<p>
+<table class="tablelist" border="1">
+<tr><th>File Name: </th>       <td>@FILE.NAME@</td></tr>
+<tr><th>File Size: </th>       <td>@FILE.SIZEMBYTES@</td></tr>
+<tr><th>File Area: </th>       <td>@FILE.AREANAME@ (@FILE.AREANUMBER@)</td></tr>
+<tr><th>File Description: </th><td>@FILE.DESCRIPTION@</td></tr>
+<tr><th>Total Uploads: </th>   <td>@USER.UPLOADS@</td></tr>
+</table>
+</p>
+
+@if UploadNote@
+<p>@GET UploadNote@</p>
+@endif@
+
+@IF !FrameMode@
+<hr>
+<p>Click <a href="/code/html-file">here</a> to go back to browsing files.</p>
+@endif@
+
+@if wcAudio.Loaded && User.Profile("Audio.UploadOk",1)@
+<script language="JavaScript">PlayAudioID("UploadOk");</script>
+@endif@
+
+@include "pagefooter.inc"@
+</body>
+</html>

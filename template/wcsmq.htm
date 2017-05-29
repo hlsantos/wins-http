@@ -1,0 +1,277 @@
+@COMMENT@
+Date: 04/29/2012
+Used by html-wcsmq.wcx
+@ENDCOMMENT@
+
+@SET Que.Opts.UseOneRow    = 1@
+@SET Que.Opts.Show.Age     = 0@
+@if QUE.SYSOP.MENU@
+@SET Que.Opts.UseOneRow    = 0@
+@ENDIF@
+
+<html>
+<head>
+<title>Wildcat! SMTP Mail Queue</title>
+<meta http-equiv="pragma" content="no-cache">
+@if Que.Refresh@
+<meta http-equiv="Refresh" content="@SUB Que.Refresh@">
+@endif@
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+<link rel="stylesheet" type="text/css" href="/template/wcsmq.css">
+
+<script type="text/javascript">
+function doKill(qf)
+{
+   if (confirm("Delete "+qf)) {
+      var frm   = document.queform;
+      frm.cmd.value   = "del";
+      frm.data.value  = qf;
+      frm.submit();
+      return true;
+   }
+}
+function doRetry(qf)
+{
+   if (confirm("Retry "+qf)) {
+      var frm   = document.queform;
+      frm.cmd.value   = "que";
+      frm.data.value  = qf;
+      frm.submit();
+      return true;
+   }
+}
+function fileListHover(ob,evt)
+{
+   if (evt.type=="mouseover") ob.style.background = "yellow";
+   if (evt.type=="mouseout")  ob.style.background = "";
+}
+</script>
+
+<style>
+th { vertical-align: bottom;}
+td { vertical-align: top;}
+
+@if QUE.SYSOP.MENU@
+#divBody    {
+   margin-top: 0pt;
+   margin-left: 0pt;
+   margin-right: 0pt;
+   padding: 0pt 3pt 3pt 3pt;
+   border: 1px outset silver;
+   background: whitesmoke;
+   font-family: arial;
+   font-size: 8pt;
+}
+table.quetable {
+   border: 1px solid silver;
+   border-collapse: collapse;
+   font-family: verdana,helvetica,arial,sans-serif;
+   font-size : 8pt;
+   background: whitesmoke;
+}
+@ELSE@
+#divBody    {
+   margin-top: 10pt;
+   margin-left: 10pt;
+   margin-right: 10pt;
+   padding: 0pt 0pt 0pt 0pt;
+   border: 3px outset silver;
+   background: Beige;
+}
+table.quetable {
+   border: 1px solid silver;
+   border-collapse: collapse;
+   font-family: verdana,helvetica,arial,sans-serif;
+   font-size : 8pt;
+   background: whitesmoke;
+}
+@ENDIF@
+
+.querowTop th {
+   border-bottom: 1px solid black;
+}
+
+@if Que.Opts.UseOneRow@
+.querow td {
+   border-bottom: 1px solid silver;
+}
+@else@
+.querow2 td {
+   border-bottom: 1px solid silver;
+}
+@endif@
+
+.queTitleBar {
+   margin: 0px
+   padding: 0px;
+   border: 1px outset silver;
+   background: blue;
+   color: Orange;
+   text-align: right;
+   font-family: verdana,helvetica,arial,sans-serif;
+   font-size: 10pt;
+   font-weight: bold;
+}
+.queButtons {
+   margin: 0px
+   padding: 0px;
+   color: white;
+   text-align: right;
+   font-family: verdana,helvetica,arial,sans-serif;
+   font-size: 10pt;
+   font-weight: bold;
+}
+#queform { margin: 0px padding: 0px; display:hidden;}
+
+.queBtnLink  {
+   color : Black;
+   background : Silver;
+   text-decoration : none;
+   font-family : Arial;
+   font-size : 8pt;
+   font-weight : Bold;
+}
+
+.queBtnLink:hover  {
+   color : Black;
+   background : Yellow;
+   text-decoration : none;
+   font-family : Arial;
+   font-size : 8pt;
+   font-weight : Bold;
+}
+</style>
+
+@SetNodeActivity "wcSMTPQue Manager"@
+
+</head>
+
+@//@------------------------------------------------------------------  BODY
+
+<body class="que">
+
+<form id="queform" name="queform" method="post">
+<input type="hidden" name="cmd"  id="cmd"  value=""/>
+<input type="hidden" name="data" id="data" value=""/>
+@if QUE.SYSOP.MENU@
+<input type="hidden" name="sm" value="1"/>
+@ENDIF@
+</form>
+
+@//@------------------------------ PAGEHEADER
+@if !QUE.SYSOP.MENU@
+@include "/template/pageheader.inc"@
+@ENDIF@
+
+<table id="divBody">
+
+@//@------------------------------ TITLE
+<tr><td class="queTitleBar">
+wcSMTPQue Manager v@SUB QUE.VERSION@
+</td></tr>
+
+@//@------------------------------ BUTTONS/LINKS
+@if !QUE.SYSOP.MENU@
+<tr><td class="queButtons">
+<a class="queBtnLink" href="/code/html-wcsmq.wcx">&nbsp;Refresh&nbsp;</button></a>
+</td></tr>
+@endif@
+@//@------------------------------ INTRO
+<tr><td>
+<TABLE BORDER="1" CLASS="QUEINTRO">
+<TR>
+<TH>CURRENT TIME</TH><TD>@DATE@ @TIME@</TD>
+<TH>PRIMARY SPOOL</TH><TD>@SUB QUE.SPOOL.PRIMARY@</TD>
+<TH>SMTP SPOOL</TH><TD>@SUB QUE.SPOOL.SMTP@</TD>
+<TH>TOTAL EMAILS</TH><TD>@SUB QUE.TOTAL.EMAILS@</TD>
+</TR>
+</TABLE>
+</td></tr>
+
+@//@------------------------------ LISTING
+<tr><td>
+<table class="quetable" border="0">
+<tr class="querowTop">
+<TH align="center"></TH>
+<TH>#</TH>
+<TH>SPOOL</TH>
+@if Que.Opts.Show.Age@
+<TH>QUE TIME</TH>
+@endif@
+<TH>TRIES</TH>
+<TH>NEXT DATE</TH>
+<TH>TIME LEFT</TH>
+<TH>DESTINATION</TH>
+<TH>STATUS</TH>
+@if Que.Opts.UseOneRow@
+<TH>DESCRIPTION</TH>
+@endif@
+</tr>
+
+
+@LOOP QUE@
+@if !QUE.SKIP@
+<tr class="querow" onmouseOver="fileListHover(this,event);" onmouseout="fileListHover(this,event);">
+   <td class="quecmd" nowrap>
+   <button class="quecmdKill" onclick="doKill('@SUB QUE.FILE@');" title="delete this spooled email">X</button>&nbsp;
+   <button class="quecmdRetry" onclick="doRetry('@SUB QUE.FILE@');" title="retry this queued email">R</button>
+   </td>
+   <td class="queidx">@SUB QUE.INDEX@</td>
+   <td id="quefile"@SUB QUE.INDEX@" class="quefile">@SUB QUE.FILE@</td>
+@if Que.Opts.Show.Age@
+   @//@<td class="queFileAge" nowrap>@SUB QUE.FILE.AGE@</td>
+   <td class="queFileAge" nowrap>@SUB QUE.FILE.LTIME@</td>
+@endif@
+   <td class="queatts" align="right">@SUB QUE.TRIES@</td>
+   <td class="quenext" nowrap>@SUB QUE.NEXT@</td>
+   <td class="quetime" nowrap>
+   @IF QUE.TIME < 0@
+     @IF QUE.TIME = ""@@ELSE@<span style="color:red">past due</span>@ENDIF@
+   @ELSE@
+     @SUB QUE.TIME@
+   @ENDIF@
+   </td>
+   <td class="quedest" nowrap>@SUB QUE.DEST@</td>
+   <td class="questatus" align="right">@SUB QUE.STATUS@</td>
+@if Que.Opts.UseOneRow@
+   <td class="quedesc" style="color:red;">@SUB QUE.STATUS.DESC@</td>
+@endif@
+</tr>
+
+@if !Que.Opts.UseOneRow@
+<tr class="querow2">
+   <td colspan="2">&nbsp;</td>
+   <td colspan="100" class="quedesc" style="color:red; border-left: 0px;">@SUB QUE.STATUS.DESC@</td>
+</tr>
+@endif@
+
+
+@ENDIF@
+@ENDLOOP@
+</table>
+</td></tr>
+
+@//@------------------------------ SUMMARY
+<tr><td>
+<table border="1" class="quetable" width="20%" style="background: yellow;  color: blue;">
+<tr>
+<th width="1%" nowrap>Total Scheduled:</th><td>@SUB QUE.SCHEDULED@</td>
+<th width="1%" nowrap>Total Queued:</th><td>@SUB QUE.NUMQUEUED@</td>
+<th width="1%" nowrap>Total Tried:</th><td>@SUB QUE.NUMTRIED@</td>
+<th width="1%" nowrap>Total Bad Emails:</th><td>@SUB QUE.NUMBAD@</td>
+</tr>
+</table>
+</td></tr>
+
+</table>
+
+@//@------------------------------ PAGEFOOTER
+@if !QUE.SYSOP.MENU@
+@include "/template/pagefooter.inc"@
+@ENDIF@
+
+</body>
+</html>
+

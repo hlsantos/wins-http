@@ -1,0 +1,39 @@
+<!-- file: helpwindowframe.htm -->
+<html>
+<head>
+<title>Wildcat! Help Window</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+</head>
+@if exist wcHelpPage@
+<frameset bordercolor="#008000" rows="25,*">
+  <frame name="top"  src="/template/helpwindow.htm" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize>
+  <frame name="body" src="@Sub HelpPage@" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
+  <noframes>
+  <body>
+  <!-- no frames -->
+  @SUB HelpPage@
+  </body>
+  </noframes>
+</frameset>
+@else@
+
+<div style="background: yellow; padding: 5px; border: 1px outset black;">
+<h3 align="center">Wildcat! Interactive Net Server</h3>
+
+<p><b>No help available for this section:</b></p>
+
+<p>@SUB HelpPage@</p>
+
+<p><a href="/public/code/html-help">Top Level Help</a></p>
+
+</div>
+
+<div id="AbsoluteBottom">
+<center>
+<input type="button" value="&nbsp;Close&nbsp;" onClick="parent.close();">
+</center>
+</div>
+
+</body>
+</html>

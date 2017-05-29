@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>No Client Access!</title>
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/templates.css">
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/buttons.css">
+
+<style type="text/css">
+div.error  {
+   color : Black;
+   background : Red;
+   border: 1px solid Black;
+   border-top-width: 2px;
+   border-bottom-width: 2px;
+   font-family: verdana,tahoma,arial; font-size : 10pt;
+   width: 50%;
+   margin:auto;
+   padding: 5px;
+   text-align: center;
+}
+</style>
+
+</head>
+<body>
+
+@include /template/pageheader.inc@
+
+<h3><u>No Access</u></h3>
+
+<div id="ErrorDisplay" style="border: 1px solid Black;">
+Sorry @USER.NAME@<br>Your account does not have access to
+the "@SUB QUERY.CLIENT@" client!
+</div>
+
+</body>
+</html>

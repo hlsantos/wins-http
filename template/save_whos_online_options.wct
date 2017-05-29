@@ -1,0 +1,31 @@
+<!-- This WCT saves the user's Who's Online options and
+     redirects to html-who -->
+
+@set LowestRefresh = 30@
+
+<!-- Only Set Refresh is 30 seconds or more
+     or 0 to turn off refreshing -->
+
+@if Query.UsersOnline.Refresh=0 || Query.UsersOnline.Refresh >= LowestRefresh@
+   @set User.UsersOnline.Refresh=Query.UsersOnline.Refresh@
+   @set User.UsersOnline.Error=@
+@else@
+   @set User.UsersOnline.Error="Refresh value too low: Only 0 or "+LowestRefresh+" secs mininum."@
+@endif@
+
+<!-- This was a checkbox and if unchecked, the form field name
+     will not be passed. So check for blank. -->
+
+@if Query.Audio.Newmail = ""@
+  @set User.Audio.Newmail=0@
+@else@
+  @set User.Audio.Newmail=1@
+@endif@
+
+<!-- Now Redirect. Note, we could call runwcx, but then
+     will see the save url in the browser. -->
+
+@UPDATEUSER@
+
+@module utl redirect /client?who.wcn@
+

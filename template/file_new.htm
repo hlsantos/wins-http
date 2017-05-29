@@ -1,0 +1,26 @@
+<!-- file_new.htm: used by html-new files.wcx
+     date: 09/07/05 09:42 am
+     version: v6.1.451.5l
+  -->
+<html>
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/templates.css">
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/buttons.css">
+<head>
+<title>New files for the last @SUB query.days@ days.</title>
+</head>
+<body>
+
+@include "pageheader.inc"@
+
+<h3 align=center>
+New files for the last @SUB query.days@ days.<br>
+Displaying files @SUB indexfirst@ - @SUB indexlast@ of @SUB total@ new files, sorted by area.
+</h3>
+
+@include "file_newmenu.inc"@
+@include "file_list.inc"@
+@include "file_newmenu.inc"@
+
+@include "pagefooter.inc"@
+</body>
+</html>

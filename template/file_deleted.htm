@@ -1,0 +1,22 @@
+<!-- File: http\template\file_deleted.htm-->
+<html>
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/templates.css">
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/buttons.css">
+<head><title>File Deleted</title></head>
+
+<html>
+<body>
+
+@include "pageheader.inc"@
+
+@if Result.Error@
+@sub Result.Error@
+@else@
+@sub Result@
+@endif@
+
+@include "pagefooter.inc"@
+
+</body>
+</html>
+

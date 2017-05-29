@@ -1,0 +1,381 @@
+@COMMENT@
+file_areas.htm: used by client?file.wcn
+  v6.1.451.8d, 06/27/06 01:13 pm
+  v6.2.451.1, 02/03/07 10:00 pm - node activity
+
+file_areas.htm is a template that is called once or twice depending if
+the user is in "Frame Mode".
+
+When the user is in FRAMEMODE:
+
+html-file.wcx will load this template with FrameHeader set
+to true.
+
+When "FrameHeader" is true, the frames are prepared. Each frame will
+call its own template page.
+
+   +--------------------------------+
+   | TOP                            |
+   |--------------------------------|
+   | RIGHT        |  LEFT-TOP       |
+   |              |-----------------|
+   |              |                 |
+   |              |  LEFT-BOTTOM    |
+   +--------------------------------+
+
+The RIGHT frame will call "html-file areas.wcx" and this wcx
+will load the page again with FrameHeader OFF thus display the
+actual content.
+
+When the user is NOT in FRAMEMODE:
+
+html-file.wcx will call "html-files areas.wcx" directly
+thus display the areas in non-frame mode.
+
+@ENDCOMMENT@
+
+@if FrameHeader@
+
+@include "globalopts.inc"@
+
+@if AreasFrame.Resizer@
+   @Set AreasFrame.Width="320pt"@
+   @Set AreasFrame.Attributes="scrolling='auto' noresize='noresize'"@
+   @if ListFrame.Resizer@
+     @Set ListFrame.Attributes="scrolling='auto' noresize='noresize'"@
+   @endif@
+   @if 0@
+     @Set FileFrame.Attributes="scrolling='auto' noresize='noresize'"@
+   @endif@
+@else@
+   @Set AreasFrame.Width="35%"@
+   @Set AreasFrame.Attributes="scrolling='auto'"@
+@endif@
+
+<html>
+<title>Wildcat! File Library</title>
+
+@if UseTopFrame@
+<frameset id="WildcatFrameTopMenu"  rows="40pt,*" class="frames">
+  <frame id="topMenu" scrolling="no" noresize="noresize" name="topmenu" framespacing="0" src="/template/pageheader.wct" class="frames">
+@endif@
+
+  <frameset id="WildcatFrame" cols="@SUB AreasFrame.Width@,*" class="frames">
+    <frame id="AreasFrame" name="areas" @sub AreasFrame.Attributes@ framespacing="0" src="/code/html-file+areas?frames=y" class="frames">
+    <frameset rows="50%,*" class="frames">
+      <frame id="AreaListFrame" name="listing" @sub ListFrame.Attributes@  framespacing="0"   src="/template/file_frame_init.wct?target=list" class="frames">
+      <frame id="AreaFileFrame"  name="description" @sub FileFrame.Attributes@ framespacing="0" src="/template/file_frame_init.wct?target=info" class="frames">
+    </frameset>
+  </frameset>
+
+@if UseTopFrame@
+</frameset>
+@endif@
+
+<noframes>
+<body>
+  Since your browser does not support frames, change your
+  <a href="/code/html-personal?page=skins">Personal Properties</a>
+  to turn off frame mode.
+</body>
+</noframes>
+
+</html>
+@exit@
+@endif@
+@//@----------------  END OF FRAME HEADER SETUP -------------------
+
+@//@----------------  START OF AREA DISPLAY -----------------------
+@SETNODEACTIVITY "Viewing Files"@
+
+<html>
+<head>
+<title>Wildcat! File Library</title>
+
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+
+<style>
+
+@if AreasFrame.Divider@
+html { overflow-y: hidden; }
+@endif@
+
+.bar { background: silver; }
+
+table.buttontable {
+    border: 1px solid #333333;
+    border-collapse: collapse;
+    empty-cells: show;
+    white-space: nowrap;
+    font-family: verdana,tahoma,arial; font-size : 8pt;
+    font-weight : Bold;
+    background : Silver;
+}
+
+table.buttontable td {
+    vertical-align: top;
+    white-space: nowrap;
+    padding: 0;
+    overflow: hidden;
+}
+
+#btnText {
+   display: inline;
+   padding: 5pt;
+   vertical-align: middle;
+}
+
+#btnImage {
+    border: 0px;
+@if "MSIE"?Http.User-Agent@
+    width: 16px;
+    height: 16px;
+@endif@
+}
+
+.Capitalize {
+  text-transform: capitalize;
+}
+
+</style>
+
+</head>
+
+<body id="mybody" @if AreasFrame.Divider@onresize="AreasBodyResizer();"@endif@>
+
+@include "pageheader.inc"@
+
+@if FrameMode && AreasFrame.Resizer@
+<script type="text/javascript">
+   function toggleResize()
+   {
+@if ListFrame.Resizer@
+     var l = parent.document.getElementById("AreaListFrame");
+     if (l) l.noResize = !l.noResize;
+@endif@
+@if 0@
+     var m = parent.document.getElementById("AreaFileFrame");
+     if (m) m.noResize = !m.noResize;
+@endif@
+     var t = parent.document.getElementById("AreasFrame");
+     if (t) t.noResize = !t.noResize;
+     var a = parent.document.getElementById("topMenu");
+     if (a) a.noResize = !a.noResize;
+     if (t) {
+       var img = document.getElementById("resizeGif");
+       if (img) {
+          img.src   = t.noResize?"/images/noresize.gif":"/images/resize.gif";
+
+          var s = "["
+@if UseTopFrame@
+          s += "TopRows: "+parent.document.getElementById("WildcatFrameTopMenu").rows;
+          s += " / ";
+@endif@
+          s += "RightCols: "+parent.document.getElementById("WildcatFrame").cols;
+          s += "]";
+          img.title = t.noResize?"Click to resize frames":("Click to lock frames: "+s);
+
+       }
+     }
+   }
+   document.writeln('<div id="AbsoluteTopFloatRight" style="right:16px;">');
+   document.writeln('<a href="#" onclick="toggleResize();"><img id="resizeGif" src="/images/noresize.gif" border="0" align="top" title="Click to resize frames"></a>');
+   document.writeln('</div>');
+</script>
+@endif@
+
+
+<table width="96%" border="0" cellspacing="0" cellpadding="2" align="center">
+  <tr><td><img src="/public/graphics/c-file.gif" width="211" height="50" alt="File Area's" border="0"></td></tr>
+</table>
+
+@//@---------------------------------------------
+@COMMENT@
+File Areas Menu Display
+
+Frame Mode
+
+   +-----------------------------+
+   | HOME       | HELP           |
+   |------------+----------------|
+   | [NO]FRAME  |                |
+   |------------+----------------|
+   | UPLOAD     |                |
+   |------------+----------------|
+   | OPTIONS    | LOGOFF         |
+   +-----------------------------+
+
+No Frames
+
+   [NO]FRAMES | UPLOAD | OPTIONS
+
+@ENDCOMMENT@
+@//@---------------------------------------------
+
+<center>
+
+@//@ v:\wc5beta\http\template\custom\wcButtonMenu-FileAreas.inc
+@include "wc:\http\template\wcButtonMenu-FileAreas.inc"@
+
+@set MaxCols=0@
+@if FrameMode@@set maxcols=3@@endif@
+<table id="tbAnch"
+       border="0"
+       width="96%"
+       cellspacing="0" cellpadding="2"
+       class="buttontable">
+@set ci=0@
+@for i=1 to btns.count@
+   @if MaxCols > 0@
+   @if ci = 0 || btns[{i}][4]="1"@<tr>@set ci=0@@endif@
+   @endif@
+    <td width="%1" id="ab2" class="Capitalize @sub btns[{i}][3]@" valign="top">
+      <a class="item"
+@if FrameMode@
+         target="@sub brefs[{i}][1]@"
+@endif@
+         title="@sub brefs[{i}][2]@"
+         href="@sub brefs[{i}][3]@">
+      @//@<span style="width: 16px; height: 16px; display:inline;float:left;">
+      <img id="btnImage" alt="" align="top" src="@sub btns[{i}][2]@">
+      @//@</span>
+      <div id="btnText">@sub btns[{i}][1]@</div>
+      </a>
+    </td>
+  @inc ci@
+  @if MaxCols > 0@
+  @if ci = MaxCols || i = btns.count@</tr>@set ci=0@@endif@
+  @endif@
+@next@
+@if !FrameMode@
+  <td nowrap width="100%">
+  &nbsp;
+  </td>
+@endif@
+</table>
+
+</center>
+
+@//@---------------------------------------------
+@//@ Form options
+@//@---------------------------------------------
+
+<center>
+@if FrameMode@
+<table width="96%" border="0" cellspacing="0" cellpadding="2" align="center">
+ <tr>
+  <form method=get action="/code/html-search+files" target="listing">
+     <input type="hidden" name="frames" value="y">
+     <td><input class="item" type=submit value="Search"></td>
+     <td><input name=target></td>
+  </form>
+ </tr>
+ <tr>
+  <form method=get action="/code/html-new+files" target="listing">
+    <input type="hidden" name="frames" value="y">
+    <td><input class="item" type=submit value="New files"></td>
+    <td>last <input name=days size=3 maxlength=3 value=7> days
+  </td>
+  </form>
+</tr>
+</table>
+@else@
+<table width="96%" border="0" cellspacing="0" cellpadding="2" align="center">
+<tr>
+  <form method=get action="/code/html-search+files">
+    <input type="hidden" name="frames" value="n">
+    <td valign="top"><input class="item" type=submit value="Search">&nbsp;<input name=target></td>
+  </form>
+  <form method=get action="/code/html-new+files">
+    <input type="hidden" name="frames" value="n">
+    <td valign="top"><input class="item" type=submit value="New files">&nbsp;last&nbsp;<input name=days size=3 maxlength=3 value=7>&nbsp;days</td>
+  </form>
+</tr>
+</table>
+@endif@
+</center>
+
+@//@---------------------------------------------
+@//@ File Areas
+@//@---------------------------------------------
+
+<center class="msgmainmenu"><b>File Library Areas</b></center>
+
+<table id="areasTable"
+       width="96%"
+       border="0"
+       cellspacing="0"
+       cellpadding="0"
+       align="center">
+@LOOP group@
+
+  <tr><td colspan=4 height="2" class="bar"></td></tr>
+
+  @IF selectedgroup@
+    <tr>
+    <td align=left colspan=3 class="AccordionPanelTab"><a href="/code/html-file+areas?frames=@SUB query.frames@" name="group@SUB groupnum@">@SUB groupname@</a></td>
+    <td>(@SUB groupfiles@)</td>
+    </tr>
+
+@if AreasFrame.Divider@
+    <tr>
+    <td colspan=4>
+       <div id="areaListDivider"
+            class="areaListDivider"
+            style="overflow:auto;
+                   clear:both;
+                   height: auto;
+                   width: auto;"
+            id="AreaList">
+       <table>
+@endif@
+
+    @LOOP area@
+      <tr>
+      <td>&nbsp;</td>
+      <td>@SUB areanum@.</td>
+      <td><a href="/code/html-list+files?frames=@SUB query.frames@&area=@SUB areanum@&group=@SUB groupnum@"@IF query.frames="y"@ target="listing"@endif@>@SUB areaname@</a></td>
+      <td>
+       (@SUB areafiles@)
+      </td>
+      </tr>
+      @if ShowFileAreaDesc && !FrameMode@
+        @if Exist AreaDescFile@
+          <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>@Include AreaDescFile@</td>
+          <td>&nbsp;</td>
+          </tr>
+        @endif@
+      @endif@
+  @ENDLOOP@
+
+@if AreasFrame.Divider@
+       </table>
+       </div>
+    </td>
+    </tr>
+@endif@
+
+  @ELSE@
+    <tr><td align=left colspan=3 class="AccordionPanelTab"><a href="/code/html-file+areas?frames=@SUB query.frames@&group=@SUB groupnum@#group@SUB groupnum@" name="group@SUB groupnum@">@SUB groupname@</a></td><td>(@SUB groupfiles@)</td></tr>
+  @ENDIF@
+@ENDLOOP@
+  <tr><td colspan=4 height="1" class="bar"></td></tr>
+</table>
+
+<div id="lastElement">
+@include "pagefooter.inc"@
+</div>
+
+@if AreasFrame.Divider@
+<script type="text/javascript" src="/template/arearesizer.js"></script>
+<script type="text/javascript">
+   dimensions(0); // resize divider
+</script>
+@endif@
+
+</body>
+</html>

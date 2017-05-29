@@ -1,0 +1,89 @@
+<!-- v6.4.454.4 -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet"           type="text/css" href="/public/wcflash/css/player.css" title="dark" media="screen" />
+<link rel="alternate stylesheet" type="text/css" href="/public/wcflash/css/player-light.css" title="light" media="screen" />
+<script type="text/javascript"   src="/public/js/soundmanager2.js"></script>
+<script type="text/javascript"   src="/public/wcflash/script/jsamp-preview.js"></script>
+
+<style type="text/css">
+body  {
+   background: #EFF6FF; font-family: verdana,tahoma,arial; font-size : 8pt;
+   color : Blue;
+}
+</style>
+
+</head>
+
+<body>
+
+<h3>Play Song - @FILE.NAME@</h3>
+
+ <div id="player-template" class="sm2player">
+
+  <!-- player UI (bar) -->
+
+  <div class="ui">
+
+   <div class="left">
+    <a href="#" title="Pause/Play" onclick="soundPlayer.togglePause();return false" class="trigger pauseplay"><span></span></a>
+   </div>
+
+   <div class="mid">
+
+    <div class="progress"></div>
+    <div class="info"><span class="caption text">%{artist} - %{title} [%{album}], (%{year}) (%{time})</span></div>
+    <div class="default">.....Wildcat! Personal BBS v7.0..... </div>
+    <div class="seek">Seek to %{time1} of %{time2} (%{percent}%)</div>
+    <div class="divider">&nbsp;&nbsp;---&nbsp;&nbsp;</div>
+    <a href="#" title="" class="slider"></a>
+   </div>
+
+   <div class="right">
+    <div class="divider"></div>
+    <div class="time" title="Time">0:00</div>
+    <a href="#" title="Previous" class="trigger prev" onclick="soundPlayer.oPlaylist.playPreviousItem();return false"><span></span></a>
+    <a href="#" title="Next" class="trigger next" onclick="soundPlayer.oPlaylist.playNextItem();return false"><span></span></a>
+    <a href="#" title="Shuffle" class="trigger s1 shuffle" onclick="soundPlayer.toggleShuffle();return false"><span></span></a>
+    <a href="#" title="Repeat" class="trigger s2 loop" onclick="soundPlayer.toggleRepeat();return false"><span></span></a>
+    <a href="#" title="Mute" class="trigger s3 mute" onclick="soundPlayer.toggleMute();return false"><span></span></a>
+    <a href="#" title="Volume" onmousedown="soundPlayer.volumeDown(event);return false" onclick="return false" class="trigger s4 volume"><span></span></a>
+    <a href="#" title="Playlist" class="trigger dropdown" onclick="soundPlayer.togglePlaylist();return false"><span></span></a>
+   </div>
+
+  </div>
+
+  <div class="sm2playlist-box">
+
+  <!-- playlist / controls -->
+  <div id="playlist-template" class="sm2playlist">
+
+   <div class="hd"><div class="c"></div></div>
+   <div class="bd">
+    <ul>
+     <!-- playlist items created, inserted here
+      <li><a href="/path/to/some.mp3"><span>Artist - Song Name, etc.</span></a></li>
+     -->
+    </ul>
+   </div>
+   <div class="ft"><div class="c"></div></div>
+  </div>
+
+  <!-- close container -->
+  </div>
+
+ </div>
+
+ <div style="position:absolute;left:0px;top:-9999px;width:30em">
+  <ul>
+    <li><a href="/file/area@FILE.AREANUMBER@/@FILE.NAME@">@FILE.DESCRIPTION@</a></li>
+  </ul>
+ </div>
+
+ <script type="text/javascript">
+ soundManager.createMovie('/public/js/soundmanager2.swf');
+ </script>
+
+</body>
+</html>

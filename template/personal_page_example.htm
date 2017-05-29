@@ -1,0 +1,31 @@
+  <h3 class="propertyPageTitle">Example Personal Properties Page:</h3>
+
+  <form method=post action="/template/personal_page_example_save.wct">
+  <input type="hidden" name="save" value="@SUB QUERY.PAGE@">
+
+  <p style="margin-left: 2%; margin-right: 2%">This is an example of the custom personal property
+  page to save user information in the user's extended database.</p>
+
+  <table class="propertyPage" border="0" cellspacing="1" cellpadding="2" style="margin: 2%; width:80%" >
+  <tr>
+	<td class="shade1">Option #1</td>
+   <td class="shade1"><input type=radio name="Option1" value=1 @IF User.Variable("PageExample","Option1",1)@checked@ENDIF@>Yes</td>
+   <td class="shade1"><input type=radio name="Option1" value=0 @IF !User.Variable("PageExample","Option1",1)@checked@ENDIF@>No</td>
+  </tr>
+  <tr>
+	<td class="shade2">Option #2</td>
+   <td class="shade2"><input type=radio name="Option2" value=1 @IF User.Variable("PageExample","Option2",0)@checked@ENDIF@>Yes</td>
+   <td class="shade2"><input type=radio name="Option2" value=0 @IF !User.Variable("PageExample","Option2",0)@checked@ENDIF@>No</td>
+  </tr>
+  <tr>
+	<td class="shade1">Option #3</td>
+   <td class="shade1"><input type=radio name="Option3" value=1 @IF User.Variable("PageExample","Option3",1)@checked@ENDIF@>Yes</td>
+   <td class="shade1"><input type=radio name="Option3" value=0 @IF !User.Variable("PageExample","Option3",1)@checked@ENDIF@>No</td>
+  </tr>
+  </table>
+  <br>
+
+  <table border="0" cellspacing="0" cellpadding="2" style="margin-left: 2%; margin-right: 2%">
+  <tr><td><input type=Submit value="Save"><input type=Reset value="Reset"><td></tr>
+  </table>
+  </form>

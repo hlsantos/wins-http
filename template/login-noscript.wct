@@ -1,0 +1,32 @@
+<center>
+<table border=0 cellspacing=1 cellpadding=1 width=60%>
+ <tr>
+  <td bgcolor=#3366cc>
+  <table bgcolor=#ffffff cellpadding=5 cellspacing=0 border=0 width=100%>
+   <tr bgcolor=#eeeeee>
+    <td align=center><img src=/public/graphics/warning.gif align=top></td>
+   </tr>
+   <tr bgcolor='red'>
+    <td>
+      <center>
+      <font face=verdana,arial,sans-serif size=-1>
+      <b>
+      Your JavaScript seem to be disabled. <br>
+      This system uses javascript for the login process.<br>
+      Enable Javascript and click Try Again.</br>
+      </b>
+      <br>
+        <font size=-2>
+        <a href="" target="_top" class="btn">&nbsp;Try Again&nbsp;</a>&nbsp;
+        <a href="/" target="_top" class="btn">&nbsp;Home Page&nbsp;</a>
+        </font>
+      </font>
+      </center>
+    </td>
+   </tr>
+  </table>
+  </td>
+ </tr>
+</table>
+</center>
+

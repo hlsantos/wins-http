@@ -1,0 +1,60 @@
+<!-- File: file_moveselectarea.htm
+     v6.2.452.1g  02/20/07 11:11 pm
+  -->
+
+<html>
+<head><title>Move File</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+</head>
+
+<body>
+
+@include "pageheader.inc"@
+
+@if !framemode@<br>@endif@
+
+<form name="formAreaSelectInput" action="/code/html-fm-move">
+<input type=hidden name="fn"     value="@FILE.NAME@">
+<input type=hidden name="ofa"    value="@FILE.AREA@">
+<input type=hidden name="frames" value="@SUB query.frames@">
+<table class="tableMoveFile"
+       width="96%"
+       border="0"
+       cellspacing="0"
+       cellpadding="1"
+       align="center">
+<tr>
+  <th class="tabletitle" valign=top colspan=2>
+    Move File to New File Area
+  </th>
+<tr>
+<tr>
+  <td><b>File Name:</b></td>
+  <td colspan=1>@FILE.NAME@</td>
+</tr>
+<tr>
+  <td><b>Current File Area:</b></td>
+  <td colspan=1>@FILE.AREA@ - @SUB areaname@</td>
+</tr>
+<tr>
+  <td><b>New File Area:</b></td>
+  <td>
+   <select name="nfa">
+     @loop conf@
+     <option value="@SUB nareanum@">@SUB nareanum@ - @SUB nareaname@</OPTION>
+     @endloop@
+   </select>
+   <input type=submit name="cmd"  value="move">
+  </td>
+</tr>
+<tr>
+  <td colspan=2><input type=checkbox name="upd"><b> Update posting date current time.</b></td>
+</tr>
+</table>
+</form>
+
+@include "pagefooter.inc"@
+
+</body>
+</html>

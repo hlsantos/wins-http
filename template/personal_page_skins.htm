@@ -1,0 +1,36 @@
+  <h3 class="propertyPageTitle">Some Interface/Skins Options:</h3>
+
+  <form method=post action="/template/personal_page_skins_save.wct">
+  <input type="hidden" name="save" value="@SUB QUERY.PAGE@">
+
+  <p style="margin-left: 2%; margin-right: 2%">Some options to change the display
+  effect of some pages.</p>
+
+  <table class="propertyPage" border="0" cellspacing="1" cellpadding="2" style="margin: 2%; width:80%" >
+
+  <tr>
+   <td class="shade1" width="1%" valign="top">
+    <input type="checkbox" name="HtmlFrames" value="y" @IF user.HtmlFrames="y"@checked@ENDIF@/>
+   </td>
+   <td class="shade1" align="left">Frames Display:  In frame display, the mail and file clients are
+   shown in three frames. </td>
+  </tr>
+  <tr>
+   <td class="shade2" width="1%" valign="top">
+    <input type="checkbox" name="InboxDayShading" value="1" @IF User.Variable("SkinsOptions","InboxDayShading",1)@checked@ENDIF@/>
+   </td>
+   <td class="shade2" align="left">Day Shading for your personal inbox message list.</td>
+  </tr>
+  <tr>
+   <td class="shade1" width="1%" valign="top">
+    <input type="checkbox" name="UseFrameMenuBar" value="1" @IF User.Variable("SkinsOptions","UseFrameMenuBar",1)@checked@ENDIF@/>
+   </td>
+   <td class="shade1" align="left">Use Top Menu Bar when using frame mode.</td>
+  </tr>
+  </table>
+  <br>
+
+  <table border="0" cellspacing="0" cellpadding="2" style="margin-left: 2%; margin-right: 2%">
+  <tr><td><input type=Submit value="Save"/><input type=Reset value="Reset"/><td></tr>
+  </table>
+  </form>

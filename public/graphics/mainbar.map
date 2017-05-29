@@ -1,0 +1,6 @@
+RECTANGLE 13,11 221,68 /public/benefit.htm
+RECTANGLE 244,8 315,75 /public/whatsnew.htm
+RECTANGLE 316,8 382,75 /public/feedback.htm
+RECTANGLE 383,8 447,75 /public/newsltr.htm
+RECTANGLE 448,8 498,75 /public/about.htm
+DEFAULT /

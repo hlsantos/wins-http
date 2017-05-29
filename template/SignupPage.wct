@@ -1,0 +1,229 @@
+@COMMENT@
+File: SignupPage.wct
+version: 6.4.454.4  (ajax version)
+
+This AJAX version of newuser.wct uses:
+
+   html-wcajax.wcx           checks user name input
+   html-captcha.wcx          creates captcha image (optional)
+   html-checkcaptcha.wcx     checks captcha user input
+
+If you disable the AJAX, then the web server will confirm the input.
+
+History:
+
+08/06/2009 - 453.2
+   - added password strength support
+
+01/10/2010 - 453.3
+   - fixed graphics\poweredbywins.gif path
+   - Added wc:\http\template\signupPage.css include
+   - Added wc:\http\template\SignupOptions.inc include
+   - Added /public/js/wildcat.signup.js  link
+
+05/18/2012 - 454.4
+   - added check for no closed system
+
+@ENDCOMMENT@
+
+@include "wc:\http\template\globalopts.inc"@
+
+@//@-----------------------------------------------------------
+@//@ Your Options.
+@//@
+@//@ The defaults are below. If you wish to change them, create
+@//@ a custom file:
+@//@
+@//@     template\custom\SignupOptions.inc
+@//@
+@//@ duplicating the set commands below and modify the values
+@//@ you wish to change.
+@//@
+@//@-----------------------------------------------------------
+
+@set SignUp.AskForClient      =   0@
+@set SignUp.AskForEmail       =   1@
+@set SignUp.CheckPassword     =   1@
+@set SignUp.AskForCaptcha     =   1@
+@set SignUp.UseAjax.UserName  =   1@
+@set SignUp.UseAjax.Captcha   =   1@
+
+@ExistInclude "wc:\http\template\SignupOptions.inc"@
+
+@//@-----------------------------------------------------------
+@//@ INTERNAL - DO NOT CHANGE
+@//@-----------------------------------------------------------
+
+@if !exist "wc:\code\html-captcha.wcx"@
+   @set SignUp.AskForCaptcha   = 0@
+   @set SignUp.UseAjax.Captcha = 0@
+@endif@
+
+@if !exist "wc:\code\html-wcajax.wcx"@
+   @set SignUp.UseAjax.Captcha  = 0@
+   @set SignUp.UseAjax.UserName = 0@
+@endif@
+
+@//@-----------------------------------------------------------
+
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>New User Signup</title>
+
+<style>
+@ExistInclude "wc:\http\template\SignupPage.css"@
+@ExistInclude "wc:\http\template\errors.css"@
+</style>
+
+<script type='text/javascript' src="/public/js/wildcat.signup.js"></script>
+<script type='text/javascript' src='/public/js/jquery.pack.js'></script>
+<script type='text/javascript'>
+  $(document).ready(function() {
+    WildcatSignupOptions.UseAjax.Captcha  = wcBool("@SUB SignUp.UseAjax.Captcha@");
+    WildcatSignupOptions.UseAjax.UserName = wcBool("@SUB SignUp.UseAjax.UserName@");
+    WildcatSignupOptions.AskForCaptcha    = wcBool("@SUB SignUp.AskForCaptcha@");
+    WildcatSignupOptions.AskForEmail      = wcBool("@SUB SignUp.AskForEmail@");
+  });
+</script>
+
+</head>
+
+<body>
+
+@ExistInclude "wc:\http\template\Signup-header.wct"@
+
+<script language="JavaScript">
+   CheckForCookieSupport();
+</script>
+
+<center>
+<div style="margin: 1%;">
+@if site.logo.text@
+   <H1>@SUB site.logo.text@</H1>
+@elseif exist site.logo.image@
+   <img src="@SUB site.logo.image@" border="0" alt="">
+@else@
+   <img src="/public/graphics/wcLogoTop.png" border="0" alt="Wildcat! Interactive Net Server">
+@endif@
+</div>
+</center>
+
+<p align="center"><font size="4" face="comic sans ms">Welcome to @SYSTEM.BBSNAME@</font></p>
+
+<center>
+<button class="btn_submit"
+        onClick="javascript:location.href='/';"><strong>Return to Home Page</strong></button>
+</center>
+
+<div class="ruler"></div>
+
+@COMMENT@
+These are the SystemAccess values
+   0 Open, accounts created
+   1 Closed, accounts must exist
+   2 Closed, run questionaire
+   3 Closed, non-validated accounts Created
+@ENDCOMMENT@
+
+@if AllowSignup@
+
+<div align="center">
+<center>
+
+<form name="formSignup"
+      action="/signup"
+      autocomplete="off"
+      method="post">
+<table border="0" width="50%"  class="formSignup">
+  <tr>
+  <td class="prmTitle" colspan=2 align="center">New Member Signup</td>
+  </tr>
+@if SignUp.AskForClient@
+  <tr>
+   <td colspan=2><input type="radio" checked name="mode" value="html">
+   I want to connect using my browser.</td>
+  </tr>
+  <tr>
+   <td colspan=2><input type="radio" name="mode" value="client">
+   I want to connect with Wildcat! Navigator</td>
+  </tr>
+@endif@
+  <tr>
+   <td colspan=2>
+    <hr>
+    Please sign on using your real name. If the system
+    cannot create a new account it means that the user
+    name you chose is already in use and you should try
+    altering your name slightly until you come up with a
+    unique user name.
+    <hr></td>
+  </tr>
+
+  <tr id="rowStatus" style="display:none;">
+   <td colspan=2 align="center">
+   <div align="center" class="divStatus" id="divAjaxResult"></div>
+   </td>
+  </tr>
+
+  <tr>
+   <td width="1%" nowrap>Real Name (First Last):</td>
+   <td><input id="username" type="text" size="30" maxlength="256"  name="username"/></td>
+  </tr>
+  <tr>
+   <td width="1%" nowrap>Choose a password:</td>
+
+   <td><input id="password1"
+            @if SignUp.CheckPassword@onKeyUp="CheckPwd(this);@ENDIF@ return false;"
+            type="password"
+            size="20" name="password1"></td>
+  </tr>
+  <tr>
+   <td width="1%" nowrap>Confirm your password:</td>
+   <td><input id="password2" type="password" size="20" name="password2"></td>
+  </tr>
+@if SignUp.AskForEmail@
+  <tr>
+   <td width="1%" nowrap>Email Address:</td>
+   <td><input type="text" size="50" name="email"></td>
+  </tr>
+@endif@
+@if SignUp.AskForCaptcha@
+  <tr>
+   <td colspan=2 align="center">
+   <hr><img SRC="/public/code/html-captcha?hls=@sub ticks@&style=@sub query.style@"></td>
+  </tr>
+  <tr>
+   <td width="1%" nowrap>Enter Image Characters:</td>
+   <td><input name="captcha" size=6></td>
+  </tr>
+@endif@
+  <tr>
+   <td colspan=2 align="center">
+   <hr>
+   <button type="submit" class="btn_submit" onClick="return ValidateFields();"><strong>Continue</strong></button>
+   </td>
+  </tr>
+</table>
+</form>
+</center>
+</div>
+
+@elseif SystemAccess=1@
+   <center>
+   <h3 class="ErrorMsg2">
+   Note: This is a closed system.<br>A prior account is required to access this site.
+   </h3>
+   </center>
+@endif@
+
+<div class="ruler"></div>
+
+<p align="center"><a href="http://www.santronics.com"><img border="0" src="/public/graphics/poweredbywins.gif" width="88" height="31"></a></p>
+
+@ExistInclude "wc:\http\template\Signup-Footer.wct"@
+
+</body>
+</html>

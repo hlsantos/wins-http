@@ -1,0 +1,200 @@
+@COMMENT@
+file: message_read.htm
+
+called by html-read message.wcx
+
+history:
+
+v6.1.451.5 10/15/2007
+
+v6.3.452.8 01/08/2008
+- now using @GET for MSGREADTIME variable
+
+@ENDCOMMENT@
+
+@SETNODEACTIVITY "Reading Mail"@
+
+<html>
+<head>
+<title>Read Wildcat! Message</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+<style>
+</style>
+
+</head>
+
+<body  class="msgbody">
+
+@include "wc:\http\template\pageheader.inc"@
+
+<!-----------------------------------------------------
+Read Message Page Outline:
+
+  table:      Menu Bar
+  table:      Message Header
+              Message Body
+  table:      line bar and optional sub-note
+
+Local Variables:
+
+  prevbtn            if true, show Prev button
+  Nextbtn            if true, show Next button
+  AllowPost          if true, show New button
+  CanReply           if true, show Reply and Forward button
+  CanDelete          if true, show Delete button
+  Listbtn            frame mode: if true, show List button
+
+  query.frames
+  query.threads
+  query.conf
+  ViewMode           0 - html mode, 1-text mode
+
+  lastmsg            thread mode:
+  nextmsg            thread mode:
+------------------------------------------------------->
+
+<!-- Menu Bar -->
+<center>
+<table id="tbAnch" border="1" cellspacing="0" cellpadding="0" class="buttontable">
+<tr>
+@if prevbtn@
+	<td><a href="/code/html-read+message?frames=@SUB query.frames@&conf=@SUB conf@@IF ThreadMode@&threads=y&msgid=@SUB nextmsg@&i=@SUB query.i@&z=@SUB query.z@@ELSE@&msgid=@SUB msgid@&dir=-1@ENDIF@&nextprev=@SUB query.nextprev@@if query.inbox@&inbox=@SUB query.inbox@@endif@@if query.snoop@&snoop=@SUB query.snoop@@endif@" class="item" title="Read previous message.">&nbsp;Prev&nbsp;</a></td>
+@else@
+	<td class="disabled">&nbsp;Prev&nbsp;</td>
+@endif@
+@if nextbtn@
+	<td><a href="/code/html-read+message?frames=@SUB query.frames@&conf=@SUB conf@@IF ThreadMode@&threads=y&msgid=@SUB lastmsg@&i=@SUB query.i@&z=@SUB query.z@@ELSE@&msgid=@SUB msgid@&dir=1@ENDIF@&nextprev=@SUB query.nextprev@@if query.inbox@&inbox=@SUB query.inbox@@endif@@if query.snoop@&snoop=@SUB query.snoop@@endif@" class="item" title="Read next message.">&nbsp;Next&nbsp;</a></td>
+@else@
+	<td class="disabled">&nbsp;Next&nbsp;</td>
+@endif@
+@if AllowPost@
+	<td><a href="/code/html-new+message?frames=@SUB query.frames@&threads=@SUB query.threads@&conf=@SUB conf@&backto=html-read+message&msgid=@SUB msgid@&nextprev=@SUB query.nextprev@" class="item" title="Create new message.">&nbsp;New&nbsp;</a></td>
+ @if CanReply@
+        <td><a href="/code/html-new+message?frames=@SUB query.frames@&threads=@SUB query.threads@&conf=@SUB conf@&replyto=@SUB msgid@&backto=html-read+message&msgid=@SUB msgid@&nextprev=@SUB query.nextprev@" class="item" title="Reply to this message.">&nbsp;Reply&nbsp;</a></td>
+	    <td><a href="/code/html-new+message?frames=@SUB query.frames@&threads=@SUB query.threads@&conf=@SUB conf@&fwdorig=@SUB msgid@&backto=html-read+message&msgid=@SUB msgid@&nextprev=@SUB query.nextprev@" class="item" title="Forward this message.">&nbsp;Forward&nbsp;</a></td>
+ @else@
+    	<td class="disabled">&nbsp;Reply&nbsp;</td>
+	    <td class="disabled">&nbsp;Forward&nbsp;</td>
+ @endif@
+@else@
+	<td class="disabled">&nbsp;New&nbsp;</td>
+	<td class="disabled">&nbsp;Reply&nbsp;</td>
+	<td class="disabled">&nbsp;Forward&nbsp;</td>
+@endif@
+@if CanDelete@
+   <td><a href="/code/html-read+message?frames=@SUB query.frames@&conf=@SUB conf@&msgid=@MSG.ID@&nextprev=@SUB query.nextprev@&deleteit=1" class="item" title="Delete this message.">&nbsp;Delete&nbsp;</a></td>
+@else@
+   <td class="disabled">&nbsp;Delete&nbsp;</td>
+@endif@
+@if FrameMode@
+ @ExistInclude "wc:\http\template\helpbutton.inc"@
+@else@
+ @if listbtn@
+	<td><a href="/code/html-list+messages?frames=n&conf=@SUB conf@@if ThreadMode@&threads=y@Endif@" class="item">&nbsp;Index&nbsp;</a></td>
+ @else@
+	<td class="disabled">&nbsp;Index&nbsp;</td>
+ @endif@
+	<td><a href="/code/html-inbox?frames=n" class="item">&nbsp;Inbox&nbsp;</a></td>
+@endif@
+
+@//@ ----------------
+@//@ 452.8
+@//@ ----------------
+   <td><a onmouseout="window.status='';return true;" href="javascript:window.print();" onmouseover="window.status='Print';return true;"><img src="/images/print.gif" align="absmiddle" border="0" /></a></td>
+@//@ ----------------
+
+</tr>
+</table>
+</center>
+
+@if note@
+  @SUB note@
+@else@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" class="msgback">
+  <tr>
+     <td colspan=10 align=right class="msgheadmenu">
+@if ShowViewMode@
+     @if ViewMode=0@
+       <a href="/code/html-read+message?@SUB params@&vmode=1">View Text Mode</a>
+     @else@
+       <a href="/code/html-read+message?@SUB params@&vmode=0">View Html Mode</a>
+     @endif@
+@endif@
+     </td>
+  </tr>
+  <tr>
+     <td colspan=10 height="1" class="bar"><img src="/images/blank.gif" width=1 height=1 border="0"></td>
+  </tr>
+
+  <tr>
+      <td class="msgheadp">From:&nbsp;</td>
+      <td class="msghead">&nbsp;@SUB MSGFROM@</td>
+      <td class="msgheadp">Number:&nbsp;</td>
+      <td class="msghead">&nbsp;@MSG.NUMBER@</td>
+      <td class="msgheadp">Private:&nbsp;</td>
+      <td class="msghead">&nbsp;@MSG.PRIVATE@</td>
+  </tr>
+  <tr>
+      <td class="msgheadp">To:&nbsp;</td>
+      <td class="msghead">&nbsp;@SUB MSGTO@</td>
+      <td class="msgheadp">Reference:&nbsp;</td>
+      <td class="msghead">&nbsp;@IF downlinknum=""@None@ELSE@<a href="/code/html-read+message?frames=@SUB query.frames@&conf=@MSG.CONFERENCE.NUMBER@&msgid=@MSG.REFERENCEID@&nextprev=@SUB query.nextprev@&uplink=@MSG.ID@">@SUB downlinknum@</a>@ENDIF@</td>
+      <td class="msgheadp">Reads:&nbsp;</td>
+      <td class="msghead">&nbsp;@MSG.READCOUNT@&nbsp</td>
+  </tr>
+  <tr>
+      <td class="msgheadp">Date:&nbsp;</td>
+      <td class="msghead">&nbsp;@MSG.DATE@</td>
+      <td class="msgheadp">Received:&nbsp;</td>
+      <td class="msghead">&nbsp;@GET MSGREADTIME@&nbsp</td>
+      @IF msgattrs@
+      <td class="msgheadp">@SUB msgattrs@</td>
+      @ENDIF@
+  </tr>
+      <td class="msgheadp">Subject:&nbsp;</td>
+      <td class="msghead">&nbsp;@SUB MSGSUBJECT@</td>
+  <tr>
+      <td class="msgheadp">Conference:&nbsp;</td>
+      <td class="msghead">&nbsp;@MSG.CONFERENCE.NAME@</td>
+      @IF msg.attachment@
+      <td class="msgheadp">Attachment:&nbsp;</td>
+      <td class="msghead">&nbsp;<a href="/file/msg@MSG.CONFERENCE.NUMBER@.@MSG.ID@/@MSG.ATTACHMENT@">@MSG.ATTACHMENT@</a>&nbsp;(size: @SUB attsize@)</td>
+      @ENDIF@
+  </tr>
+
+  <tr>
+      <td colspan=10 height="1" class="bar"><img src="/images/blank.gif" width=1 height=1 border="0"></td>
+  </tr>
+</table>
+
+
+<div id="msgwin" style="margin-left: 1%; margin-right: 1%;">
+@if NoPreFormat || HasHtml@
+  <br>@sub body@
+@else@
+  <pre>@sub body@</pre>
+@endif@
+</div>
+
+  @if Attachments > 0@
+  <hr>
+  <b>There are @sub attachments@ attachment(s) in this message.<b><br>
+  @Loop FatList@
+   <a href='/code/html-getattachment?mid=@sub fattag@&file=@sub encfatname@'>@sub fatname@</a> (size: @sub fatsize@)<br>
+  @EndLoop@
+  @endif@
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr><td colspan=10 height="1" class="bar"><img src="/images/blank.gif" width=1 height=1 border="0"></td></tr>
+
+  @IF subnote@
+  <tr><td>@SUB subnote@</td></tr>
+  <tr><td colspan=10 height="1" class="bar"><img src="/images/blank.gif" width=1 height=1 border="0"></td></tr>
+  @endif@
+  </table>
+@endif@
+@ExistInclude "wc:\http\template\pagefooter.inc"@
+
+</body>
+</html>

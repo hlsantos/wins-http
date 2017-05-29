@@ -1,0 +1,89 @@
+<!-- vinfo: chat.htm, v6.4.454.4 -->
+
+@SetNodeActivity "Chatting"@
+
+@if query.pop@
+
+<style>
+#tblChatApplet  {
+     background: Blue;
+     border-collapse: collapse;
+     font-family: verdana,tahoma,arial; font-size : 14pt;
+     color : Yellow;
+     border: 1px solid black;
+}
+</style>
+
+@include "wcnav.htm"@
+
+@else@
+
+<html>
+<head>
+<title>Wildcat! Chat</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+<link rel="stylesheet" type="text/css" href="/template/layout.css">
+<script language="javascript" src="/template/wcNavigator.js"></script>
+
+</head>
+
+<body>
+
+
+<div id="layoutHeader">@include "pageheader.inc"@</div>
+
+<div id="layoutMain">
+
+   <table width="96%" border="0" cellspacing="0" cellpadding="2" align="center">
+   <tr><td>
+   <img src="/public/graphics/c-chat.gif" width="211" height="50" alt="Wildcat! Chat" border="0">
+   </td></tr>
+   <tr><td>
+   <br>
+<script>
+   document.writeln("If your browser supports JavaScript, the <b>Wildcat! Chat Monitor</b>");
+   document.writeln("and Chat Window should be automatically launched at this point. If");
+   document.writeln("your browser does not support JavaScript or it is turned off, then");
+   document.writeln("you can launch the chat module by the Start Chat button.");
+</script>
+   </td></tr>
+
+<noscript>
+   <tr>
+   <th>
+   No JavaScript support!
+   </th>
+   </tr>
+   <td id="WarningDisplay">
+   Your browser does not support or has disabled JavaScripting.
+   If your browser supports JavaScript, the chat module should be automatically launched at this point.
+   If your browser does not support JavaScript or it is turned off, then you can launch the chat module
+   by clicking the Start Chat button:
+   </td>
+   </tr>
+</noscript>
+
+   </tr>
+   <td align="center">
+   <br>
+   <a style="border: outset; padding: 3px; background: blue; color: white;"
+                  href="/code/html-wcnav">Start Chat</a>.
+   </td>
+   </tr>
+   </table>
+
+   <script>
+      StartWcNavigatorPopup(window);
+   </script>
+
+</div>
+
+<div id="layoutFooter">@include "pageFooter.inc"@</div>
+
+</body>
+</html>
+
+@endif@
+
+

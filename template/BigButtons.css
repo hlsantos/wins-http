@@ -1,0 +1,55 @@
+/*---------------------------------------------------*/
+/* Menu Buttons based on <ul><li><a><div>text tags   */
+/* !! - Items to size buttons                        */
+/*---------------------------------------------------*/
+
+#buttons {
+   z-index: 1;
+   position: absolute;
+   top: 350px; left: 0px;
+   margin-left:2%;
+	font-family: "Trebuchet MS", Verdana, Helvetica, sans-serif;
+   font-weight: bold;
+   font-size : 16pt;         /*!!*/
+   width: 40%;               /*!!*/
+}
+
+.btnMenu {
+   padding: 0px;
+   margin: 2%;
+   text-decoration: none;
+   list-style-type: none;
+}
+
+/* this div sizes the link margins and padding */
+
+.btnMenu div {
+   margin-top: 2px;
+   margin-bottom: 2px;
+   padding-top: 2px; padding-bottom: 2px;
+   padding-left: 0; padding-right: 0;
+}
+
+/* this li draws the buttons */
+
+.btnMenu li {
+   background-color: cyan;
+   text-align: center;
+   border: outset;            /*  3d effect */
+   margin-bottom: 15px;       /*  !! padding after each button */
+}
+
+.btnMenu a {
+    color: black;
+    text-decoration:none;
+    width:100%;  /* Needed for IE hover over region, not just text */
+}
+
+.btnMenu li:hover, a:hover {
+    color: white; background-color: Blue;
+}
+
+.btnMenu li.logout:hover, a.logout:hover {
+    color: white; background-color: Red;
+}
+

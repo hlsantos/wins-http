@@ -1,0 +1,21 @@
+<!-- File: D:\wc5beta\http\template\file_moved.htm-->
+<html>
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/templates.css">
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/buttons.css">
+<head><title>File Moved</title>
+</head>
+<body>
+
+@include "pageheader.inc"@
+
+<h2>File Moved</h2>
+<p>File <b>@FILE.NAME@</b> moved to file area #@FILE.AREA@ (@SUB areaname@)</p>
+
+@if !FrameMode@
+<p><a href="/code/html-list+files?frames=n&area=@FILE.AREA@&ra=1">[Back to File List]</a></p>
+@endif@
+
+@include "pagefooter.inc"@
+
+</body>
+</html>

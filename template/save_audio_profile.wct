@@ -1,0 +1,14 @@
+<!-- This WCT saves the user's audio profile and
+     redirects to html-personal -->
+
+@set User.Audio.GoodSee=Query.Audio.GoodSee@
+@set User.Audio.Newmail=Query.Audio.Newmail@
+@set User.Audio.Openinginbox=Query.Audio.Openinginbox@
+@set User.Audio.Instantmsg=Query.Audio.Instantmsg@
+@set User.Audio.Uploadok=Query.Audio.Uploadok@
+@set User.Audio.Oops=Query.Audio.Oops@
+
+@UpdateUser@
+
+@MODULE UTL REDIRECT /code/html-personal?page=audio@
+

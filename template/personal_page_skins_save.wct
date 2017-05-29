@@ -1,0 +1,20 @@
+<!--
+     WCT to save personal properties in the extended
+     user database.
+
+     We are saving some options in section [SkinsOptions]
+
+-->
+
+@if Query.HtmlFrames="y"@
+   @set User.HtmlFrames="y"@
+@else@
+   @set User.HtmlFrames="n"@
+@endif@
+
+@set User.Variable("SkinsOptions","InboxDayShading")=Query.InboxDayShading@
+@set User.Variable("SkinsOptions","UseFrameMenuBar")=Query.UseFrameMenuBar@
+
+@UPDATEUSER@
+
+@MODULE UTL REDIRECT /code/html-personal?page=skins@

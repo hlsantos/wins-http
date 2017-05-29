@@ -1,0 +1,73 @@
+<!-- file_listing.htm: used by html-list files.wcx
+     01/30/07 10:05 pm updated: v6.2.452.1
+     08/23/08 07:46 pm updated: v6.3.452.6b - date sort option
+     07/25/09 08:56 pm updated: v6.3.453.2  - using wcflash folder
+  -->
+<html>
+<head>
+<title>File area @SUB areanumber@ - @SUB areaname@</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+@include "wcAudioPlay.Inc"@
+</head>
+<body>
+
+@include "pageheader.inc"@
+
+<h3 align=center>
+@if !query.iframe@
+File listing of area @SUB areanumber@ - @SUB areaname@<br>
+@endif@
+Displaying files @SUB indexfirst@ - @SUB indexlast@ of @SUB total@ in this area,
+&nbsp;sort by&nbsp;
+@if user.htmlfilelistsort="dateasc"@
+ date (oldest first).
+@elseif user.htmlfilelistsort="datedes"@
+ date (newest first).
+@else@
+ name.
+@endif@
+</h3>
+
+@include "file_listmenu.inc"@
+
+<center>
+<table width="96%"
+       border="0"
+       cellspacing="0"
+       cellpadding="2"
+       align="center"
+       class="buttontable"
+       id="tbAnch">
+<tr>
+	<td colspan=@if FrameMode@5@else@7@endif@>
+
+@if user.htmlfilelistsort="" || user.htmlfilelistsort?"name"@
+   <b class="item">Jump to:</b>
+   <script type="text/javascript">
+   var al = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+   var i;
+   for (i=0;i<al.length;i++) {
+     document.write('<a href="/code/html-list+files' +
+                    '?frames=@SUB query.frames@'+
+                    '&area=@SUB query.area@'+
+                    '&find='+al.charAt(i)+'"'+
+                    ' class="item">&nbsp;'+al.charAt(i)+
+                    '</a>');
+   }
+   </script>
+@endif@
+
+</tr>
+</table>
+</center>
+
+@include "file_list.inc"@
+
+@include "file_listmenu.inc"@
+
+@include "pagefooter.inc"@
+
+
+</body>
+</html>

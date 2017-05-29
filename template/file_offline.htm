@@ -1,0 +1,28 @@
+<html>
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/templates.css">
+<LINK REL="stylesheet" TYPE="text/css" HREF="/template/buttons.css">
+<head><title>Offline File Request</title></head>
+<body>
+<h3 align=center>OffLine File Request</h3>
+<table width="90%" border="0" align="center">
+<tr>
+	<td>
+
+@IF sent="y"@
+  Your request has been sent to the system operator.
+@ELSE@
+<form action="/code/html-offline" method="post">
+<input type="hidden" name="file" value="@SUB filename@">
+<input type="hidden" name="area" value="@SUB area@">
+<input type="hidden" name="area" value="@SUB areaname@">
+<p>The file you have requested, @SUB filename@ is currently OffLine.  If you would like
+to, you may email the system administrator to have the file made available.
+Just click on Send below.</p>
+<input type="submit" name="command" value="Send OffLine Request">
+</form>
+@ENDIF@
+</td>
+</tr>
+</table>
+</body>
+</html>

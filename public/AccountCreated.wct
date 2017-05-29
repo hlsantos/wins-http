@@ -1,0 +1,71 @@
+@COMMENT@
+File   : accountcreated.wct
+Version: v6.4.454.4
+
+This page is display after the signup account is created and before
+the redirection to /newuser is done which requires a user login.
+
+History:
+
+05/18/2012 - 454.4
+   - added check for no closed system
+
+@ENDCOMMENT@
+
+@include "wc:\http\template\globalopts.inc"@
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+@if AllowSignup@
+<title>@SYSTEM.BBSNAME@ - Account Created</title>
+@elseif SystemAccess=1@
+<title>@SYSTEM.BBSNAME@ - No Access</title>
+@endif@
+
+<style>
+@ExistInclude "wc:\http\template\errors.css"@
+</style>
+
+</head>
+
+<body>
+
+<center>
+<div style="margin: 1%;">
+@if exist site.logo.image@
+<img src="@SUB site.logo.image@" border="0" alt=""/>
+@else@
+<img src="/public/graphics/wcLogoTop.png" border="0" alt="Wildcat! Interactive Net Server"/>
+@endif@
+</div>
+</center>
+
+@if AllowSignup@
+<div style="margin-left:20%; margin-right:20%;">
+<center>
+<h3>Thank you.</h3>
+<p>Your new user account was created.</p>
+
+<p>Please continue with the login process using your new user id and
+password account so that we can proceed with completing your new
+signup.</p>
+
+<p><a href="/newuser">[ CLICK HERE TO LOGIN ]</a></p>
+</center>
+</div>
+@elseif SystemAccess=1@
+<center>
+   <h3 class="ErrorMsg2">
+   Note: This is a closed system.<br>A prior account is required to access this site.
+   </h3>
+<button class="btn_submit"
+        onClick="javascript:location.href='/';"><strong>Return to Home Page</strong></button>
+</center>
+
+@endif@
+
+</body>
+</html>

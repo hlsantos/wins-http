@@ -1,0 +1,68 @@
+@IF !Access.Client.Sysop Client@No Access!@EXIT@@ENDIF@
+
+<style>
+table.stats {
+  border-collapse: collapse;
+  font-family: Verdana, Arial;
+  font-size: 10pt;
+  margin-top: 3%;
+  margin-bottom: 3%;
+  empty-cells:show;
+  background: white;
+  white-space:nowrap;
+}
+table.stats td, th { padding: 2pt;}
+td.capitalize { text-transform: capitalize;}
+
+.statsCaption {
+  text-align: center;
+  text-transform: Capitalize;
+  background: silver;
+  color: Blue;
+  font-size: 12pt;
+}
+.statsItem {
+  font-weight: bold;
+  text-align: left;
+  text-transform: Capitalize;
+}
+</style>
+
+@//@-------------------------------------------------------------------
+@//@ System Information
+@//@-------------------------------------------------------------------
+
+<table class="stats" border=1 width="70%" align="center">
+<tr>
+<th class="statsCaption" colspan=4 align="center">System Information</th>
+</tr>
+<tr>
+<td class="statsItem">Version</td><td>&nbsp;@VERSION@</td>
+<td class="statsItem">Build</td><td>&nbsp;@BUILD@</td>
+</tr>
+<tr>
+<td class="statsItem">Sysop Name</td><td>&nbsp;@SYSTEM.SYSOPNAME@</td>
+<td class="statsItem">System Name</td><td>&nbsp;@SYSTEM.BBSNAME@</td>
+</tr>
+<tr>
+<td class="statsItem">System Date</td><td>&nbsp;@DATE@</td>
+<td class="statsItem">System Time</td><td>&nbsp;@TIME@</td>
+</tr>
+<tr>
+<td class="statsItem">Total Users</td><td>&nbsp;@TOTALUSERS@</td>
+<td class="statsItem">Total Calls</td><td>&nbsp;@TOTALCALLS@</td>
+</tr>
+<tr>
+<td class="statsItem">Total File Areas</td><td>&nbsp;@TOTALFILEAREAS@</td>
+<td class="statsItem">Total Conferences</td><td>&nbsp;@TOTALCONFERENCES@</td>
+</tr>
+<tr>
+<td class="statsItem">Total Files</th><td>&nbsp;@TOTALFILES@</td>
+<td class="statsItem">Total Messages</th><td>&nbsp;@TOTALMESSAGES@</td>
+</tr>
+<tr>
+<td class="statsItem">Total Users Online</td><td>&nbsp;@TOTALUSERSONLINE@</td>
+<td class="statsItem">Operating Since</td><td>&nbsp;@SYSTEM.FIRSTCALL@</td>
+</tr>
+</table>
+

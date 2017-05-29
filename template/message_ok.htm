@@ -1,0 +1,51 @@
+<!-- message_ok.htm
+     v6.2.452.1f - Fixes Backto logic
+-->
+<html>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+<head><title>Message posted OK</title></head>
+<body>
+
+@include "wc:\http\template\pageheader.inc"@
+
+@if error@
+  @if error="2000001D"@
+  <p><b>Sorry, this is a duplicate message. The message was not posted!</b></p>
+  @else@
+    @if ErrorStr@
+    <p>@sub ErrorStr@</p>
+    @else@
+    <p>There was an error posting your message (error code @SUB error@).</p>
+    @endif@
+  @endif@
+  <p>If you wish, you can back up and try again. If this error persist,
+     please send the system web master a problem report.</p>
+@else@
+<p>
+  @if recipients@
+    Your message to @SUB recipients@ recipients was posted successfully.
+  @else@
+    Your message to @MSG.TO.NAME@ was posted successfully.
+  @endif@
+</p>
+  @if backtoread@
+     Click <a href="@SUB backtoread@">here</a> to go back to reading messages.
+  @elseif backtolist@
+     Click <a href="@SUB backtolist@" @if FrameMode@target="index"@endif@ >here</a> to go back to message list.
+  @elseif !FrameMode@
+     @if backto = ""@
+        <center>
+        <input class="btnClose" type="button" value="&nbsp;Close Window&nbsp;" onClick="parent.close();">
+        </center>
+     @else@
+        Click <a href="@SUB backto@">here</a> to go back to @SUB backtoDesc@
+     @endif@
+  @endif@
+  <hr>
+  @SUB subnote@
+@endif@
+
+@include "wc:\http\template\pagefooter.inc"@
+</body>
+</html>

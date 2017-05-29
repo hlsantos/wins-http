@@ -1,0 +1,63 @@
+<!--
+@COMMENT@
+personalclient.htm
+
+02/04/07, v6.2.452.1
+    - Major web layout redesign
+12/26/08m v6.3.452.8
+    -  PersonalClient.htm replaces old Account_info.htm
+
+Personal Properties (called from html-personal)
+
+     - General Page
+     - Change Password Page
+        - Password Changed Page
+     - Messaging Page (html-msgselect.wcx is obselete)
+     - Audio Page
+     - Filing Page
+     - Skins Page
+     - MyFiles Page
+
+@ENDCOMMENT@
+-->
+
+@SetNodeActivity "Personal Properties"@
+@module utl newmail@
+@if NewMail@
+@Set ProcessSystemEvent="<a href='/code/html-inbox' title='Read New Mail' target="_blank">You have new mail in your inbox!</a>"@
+@endif@
+@Set CurrentPage=Query.Page@
+@if CurrentPage=""@@Set CurrentPage="general"@@endif@
+
+<html>
+<head>
+<title>Personal Properties</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+<link rel="stylesheet" type="text/css" href="/template/layout.css">
+<link rel="stylesheet" type="text/css" href="/template/personalclient.css">
+</head>
+
+<body>
+
+<div id="layoutHeader">@include "pageheader.inc"@</div>
+<div id="layoutMain">
+  <div id="layoutMenu">@include "personalmenu.inc"@</div>
+   <div id="layoutContent">
+      <div id="propertyPage" class="propertyPage">
+      @IF EXIST "personal_page_"+CurrentPage+".htm"@
+         @Include "personal_page_"+CurrentPage+".htm"@
+      @ELSE@
+         <center>
+         <span style="font-weight : Bold; color: black;">
+         Personal Property Menu Page Not found: personal_page_@SUB CurrentPage@.htm
+         </span>
+         </center>
+      @ENDIF@
+      </div>
+   </div>
+</div>
+<div id="layoutFooter">@include "pagefooter.inc"@</div>
+
+</body>
+</html>

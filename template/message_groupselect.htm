@@ -1,0 +1,189 @@
+<!-- Personal Properties (called from html-msgselect.wcc)
+     - Messaging Page
+-->
+<html>
+<head>
+<title>Messaging Properties</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+
+<style type="text/css">
+
+body  {
+   color : Black;
+   background: #EFF6FF;
+   font-family: verdana,tahoma,arial; font-size : 8pt;
+}
+
+.error  {
+   color : White;
+   background : Red; /*AliceBlue;*/
+   border: 1px solid Black;
+   border-top-width: 2px;
+   border-bottom-width: 2px;
+   font-family: verdana,tahoma,arial; font-size : 12pt;
+	font-weight : Bold;
+   width: 80%;
+   margin:auto;
+   padding: 5px;
+   text-align: center;
+}
+
+div.properties  {
+   color : Black;
+   background : #33FF66; /*AliceBlue;*/
+   border: 1px solid Black;
+   border-top-width: 2px;
+   border-bottom-width: 2px;
+   font-family: verdana,tahoma,arial; font-size : 10pt;
+   width: 80%;
+   margin:auto;
+   padding: 5px;
+   text-align: center;
+}
+
+table.properties  {
+   color : Black;
+   border: 1px solid Black;
+   border-top-width: 2px;
+   border-bottom-width: 2px;
+   margin-left: 2.5%;
+}
+
+h3 {
+   color: Blue;
+}
+</style>
+
+</head>
+<body>
+
+@include "pageheader.inc"@
+@include "personalmenu.inc"@
+
+@if UseCuteTabs@
+<div id="tabscontentarea" class="tabscontentstyle" style="margin-left: 2.5%">
+@endif@
+
+<form action="/code/html-msgselect" method="post">
+
+<table border=0 cellspacing="1" cellpadding="2" style="margin: 2.5%" > <!-- outer table -->
+<tr><td>     <!-- outer table -->
+
+<table border=0 cellspacing="1" cellpadding="2" >  <!-- inner table -->
+<tr>
+	<td class="shade2"><b>Incoming Email Storage Mode</b> (for POP email clients):</td>
+	<td class="shade2"><input type=radio name=PreserveMimeMessages value=y @IF user.preservemimemessages="Yes"@checked@ENDIF@>Raw Mime Format</td>
+	<td class="shade2"><input type=radio name=PreserveMimeMessages value=n @IF user.preservemimemessages="No"@checked@ENDIF@>Wildcat Format</td>
+</tr>
+<tr>
+	<td class="shade1"><b>View network control lines</b>:</td>
+    <td class="shade1"><input type=radio name=ShowEmailHeaders value=y @IF user.showemailheaders="Yes"@checked@ENDIF@>Yes</td>
+    <td class="shade1"><input type=radio name=ShowEmailHeaders value=n @IF user.showemailheaders="No"@checked@ENDIF@>No</td>
+</tr>
+<tr>
+	<td class="shade2"><b>Follow Last Mail Read Position</b>:</td>
+	<td class="shade2"><input type=radio name=FollowLastRead value=y @IF user.followlastread="y"@checked@ENDIF@>Yes</td>
+	<td class="shade2"><input type=radio name=FollowLastRead value=n @IF user.followlastread="y"@@ELSE@checked@ENDIF@>No</td>
+</tr>
+<tr>
+	<td class="shade1"><b>Mail Listing Mode:</b></td>
+	<td class="shade1"><input type=radio name=HtmlThreads value=y @IF user.HtmlThreads="y"@checked@ENDIF@>Show Mail Threads</td>
+	<td class="shade1"><input type=radio name=HtmlThreads value=n @IF user.HtmlThreads="y"@@ELSE@checked@ENDIF@>Show Flat Listing</td>
+</tr>
+<tr>
+	<td class="shade2"><b>Number of Messages per Listing</b>:</td>
+	<td class="shade2"><input name="HtmlPageSize" size=4 value="@USER.HTMLPAGESIZE@"></td>
+	<td class="shade2">&nbsp;</td>
+</tr>
+
+<tr>
+	<td class="shade1"><b>Reply Quote Characters</b>:</td>
+	<td class="shade1"><input name="HtmlQuoteStr" maxlength=4 size=4 value="@USER.HTMLQUOTESTR@"></td>
+	<td class="shade1">&nbsp;</td>
+</tr>
+
+<tr>
+	<td class="shade2"><b>Inbox Mail Read Direction</b>:</td>
+	<td class="shade2"><input type=radio name=InboxReadForward value="-1" @IF user.InboxReadForward@checked@ENDIF@>Oldest to Newest</td>
+	<td class="shade2"><input type=radio name=InboxReadForward value="0" @IF !user.InboxReadForward@checked@ENDIF@>Newest to Oldest</td>
+</tr>
+
+<tr>
+	<td class="shade1"><b>Contact Email Address</b>:</td>
+@IF AllowEmailAddressEdit@
+	<td class="shade1" colspan=2><input name="EmailAddress" maxlength=60 size=40 value="@USER.EMAILADDRESS@"></td>
+@ELSE@
+	<td class="shade1" colspan=2>&nbsp;@USER.EMAILADDRESS@</td>
+@ENDIF@
+</tr>
+
+<tr>
+	<td class="shade2"><b>Email Forwarding Address</b>:</td>
+@IF AllowSmtpForwardEdit@
+	<td class="shade2" colspan=2><input name="SmtpForward" maxlength=60 size=40 value="@USER.SMTPFORWARD@"></td>
+@ELSE@
+	<td class="shade2" colspan=2>&nbsp;@USER.SMTPFORWARD@</td>
+@ENDIF@
+</tr>
+
+</table>    <!-- inner table -->
+
+<br>
+@if ChangeEmailAddressRequest@
+<h3>Note: Your Email Address change request was sent to the sysop.</h3>
+@endif@
+
+@if ChangeSmtpForwardRequest@
+<h3>Note: Your Forwarding Address change request was sent to the sysop.</h3>
+@endif@
+</td></tr>  <!-- outer table -->
+
+<tr><td>   <!-- outer table -->
+<b>Selected Mail Conference Groups:</b>
+</td></tr>  <!-- outer table -->
+
+<tr><td>     <!-- outer table -->
+<table border=0 cellspacing="2" cellpadding="2" >
+<tr>
+  <td>
+  Select the mail conferences you would like to have show up in your 'Selected Groups' in the
+  message menu.  After clicking on 'Commit Changes', you will be shown this page again, with
+  the modifications you have made. <b>Note: You must 'Save Changes' before switching to a new group
+  listing.</b>
+  <dl>
+  @LOOP group@
+    @IF selectedgroup@
+      <input type="hidden" name="group" value="@SUB groupnum@">
+        <li><a href="/code/html-msgselect" name="group@SUB groupnum@">@SUB groupname@</a>
+      <dl>
+      @LOOP conf@
+        <li><input type="checkbox" name="conf@SUB confnum@" value="@SUB confnum@" @IF selected="y"@checked@ENDIF@>@SUB confnum@ - @SUB confname@<br>
+      @ENDLOOP@
+      </dl>
+    @ELSE@
+      <li><a href="/code/html-msgselect?group=@SUB groupnum@#group@SUB groupnum@" name="group@SUB groupnum@">@SUB groupname@</a>
+    @ENDIF@
+  @ENDLOOP@
+  </dl>
+  </td>
+</tr>
+<tr>
+    <td>
+       <input type="submit" value="Save Changes" name="commit">
+       <input type=Reset value="Reset">
+    </td>
+</tr>
+</table>
+
+</td></tr>  <!-- outer table -->
+</table>    <!-- outer table -->
+</form>
+
+@if UseCuteTabs@
+</div>
+@endif@
+
+@include "wc:\http\template\pagefooter.inc"@
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!--
+  file: message_indexthd.htm: used by html-msgthread.wcx
+  history:
+  - 452.3f 10/02/2007 - added MailPreview
+  - 452.3f 10/05/2007 - replaced cluetip with wcTipster
+-->
+
+<html>
+<head>
+  <title>Conference @SUB confnumber@ - @SUB confname@</title>
+  <link rel="stylesheet" type="text/css" href="/template/templates.css">
+  <link rel="stylesheet" type="text/css" href="/template/buttons.css">
+
+  <style>
+  ul { margin-left: 5px; padding-left: 8px; list-style-position: inside;}
+  a.basic:hover { background: yellow; color: black;}
+  </style>
+
+<!--- 452.3 Mail Preview window -->
+@set MailPreview = User.Profile("MailOpts.Preview","1")@
+@if MailPreview@
+@set UseDirectHover = 1@
+  <link rel="stylesheet" type="text/css" href="/public/js/wildcat.wctipster.css">
+  <script type="text/javascript" src="/public/js/jquery.pack.js"></script>
+  <script type="text/javascript" src="/public/js/jquery.wctipster.mini.js"></script>
+  <script type='text/javascript'>
+    $(window).load(function() {
+      wctipster.start();
+    });
+    var wctipster = new wcTipster({
+       cacheEnabled: true,
+       enableWaitImage: true,
+@if !FrameMode@
+       viewPort: "#areaListDivider", width: 400,
+@endif@
+       onActivate: function(e) {
+           var cb = document.getElementById("cbPreview");
+           return !cb || cb.checked;
+       }
+    });
+  </script>
+@endif@
+<!---------------------------------------->
+
+</head>
+
+<body id="mybody" onresize="BodyResizer();">
+
+@include "pageheader.inc"@
+
+<table width="96%" border="0" cellspacing="0" cellpadding="2" align="center">
+<tr>
+@if !FrameMode@
+    <td><img src="/public/graphics/c-msg.gif" width="211" height="50" alt="Messaging" border="0"></td>
+@endif@
+    <td valign="bottom"><b>Conference @SUB confnumber@ - @SUB confname@</b></td>
+    <td valign="bottom" align="right">
+@if MailPreview@
+    <script type='text/javascript'>
+      document.write('<input id="cbPreview" type="checkbox" checked/>&nbsp;Preview<br>');
+    </script>
+@endif@
+    <b>Messages @SUB indexfirst@ - @SUB indexlast@ of @SUB total@</b>
+    </td>
+</tr>
+</table>
+
+@include "message_indexthdmenu.inc"@
+
+@if ThreadList.Divider@
+<div id="areaListDivider"
+     class="msgThreadListDivider"
+     style="border: 1px solid silver;
+            overflow:auto;
+            clear:both;
+            margin: 2%;
+            margin-top: 1%; margin-bottom: 1%;
+            height: auto;
+            width: auto;">
+@endif@
+
+@IF threadtpl@
+<!-- This is an example of using a template to define the thread links.
+     By default, threadtpl is FALSE, and the fastthreads method is used.
+  -->
+@LOOP THREAD@
+<li>
+  @IF new="y"@<img src="/images/new.gif">@ENDIF@
+  @IF private="y"@<img src="/images/pvtmsg.gif" alt="Private" border=""0"">@ENDIF@
+  @IF snoopable="y"@<a href="/code/html-read+message?frames=@SUB frames@&conf=@cub conf@&msgid=@MSG.ID@&i=@SUB index@&nextprev=1&threads=@SUB threads@&snoop=1" @IF frames="y"@ target="body"@ENDIF@><img src="images/snoop.gif" alt="Snoop" border=1></a>@ENDIF@
+                    <a href="/code/html-read+message?frames=@SUB frames@&conf=@SUB conf@&msgid=@MSG.ID@&i=@SUB index@&nextprev=1&threads=@SUB threads@"
+                    @IF frames="y"@target="body"@ENDIF@
+  @if UseDirectHover@
+                    onMouseOver="wctipster.handleHover(this,event);"
+                    onMouseOut="wctipster.handleHover(this,event);"
+  @endif@
+                    class="basic"
+                    id="tip@MSG.ID@"
+                    title="Click to view message (#@MSG.NUMBER@)"
+                    titleTip="(#@MSG.NUMBER@) From: @MSG.FROM.NAME@"
+                    rel="/code/html-getmsg.wcx?conf=@SUB conf@&msgid=@MSG.ID@&max=255"
+                    >@SUB MSGSUBJECT@</a> from @MSG.FROM.NAME@ at @MSG.DATE@
+</li>
+@ENDLOOP@
+@else@
+<!-- this is much faster than above! -->
+@SUB FASTTHREADS@
+@endif@
+
+@if ThreadList.Divider@
+</div>
+@endif@
+
+@//@ Not needed with divider resizer
+@if !ThreadList.Divider@
+@include "message_indexthdmenu.inc"@
+@endif@
+
+<div id="lastElement">
+@if !FrameMode@
+@include "pagefooter.inc"@
+@endif@
+</div>
+
+@if ThreadList.Divider@
+<script type="text/javascript" src="/template/arearesizer.js"></script>
+<script type="text/javascript">
+dimensions(0); // resize divider
+</script>
+@endif@
+
+</body>
+</html>

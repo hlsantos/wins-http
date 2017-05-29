@@ -1,0 +1,52 @@
+<style>
+table.myFiles {
+ width: 100%;
+ border-collapse: collapse;
+ empty-cells: show;
+ font-family: verdana,tahoma,arial; font-size : 8pt;
+ background: whiteSmoke;
+}
+table.myFiles th { background : Silver; text-align: left; }
+table.myFiles td { vertical-align: top; padding: 4px; }
+table.myFiles td.newArea{ background : Silver; text-align : left; font-weight : bold;}
+table.myFiles th#topRow { background : Blue; color: white; text-align: center; font-weight: bold; font-size: 12pt;}
+</style>
+
+@SET LASTAREA = 0@
+@SET TOTAL    = 0@
+
+<table id="myFiles" class="myFiles" border="1" style="display:none;">
+ <tr><th colspan="2" id="topRow"></th></tr>
+
+@LOOP GetFileByUploader(USER.ID)@
+
+ <!-- Area Divider -->
+ @IF LASTAREA <> FILE.AREANUMBER@
+ <tr><td class="newArea" colspan="2">(@FILE.AREA@) @FILE.AREANAME@</td> </tr>
+ @SET LASTAREA=FILE.AREANUMBER@
+ @ENDIF@
+
+ <!-- Files in Area -->
+ @INC TOTAL@
+ <tr>
+    <td>
+    <b><a target="myFileView" href="/code/html-file+info?recno=@FILE.RECORDNUMBER@">@FILE.NAME@</a></b><br>
+    <b>Date:</b>&nbsp;@FILE.FILETIME@
+    @IF FILE.DOWNLOADS@
+    &nbsp;<b>Downloads:</b>&nbsp;@FILE.DOWNLOADS@&nbsp;<b>Last Access:</b>&nbsp;@FILE.LASTACCESSED@
+    @ENDIF@
+    </td>
+ </tr>
+
+@ENDLOOP@
+</table>
+
+<script>
+  var tmyFiles =  document.getElementById("myFiles");
+  if (tmyFiles) {
+     tmyFiles.style.display = "";
+     var topRow =  document.getElementById("topRow");
+     if (topRow) topRow.innerHTML = "Files Uploaded by You - Total: @SUB TOTAL@";
+  }
+</script>
+

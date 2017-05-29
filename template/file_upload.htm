@@ -1,0 +1,261 @@
+@COMMENT@
+File: File_upload.htm: called by html-upload.wcx
+date: 01/25/07 06:35 am, version: v6.2.452.1
+date: 02/03/09 04:10 pm, version: v6.3.452.8
+date: 05/12/12 06:22 pm, version: v6.4.454.4
+      - added AutoSuggest to Private user field
+@ENDCOMMENT@
+<html>
+<head>
+<title>Upload File</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+<link rel="stylesheet" type="text/css" href="/template/file_upload.css">
+
+<noscript>
+<style>
+#uploadProgressBar  {display:none; visibility:hidden; }
+</style>
+</noscript>
+
+<script language="JavaScript" src="/template/file_upload.js"></script>
+<script language="JavaScript" src="/public/js/jquery.pack.js"></script>
+
+@SET WCAUTOSUGGEST=0@
+@IF EXIST "wc:\code\html-suggest-users.wcx"@
+@SET WCAUTOSUGGEST=1@
+@ENDIF@
+
+@IF WCAUTOSUGGEST@
+<script language="JavaScript" src="/public/js/jquery.wcautosuggest.mini.js"></script>
+@ENDIF@
+
+<script type='text/javascript'>
+   $(document).ready(function() {
+@IF WCAUTOSUGGEST@
+     $("#pvtusername").wcAutoSuggest({
+        suggestUrl : "/code/html-suggest-users.wcx?q=",
+        viewLimit  : 11,     // length of view box
+        autoSelect : true,
+        dummy: ""
+     });
+@ENDIF@
+     wcFileAreaChange();
+     wcLongDesc();
+     wcShowProgressBar(false);
+   });
+</script>
+
+</head>
+
+<body onunload="wcShowProgressBar(false);">
+
+@include "pageheader.inc"@
+
+@if !FrameMode@<br>@endif@
+
+<div id="uploadContainer">
+
+@COMMENT@
+Progress Bar Notes:
+
+The following uploadProgressBar divider, has 4-5 example
+progress bar include files. Pick or make your own.
+
+Two things:
+
+1) IE has a problem with animated gifs, so you can't use
+   the "cat" animated gif images.
+
+2) With IE, showing a box "on top" needs to hide the
+   select box.
+
+@ENDCOMMENT@
+
+<div id="uploadProgressBar">
+   @//@@include "file_upload_pbar.inc"@
+   @//@@include "file_upload_pbar_cateyes.inc"@
+   @//@@include "file_upload_pbar_running_black_cat.inc"@
+   @//@@include "file_upload_pbar_running_spotted_cat.inc"@
+   @include "file_upload_pbar_xp.inc"@
+</div>
+
+<form name="inputForm"
+      action="html-uploadprocess"
+      autocomplete="off"
+      enctype="multipart/form-data"
+      onSubmit="submitFile(); return false;"
+      method="post">
+
+ <input type=hidden name="frames"  value="@SUB query.frames@">
+ <input type=hidden name="wraplen"  value="70">
+ <noscript><input type=hidden name="nojs"  value="1"></noscript>
+
+ <table id="uploadTable"
+        class="uploadTable"
+        width="96%"
+        border="0"
+        cellspacing="0"
+        cellpadding="1"
+        align="center">
+  <tr>
+  <td nowrap class="uploadTitle">Upload a File:</td>
+  <td colspan="2" class="uploadTitle" align="right" nowrap>
+    @if HelpEnabled@
+      <a id="idHelp" href="@SUB JavaHelpUrl@" class="itemgif" title="@sub JaveHelpTitle@">
+      <img src="/public/graphics/helpbook.gif" align="top" border="0">&nbsp;Help&nbsp;</a>
+    @else@
+      &nbsp;
+    @endif@
+  </td>
+  </tr>
+
+  <tr>
+  <td colspan="3">
+@If ShowBrowserUploadNote@
+  <hr>
+  <p><b>NOTE</b>: If you do not see a "Browse..." button beside the
+  "File to Upload" field below, your browser may not support uploading
+  files.</p>
+  <ul>
+  <li><b>Internet Explorer</b>: An update that supports HTTP uploads can be found on the
+  <a href="http://www.microsoft.com/ie">Microsoft Internet Explorer</a> home page. Download the
+  "Internet Explorer 3.02 File Upload Add-On for Windows 95 & NT" file.
+  <li><b>Netscape</b>: Netscape has supported HTTP uploads since version 2.0 on most platforms.
+  <li><b>Other browsers</b>: Check with your browser vendor to find out whether there is
+       an update that supports HTTP uploads.
+  </ul>
+  <hr>
+@else@
+  &nbsp;
+@endif@
+  </td>
+  </tr>
+
+  <tr>
+    <td valign=top class="fname">File Area:</td>
+    <td colspan="2">
+    <select id="fileAreas" name="area" onChange="wcFileAreaChange()">
+     @loop FileAreas@
+     <option value='@sub areanum@ pwd=@sub pwdok@ pvt=@sub pvtok@' @sub selected@>@sub areanum@ - @sub areaname@</option>
+     @endloop@
+    </select>
+<noscript>
+    <button name="chgarea" value="1">Change File Area</button>
+</noscript>
+    </td>
+  </tr>
+
+  <tr>
+    <td valign=top class="fname">File to Upload:</td>
+    <td colspan="2"><input type="file" name="file" size=50 MaxLength=70 /></td>
+  </tr>
+
+@//@------------------------------------------
+@//@ optional File Password row
+@//@------------------------------------------
+  <tr>
+    <td>&nbsp;</td>
+<script>
+    document.write('<td valign=top id="pwdid" class="fname" colspan="2">');
+    document.write('<LABEL for="password" id="lpassword">Password (optional):<br></LABEL>');
+    document.write('<input type="password" name="password" id="password" size="15"/>');
+    document.write('</td>');
+</script>
+<noscript>
+@if ShowSelectedAreaPwdOpt@
+    <td valign=top id="pwdid" class="fname" colspan="2" nowrap>
+    <LABEL for="password" id="lpassword">Password (optional):<br></LABEL>
+    <input type="password" name="password" id="password" size="15"/>
+    </td>
+@endif@
+</noscript>
+  </tr>
+
+@//@------------------------------------------
+@//@ optional Private User row
+@//@------------------------------------------
+  <tr>
+    <td>&nbsp;</td>
+<script>
+    document.write('<td valign=top id="pvtid" class="fname" colspan="2">');
+    document.write('<LABEL for="pvtusername" id="lpvtusername">Private User Name (optional):<br></LABEL>');
+    document.write('<input name="pvtusername" id="pvtusername" size="32"/>');
+    document.write('</td>');
+</script>
+<noscript>
+@if ShowSelectedAreaPvtOpt@
+    <td valign=top id="pvtid" class="fname" colspan="2" nowrap>
+    <LABEL for="pvtusername" id="lpvtusername">Private User Name (optional):<br></LABEL>
+    <input name="pvtusername" id="pvtusername" size="32"/>
+    </td>
+@endif@
+</noscript>
+  </tr>
+
+@if ShowFileIdDizUploadNote@
+  <tr>
+  <td colspan=3>
+    <hr>
+    <b>Note:</b> If the file is a compressed zip file, any FILE_ID.DIZ
+    file found in the zip may be imported as the long description with
+    the first line used as the short description.  You can override the
+    DIZ import, by entering your own short or long description here.
+    <hr>
+  </td>
+  </tr>
+@endif@
+
+  <tr>
+    <td valign=top class="fname" nowrap>Short description:</td>
+    <td colspan="2"><input type="text" name="shortdesc" size=50 MaxLength=75></td>
+  </tr>
+
+  <tr>
+    <td valign=top class="fname" colspan=3>
+    Long description (optional):
+<script>
+    document.write('<a href="javascript:wcLongDesc()">[Click Here]</a>');
+</script>
+    </td>
+  <tr>
+
+  <tr>
+  <td colspan="3">
+  <textarea class="ffixed" name="longdesc" cols=70 rows=15 wrap=on></textarea>
+  </td>
+  </tr>
+
+  <tr>
+  <td valign=top colspan="3">
+  <input type="submit" value="Upload Now">
+  </td>
+  </tr>
+
+</table>
+
+</form>
+</div> <!-- end of uploadContainer -->
+
+@include "pagefooter.inc"@
+
+@//@******************************************************
+@//@  Use this to test showing/hiding progress bar. Just
+@//@  set the if condition to true (1) to enabled it.
+@//@******************************************************
+@if 0@
+<hr>
+   <input type="button" value="Show" onclick="wcShowProgressBar(true);"/>
+   <input type="button" value="Hide" onclick="wcShowProgressBar(false);"/>
+<hr>
+   For file_upload_pbar_xp.inc:
+   <a href="javascript:uploadXPBar.togglePause()">Toggle Bar 2</a>
+   <a href="javascript:uploadXPBar.hideBar()">Hide Bar 2</a>
+   <a href="javascript:uploadXPBar.showBar()">Show Bar 2</a>
+<hr>
+@endif@
+@//@******************************************************
+
+
+</body>
+</html>

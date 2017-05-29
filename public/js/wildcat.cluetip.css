@@ -1,0 +1,98 @@
+.cluetip-default {
+}
+
+#cluetip-waitimage {
+  width: 43px;
+  height: 11px;
+  position: absolute;
+  background-image: url(/public/js/images/wait.gif);
+}
+
+.cluetip-default #cluetip-outer {
+  position: relative;
+  margin: 0px;
+  background: lightcyan;
+}
+
+.clue-right-default {
+  background-image: url(/public/js/images/arrowleft.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-left: 10px;
+}
+.clue-left-default {
+  background-image: url(/public/js/images/arrowright.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-right: 10px;
+}
+
+.clue-top-default {
+  background-image: url(/public/js/images/arrowdown.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-bottom: 10px;
+}
+.clue-bottom-default {
+  background-image: url(/public/js/images/arrowup.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-top: 10px;
+}
+
+.clue-right-jtip {
+  background-image: url(/public/js/images/arrowleft.gif);
+  background-repeat: no-repeat;
+  padding-left: 10px;
+}
+.clue-left-jtip {
+  background-image: url(/public/js/images/arrowright.gif);
+  background-repeat: no-repeat;
+  padding-right: 10px;
+}
+.clue-top-jtip {
+  background-image: url(/public/js/images/arrowdown.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-bottom: 10px;
+}
+.clue-bottom-jtip {
+  background-image: url(/public/js/images/arrowup.gif);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-top: 10px;
+}
+
+#cluetip-outer {
+  border: 2px solid #ccc;
+  position: relative;
+  background: lightcyan;
+}
+
+#cluetip-inner {
+  padding: 10px;
+}
+
+h3#cluetip-title {
+  margin: 0 0 5px;
+  padding: 2px 10px 4px;
+  font-weight: bold;
+  background-color: green;
+  color: white;
+}
+
+#cluetip-title {
+  font-size: 1em;
+  font-weight: bold;
+  background-color: red;
+  color: white;
+}
+
+span#cluetip-close {
+  text-align: right;
+  margin: 0 5px 5px;
+  color: #900;
+}
+#cluetip-close img {
+  border: 0;
+}

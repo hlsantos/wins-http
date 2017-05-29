@@ -1,0 +1,17 @@
+<html>
+<head>
+<title>Message posted OK</title></head>
+<body>
+@if error@
+  There was an error posting your message (error code @SUB error@).
+@else@
+  @IF invalidname@
+    The user name "@SUB invalidname@" was not found in the user database. Your message has been sent to
+    the system administrator (@MSG.TO.NAME@).<p>
+  @ELSE@
+    Your message regarding @SUB subject@ was posted and will be processed
+    by our staff.  Thank you.
+  @ENDIF@
+@ENDIF@
+</body>
+</html>

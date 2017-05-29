@@ -1,0 +1,35 @@
+/****************************************/
+/* THIS IS PERFECT FOR THE CURRENT PAGE */
+/****************************************/
+#uploadProgressBar_PAGE  {
+   z-index: 1;
+   position: absolute;
+   padding: 0;
+   width: 98%;
+   bottom: 50%;
+}
+/****************************************/
+
+/*********************************************/
+/* THIS IS PERFECT FOR RELATIVE CENTERING    */
+/*********************************************/
+
+#uploadContainer {
+   width: 100%;
+}
+
+#uploadProgressBar  {
+   z-index: 1;
+   position: absolute;
+   padding: 0;
+   top: 10em;
+   width:  100%;
+   height: 0px;
+}
+
+#uploadTable {
+   position: relative;
+   top: 0;
+   z-index: 0;
+}
+

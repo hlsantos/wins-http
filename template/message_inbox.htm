@@ -1,0 +1,265 @@
+@COMMENT@
+-------------------------------------------------------------------
+File: message_inbox.htm: used by html-inbox.wcx
+v6.2.452.1g 02/15/07 - added new layout option
+v6.2.452.1n 03/25/07 - typo fixed for SkinOptions
+v6.2.452.3e 08/09/07 - Added MailPreview Optional support
+v6.2.453.2  07/29/09 - Added a row highlighter
+v6.3.453.2  11/18/09 - now using wcaudioplay.inc
+
+
+- Global variables prepared by HTML-INBOX.WCX
+
+The following variables are set during the @LOOP@ process for
+each message found:
+
+   MSG.XXXXXXXXXXX               Current Global Message Header
+
+--------------------------------------------------------------------
+@ENDCOMMENT@
+
+@SETNODEACTIVITY "Reading Mail"@
+
+<html>
+<head>
+<title>Personal Mail Inbox</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+@if !FrameMode@
+<link rel="stylesheet" type="text/css" href="/template/layout.css">
+@endif@
+
+<script type="text/javascript" src="/template/wcmsglib.js"></script>
+@if Inbox.PlayAudio || !SkipAudio && User.Profile("Audio.OpeningInbox",1)@
+@include "wcAudioPlay.inc"@
+@endif@
+
+<!--- 452.3e Mail Preview window -->
+@set MailPreviewNote="Preview message in snoop mode"@
+@set MailPreview = User.Profile("MailOpts.Preview","1")@
+@//@@if FrameMode@@set MailPreview = 0@@endif@
+
+@if MailPreview@
+<link rel="stylesheet" href="/public/js/wildcat.wctipster.css" type="text/css">
+<script type="text/javascript" src="/public/js/jquery.pack.js"></script>
+<script type="text/javascript" src="/public/js/jquery.wctipster.mini.js"></script>
+<script type='text/javascript'>
+$(window).load(function() {
+  $("a.wcpreview").wcTipster();
+});
+</script>
+@endif@
+<!---------------------------------------->
+
+<!--- 453.2 ----->
+<script type='text/javascript'>
+function mailListHover(ob,evt)
+{
+   if (evt.type=="mouseover") ob.style.background = "yellow";
+   if (evt.type=="mouseout")  ob.style.background = "";
+}
+</script>
+<!--------------->
+
+</head>
+<body>
+
+<div id="layoutHeader">@include "pageheader.inc"@</div>
+
+<div id="layoutMain"> <!-- start: layoutMain -->
+
+@if !FrameMode@
+@set frames="n"@ <!-- 452.1e Force frames="n" -->
+<table width="96%" border="0" cellspacing="0" cellpadding="2" align="center">
+  <tr><td><img src="/public/graphics/c-msg.gif" width="211" height="50" alt="Messaging" border="0"></td></tr>
+</table>
+@endif@
+
+@if !SkipAudio && User.Profile("Audio.OpeningInbox",1)@
+<script language="JavaScript">PlayAudioID("OpeningInbox");</script>
+@endif@
+
+@if Inbox.PlayAudio@
+<script language="JavaScript">PlayAudioID("@SUB Inbox.PlayAudio@");</script>
+@endif@
+
+<!----------------------------------------------------------
+
+ +------------------------------------------+
+ | Your Personal Inbox Messages    | Help   |
+ |------------------------------------------|
+ | Delete | Mark Read |                     |
+ |------------------------------------------|
+ |               Conference Name            |
+ |------------------------------------------|
+ | [_] | Date   | Subject        | From     |
+ | [_] | Date   | Subject        | From     |
+ | [_] | Date   | Subject        | From     |
+ | [_] | Date   | Subject        | From     |
+ | [_] | Date   | Subject        | From     |
+ | ..  | ..     | ..             | ..       |
+ | [_] | Date   | Subject        | From     |
+ +------------------------------------------+
+ | Delete | Mark Read |                     |
+ +------------------------------------------+
+
+------------------------------------------------------------>
+
+<center>
+<table class="buttontable"
+       width="96%"
+       border="0"
+       cellspacing="0"
+       align="center">
+<tr>
+  <td width="100%" class="inboxTitle">Your Personal @if NewMail@New @endif@Inbox Messages</td>
+  @if FrameMode@
+  @ExistInclude "helpbutton.inc"@
+  @endif@
+</tr>
+</table>
+</center>
+
+<form name="list" action="/code/html-inbox" method="post">
+<input type="hidden" name="frames" value="@SUB frames@">
+<input type=hidden name="oldscan" value=@sub Query.OldScan@>
+<input type=hidden name="skipaudio" value="1">
+<input type=hidden name="command" value="">
+
+<style>
+.collapse { border-collapse: collapse; }
+</style>
+
+@if hasmessages@
+@include "message_buttons.inc"@
+@endif@
+
+@if Inbox.Response@
+<div id="InboxResponse"
+    style="font-size: 12pt; font-weight: bold;
+           margin-left:25%; margin-right:25%;
+           margin-top:2%; margin-bottom:2%;
+           text-align: center;"
+           >
+    @SUB Inbox.Response@
+</div>
+@endif@
+
+
+<table class="msglisttable"
+       width="96%"
+       border="1"
+       cellspacing="0"
+       align="center">
+<tr>
+   <td class="msglisthdr" align="left"><input type="checkbox" name="msgall" title="Check or Uncheck all" onClick="msgToggleAll()" value="1"></td>
+   <td class="msglisthdr"><b>&nbsp;Date</b></td>
+   <td class="msglisthdr"><b>&nbsp;Subject</b></td>
+   <td class="msglisthdr"><b>&nbsp;From</b></td>
+@if ShowInboxToField@
+   <td class="msglisthdr"><b>&nbsp;To</b></td>
+@endif@
+</tr>
+
+<style>
+.msglistcol {
+   font-family : Arial;
+   font-size : 8pt;
+   color : Black;
+}
+
+.msglistrow, .msglistrowl {
+   background : #EEEEEE;
+   font-family : Arial;
+   font-size : 8pt;
+   color : Black;
+}
+
+.msglistrowh  {
+   background : silver;
+   font-family : Arial;
+   font-size : 8pt;
+}
+</style>
+@set LastDayNumber=0@
+@set RowShade=""@
+@set ShadingEnabled=User.Variable("SkinsOptions","InboxDayShading")@
+
+@LOOP@
+
+ @if ShadingEnabled && LastDayNumber <> Msg.DayNumber@
+     @set LastDayNumber=Msg.DayNumber@
+     @if RowShade="l"@@set RowShade="h"@@else@@set RowShade="l"@@endif@
+ @endif@
+ @set MSGIDENT=""+MSG.CONFERENCE.NUMBER+"."+MSG.ID@
+
+ @if NewConf@
+ <tr>
+   <td colspan=6 class="inboxbreak"><b>@MSG.CONFERENCE.NAME@</b></td>
+ </tr>
+ @endif@
+ <tr id="msglistRow"
+     class="msglistRow@SUB RowShade@"
+     onmouseOver="mailListHover(this,event);" onmouseout="mailListHover(this,event);"
+     >
+   <td  id="msglistTag" class="msglistcol" nowrap align="left" width="1%">
+     @if CanDelete || CanTag@
+     <input type="checkbox"
+            class="msgitem"
+            name="msg@SUB MSGIDENT@"
+            deletable="@sub candelete@" @if !CanDelete@Title="NOTE: You can not delete this message!"@endif@
+            value="@SUB MSGIDENT@">
+     @endif@
+   </td>
+   <td nowrap id="msglistDate" class="msglistcol" width="1%">&nbsp;@if SmartMsgDate@@sub SmartMsgDate@@else@@MSG.DATE@@endif@&nbsp;</td>
+   <td nowrap id="msglistIcons" width="55%" class="msglistcol">
+     @IF new@<img src="/images/new.gif" alt="New @IF MSG.PRIVATE="Yes"@private @ENDIF@personal message">@ENDIF@
+     @IF snoopable@<a href="/code/html-read+message?frames=@SUB frames@@sub MsgExtra@&conf=@MSG.CONFERENCE.NUMBER@&msgid=@MSG.ID@&snoop=1"
+            @if MailPreview@
+                      rel="/code/html-getmsg.wcx?conf=@MSG.CONFERENCE.NUMBER@&msgid=@MSG.ID@&max=255"
+                      title="From: @SUB MSGFROM@"
+                      class="wcpreview"
+            @endif@
+                      @if FrameMode@ target="body"@endif@>
+                      <img src="/images/snoop.gif"
+            @if !MailPreview@
+                           title="Preview message in snoop mode"
+            @endif@
+                           border=0></a>
+     @ENDIF@
+                   <a href="/code/html-read+message?frames=@SUB frames@@sub MsgExtra@&conf=@MSG.CONFERENCE.NUMBER@&msgid=@MSG.ID@"@if FrameMode@ target="body"@endif@ title="Display and read message.">&nbsp;@MSG.SUBJECT@</a>
+   </td>
+   <td nowrap id="msglistFrom" class="msglistcol">&nbsp;@if MsgFrom@@sub MsgFrom@@else@@MSG.FROM.NAME@@endif@&nbsp;</td>
+   @if ShowInboxToField@
+   <td nowrap id="msglistTo" class="msglistcol">&nbsp;@MSG.TO.NAME@&nbsp;</td>
+   @endif@
+ </tr>
+@ENDLOOP@
+
+@if HasMessages@
+<tr>
+  <td colspan="6" class="msglisthdr">
+      &nbsp;&nbsp;
+  </td>
+</tr>
+@else@
+<tr>
+  <td colspan="6" align="center" class="msglist">
+  <b>Sorry, there are no messages for you.</b>
+  </td>
+</tr>
+@endif@
+</table>
+
+@if HasMessages@
+@include "message_buttons.inc"@
+@endif@
+
+</form>
+
+</div> <!-- end: layoutMain -->
+
+<div id="layoutFooter">@include "pagefooter.inc"@</div>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+@COMMENT@
+---------------------------------------------------------------------------
+File: errors.wct
+
+Errors.wct is the "catch all" error display template for all possible
+web errors.  See readme_errors.txt.  WcWeb will check for specific
+template for specific errors. if found, they will be displayed. If
+not found, errors.wct is used.
+
+history:
+452.8 Initial verrsion
+
+454.4 05/29/12
+- changed wcLogoTop.png to wcLogoTop.bmp
+
+---------------------------------------------------------------------------
+@ENDCOMMENT@
+
+@include "wc:\http\template\globalopts.inc"@
+
+<html>
+<head>
+<title>@SUB HTTP.http_errormsg@</title>
+<style>
+@include "wc:\http\template\errors.css"@
+</style>
+</head>
+
+<body class="ErrorBody">
+
+<div class="ErrorBox">
+<center>
+
+<div class="ErrorLogo">
+@if exist site.logo.image@
+<img src="@SUB site.logo.image@" border="0" alt=""/>
+@else@
+<img src="/public/graphics/wcLogoTop.png" border="0" alt=""/>
+@endif@
+</div>
+
+<h1 class="ErrorMsg">@sub http.http_errormsg@</h1>
+
+@if http.http_errormsg2 <> ""@<p class="ErrorMsg2">@sub HTTP.http_errormsg2@</p>@endif@
+
+@if HttpAuth.AllowCookie && !http.UsingBasicDigest  && !http.cookie@
+@existinclude "wc:\http\public\warning-no-cookie.wct"@
+@endif@
+
+<h3 class="ErrorText">
+If you have an account, and you simply enter the name or password wrong, please
+try again by returning to the home page or clicking the login option:</h3>
+
+@SET UseThisUrl = URL@
+@IF "/signup"?HTTP.URL && !AllowSignup@@SET UseThisUrl = "/Login"@@ENDIF@
+
+<p><a class="ErrorLink" href="/">return to home page</a> | <a class="ErrorLink" href="@SUB UseThisUrl@">Login</a></p>
+
+@COMMENT@
+These are the SystemAccess values
+   0 Open, accounts created
+   1 Closed, accounts must exist
+   2 Closed, run questionaire
+   3 Closed, non-validated accounts Created
+@ENDCOMMENT@
+
+@if AllowSignup@   @//@ True when SystemAccess is 0 or 3
+
+   <h3 class="ErrorText">
+   If you don't have an account, you may create a new user account by clicking the
+   Create New Account button:
+   </h3>
+
+   <p><a href="/signup"><img src="/public/graphics/loginnew.gif" border="0" alt=""></a></p>
+
+@elseif SystemAccess=1@
+
+   <h3 class="ErrorText">
+   Note this is a closed system.<br>A prior account is required to gain access to this web site.
+   </h3>
+
+@elseif SystemAccess=2@
+
+   <h3 class="ErrorText">
+   If you don't have an account, you may create a new user account by filling
+   out our questionnaire:
+   </h3>
+
+   <p><a href="/public/ques?quesclos"><img src="/public/graphics/loginnew.gif" border="0" alt=""></a></p>
+
+@endif@
+
+   @IF WILDCAT.DEBUG@<h5 style="text-align: right; margin: 0; font-size: 12;">@SUB HTTP.HTTP_ERROR@ - @SUB HTTP.HTTP_AUTHFILE@</H5>@ENDIF@
+
+</center>
+</div>
+
+@if HTTP.AUTHORIZATION@
+<script>document.cookie = "sessionid=signedoff";</script>
+@endif@
+</body>
+</html>
+

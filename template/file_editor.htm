@@ -1,0 +1,270 @@
+@COMMENT@
+File: file_editor.htm
+
+History:
+02/20/07 - 6.2.452.1g
+
+05/27/12 - 6.4.454.4
+
+@ENDCOMMENT@
+<html>
+<head>
+<title>Sysop File Editor</title>
+<link rel="stylesheet" type="text/css" href="/template/templates.css">
+<link rel="stylesheet" type="text/css" href="/template/buttons.css">
+
+<SCRIPT TYPE="text/javascript">
+function currencyFormat(fld, milSep, decSep, e) {
+var sep = 0;
+var key = '';
+var i = j = 0;
+var len = len2 = 0;
+var strCheck = '0123456789';
+var aux = aux2 = '';
+var whichCode = (window.Event) ? e.which : e.keyCode;
+if (whichCode == 13) return true;  // Enter
+key = String.fromCharCode(whichCode);  // Get key value from key code
+if (strCheck.indexOf(key) == -1) return false;  // Not a valid key
+len = fld.value.length;
+for(i = 0; i < len; i++)
+if ((fld.value.charAt(i) != '0') && (fld.value.charAt(i) != decSep)) break;
+aux = '';
+for(; i < len; i++)
+if (strCheck.indexOf(fld.value.charAt(i))!=-1) aux += fld.value.charAt(i);
+aux += key;
+len = aux.length;
+if (len == 0) fld.value = '';
+if (len == 1) fld.value = '0'+ decSep + '0' + aux;
+if (len == 2) fld.value = '0'+ decSep + aux;
+if (len > 2) {
+aux2 = '';
+for (j = 0, i = len - 3; i >= 0; i--) {
+if (j == 3) {
+aux2 += milSep;
+j = 0;
+}
+aux2 += aux.charAt(i);
+j++;
+}
+fld.value = '';
+len2 = aux2.length;
+for (i = len2 - 1; i >= 0; i--)
+fld.value += aux2.charAt(i);
+fld.value += decSep + aux.substr(len - 2, len);
+}
+return false;
+}
+
+
+function numbersonly(myfield, e, dec)
+{
+var key;
+var keychar;
+
+if (window.event)
+   key = window.event.keyCode;
+else if (e)
+   key = e.which;
+else
+   return true;
+keychar = String.fromCharCode(key);
+
+// control keys
+if ((key==null) || (key==0) || (key==8) ||
+    (key==9) || (key==13) || (key==27) )
+   return true;
+
+// numbers
+else if ((("0123456789").indexOf(keychar) > -1))
+   return true;
+
+// decimal point jump
+else if (dec && (keychar == "."))
+   {
+   myfield.form.elements[dec].focus();
+   return false;
+   }
+else
+   return false;
+}
+</SCRIPT>
+
+<SCRIPT TYPE="text/javascript">
+function ClearLongDesc(form)
+{
+   form.fldesc.value = "";
+}
+
+function ShowLongDesc(onoff)
+{
+   var frm = document.formModifyFile;
+   if (onoff) {
+      frm.fldesc.disabled = !onoff;
+   } else {
+      frm.fldesc.disabled = !frm.fldesc.disabled;
+   }
+   frm.fldesc.style.display = frm.fldesc.disabled?"none":""; // text area
+   frm.clear.style.display  = frm.fldesc.disabled?"none":"";  // clear button
+   document.getElementById('afldesc').innerHTML=frm.fldesc.disabled?"[Change]":"[No Change]";
+   return;
+}
+</script>
+
+</head>
+
+<body>
+
+@include "pageheader.inc"@
+
+@if !framemode@<br>@endif@
+
+<noscript>
+<div id="NoteDisplay">
+Warning: Javascript is required for the sysop editor
+</div>
+</noscript>
+
+@If HasSysopAccess@
+   @set FileReadOnly=""@
+   @set FileEditTitle="Sysop File Editor"@
+@else@
+   @set FileReadOnly="ReadOnly class=fdisabled"@
+   @set FileEditTitle="User Modify File Information"@
+@endif@
+
+<form method="POST"
+      action="/code/html-fm-editsave"
+      enctype="multipart/form-data"
+      name="formModifyFile">
+
+<table class="tableModifyFile"
+       width="96%"
+       border="0"
+       cellspacing="0"
+       cellpadding="1"
+       align="center">
+   <tr>
+    <th class="tabletitle" valign=top colspan=4>@sub FileEditTitle@</th>
+   <tr>
+    <tr>
+      <td class="fname" valign="top">File Name:</td>
+@If HasSysopAccess@
+      <td colspan=3 class="fvalue"><input class="fvalue" type="text" name="fname" size=75 MaxLength=240 AutoComplete=off value="@FILE.NAME@"></td>
+@else@
+      <td colspan=3 class="fvalue">@FILE.NAME@</td>
+@endif@
+    </tr>
+
+    <tr>
+      <td class="fname" valign="top">File Area:</td>
+@if HasSysopAccess@
+      <td colspan=3 class="fvalue">
+       <select class="fvalue" name="farea">
+         @loop areas@
+         <option value="@SUB nareanum@" @if FILE.AREA = nareanum@selected@endif@>@SUB nareanum@ - @SUB nareaname@</OPTION>
+         @endloop@
+       </select>
+      </td>
+@else@
+      <td class="fvalue" colspan=3>@FILE.AREA@ - @sub areaname@</td>
+@endif@
+    </tr>
+
+    <tr>
+      <td class="fname" valign="top">Uploader by:</td>
+@if HasSysopAccess@
+      <td class="fvalue" colspan=3><input class="fvalue" type="text" name="fuplduser" size="20" value="@FILE.UPLOADER@"></td>
+@else@
+      <td class="fvalue" colspan=3>@FILE.UPLOADER@</td>
+@endif@
+    </tr>
+
+    <tr>
+      <td class="fname" valign="top">Optional Password:</td>
+      <td><input class="fvalue" type="text" name="fpwd" size="9" VALUE="@FILE.PASSWORD@"></td>
+      <td class="fname" valign="top">Optional Private User:</td>
+      <td><input class="fvalue" type="text" name="fpvtuser" size="20" value="@SUB PVTUSER@"></td>
+    </tr>
+
+@if HasSysopAccess@
+    <tr>
+      <td class="fname" valign="top">Optional Stored Path:</td>
+      <td colspan="3"><input class="fvalue" type="text" name="fpath" size="75" MaxLength=240 value="@SUB FILE.STOREDPATH@"></td>
+    </tr>
+
+    <tr>
+      <td class="fname" valign="top">File Date:</td>
+      <td><input class="fvalue" type="text" name="fsdate" size="20" value="@FILE.FILETIME@"></td>
+      <td class="fname" valign="top">File Size:</td>
+      <td><input class="fvalue" type="text" name="fsize" size="15" value="@FILE.SIZE@" onKeyPress="return numbersonly(this, event)"></td>
+    </tr>
+
+    <tr>
+      <td class="fname" valign="top">Last Access Date:</td>
+      <td><input class="fvalue" type="text" name="fadate" size="20" value="@FILE.LASTACCESSED@"></td>
+      <td class="fname" valign="top">Downloads:</td>
+      <td><input class="fvalue" type="text" name="fdnld" size="10" value="@FILE.DOWNLOADS@" onKeyPress="return numbersonly(this, event)"></td>
+    </tr>
+
+    <tr>
+      <td class="fname">Cost:</td>
+      <td class="fvalue"><input class="fvalue" type="text" name="fcost" size="20" value="@FILE.COST@" onKeyPress="return(currencyFormat(this,',','.',event))"></td>
+      <td class="fvalue"><input class="fvalue" type="checkbox" name="bnocost" @IF FILE.FREEFILE="Yes"@checked@ENDIF@>No Charge</td>
+      <td class="fvalue"><input class="fvalue" type="checkbox" name="bfreetime" @IF FILE.FREETIME="Yes"@checked@ENDIF@>Free Time</td>
+    </tr>
+
+    <tr>
+      <td class="fname" colspan=2>&nbsp;</td>
+      <td class="fvalue"><input class="fvalue" type="checkbox" name="bcopyb4" @IF FILE.COPYBEFOREDOWNLOAD="Yes"@checked@ENDIF@>Copy before Download</td>
+      <td class="fvalue"><input class="fvalue" type="checkbox" name="bnowrite" @IF FILE.NEVEROVERWRITE="Yes"@checked@ENDIF@>Never Overwrite</td>
+    </tr>
+
+    <tr>
+     <td colspan=1>&nbsp;</td>
+     <td class="fvalue"><input class="fvalue" type="checkbox" name="boffline" disabled @IF FILE.OFFLINE="Yes"@checked@ENDIF@>OffLine</td>
+     <td class="fvalue"><input class="fvalue" type="checkbox" name="bnokill" @IF FILE.NEVERDELETE="Yes"@checked@ENDIF@>Never Delete</td>
+     <td class="fvalue"><input class="fvalue" type="checkbox" name="bfailed" @IF FILE.FAILEDSCAN="Yes"@checked@ENDIF@>Failed Scan</td>
+    </tr>
+
+@endif@
+
+    <tr>
+      <td class="fname">Short description:</td>
+      <td colspan=3><input class="fvalue" type="text" name="fsdesc" size=75 MaxLength=75 value="@FILE.DESCRIPTION@"></td>
+    </tr>
+
+    <tr>
+      <td class="fname" colspan=4>Long description (optional, maximum lines: 15) <a href="javascript:ShowLongDesc()" id="afldesc">[No Change]</a></td>
+    </tr>
+
+    <tr>
+      <td colspan=4>
+      <textarea class="ffixed" name="fldesc" cols=70 rows=5 wrap=on>@SUB LongDesc@</textarea>
+      <input class="fvalue" type="button" value="Clear"  name="clear" onClick="ClearLongDesc(this.form)">
+      </td>
+    </tr>
+
+    <tr class="tabletitle">
+     <td valign=top class="fname">
+     <input class="fname" type="submit" value="Save"  name="cmd">
+     <input class="fname" type="reset"  value="Reset" name="reset">
+     </td>
+     <td class="fvalue" colspan=3>&nbsp;</td>
+    </tr>
+</table>
+
+<input type="hidden" name="ofname" value="@FILE.NAME@"></p>
+<input type="hidden" name="ofarea" value="@FILE.AREA@" ></p>
+<input type="hidden" name="frames" value="@SUB query.frames@">
+<input type="hidden" name="mod"    value="@SUB query.mod@">
+
+</form>
+
+<script language="JavaScript">
+ShowLongDesc(false);
+</script>
+
+@include "pagefooter.inc"@
+
+</body>
+</html>

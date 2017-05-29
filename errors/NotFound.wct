@@ -1,0 +1,20 @@
+<!--
+Wildcat! WEB Server
+File: NotFound.wct
+-->
+<html>
+<head>
+<title>Document not found</title>
+</head>
+<body>
+
+
+<fieldset style="margin-right: 20%; margin-left:20%; border: 1px solid black; padding: 5pt;">
+<legend style="padding: 4pt;"><b style="color:red;">ERROR 404 - Document not found</b></legend>
+<b>document:</b>&nbsp;<a href="@SUB HTTP.URL@">@SUB HTTP.URL@</a>
+<p>Return to the <a href="/">@SYSTEM.BBSNAME@</a></p>
+</fieldset>
+
+</body>
+</html>
+

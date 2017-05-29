@@ -1,0 +1,78 @@
+@COMMENT@
+
+message_frame_init.wct
+
+     This WCT is called by the frame system in message_conferences.htm.
+     One parameter is passed: target=index|body
+
+     When the target is index, you have the options available:
+
+     - Show instructions in each frame or use "inbox" or "newmail"
+       to use mail in the index frame.
+
+     @SET ShowMail=@
+
+     452.3g - adjusted centering of notice
+
+@ENDCOMMENT@
+
+@set showmail=""@
+@if exist "wc:\code\html-recentmail.wcx"@
+@set showmail="recentmail"@
+@endif@
+
+<html>
+<head>
+<style>
+div.notice  {
+   color : Black;
+   background : #33FF66;  @//@ AliceBlue
+   border: 1px solid Black;
+   border-top-width: 2px;
+   border-bottom-width: 2px;
+   font-family: verdana,tahoma,arial; font-size : 10pt;
+   margin-left:10%; margin-right:10%;
+   padding: 5px;
+   text-align: center;
+}
+h3 {
+   color: Blue;
+}
+</style>
+</head>
+
+<body  class="image">
+
+@//@ Show target=index frame initial instructions
+
+@if query.target = "index"@
+ @if showmail="newmail"@
+   @runwcx html-inbox frames=y@
+ @elseif showmail="inbox"@
+   @runwcx html-inbox oldscan=1&frames=y@
+ @elseif showmail="recentmail"@
+   @runwcx html-recentmail frames=y@
+ @else@
+   <br>
+   <div class="notice">
+   <h3>Welcome to the<br>@SYSTEM.BBSNAME@<br>Message System</h3>
+   A list of messages will be shown in this frame. To view a list of
+   messages, select a message group and conference on the left or click
+   INBOX or NEWMAIL if shown.
+   </div>
+ @endif@
+@endif@
+
+@//@ Show target=body frame initial instructions
+
+@if query.target = "body"@
+   <br>
+   <div class="notice">
+   To view a message, first show the message list above and
+   click the message to read it.
+   </div>
+@endif@
+
+
+</body>
+</html>

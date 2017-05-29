@@ -1,0 +1,130 @@
+@COMMENT@
+// (c) copyright 2000-2012 Santronics Software, Inc
+// Wildcat! Logout Template, v6.4.454.4
+@ENDCOMMENT@
+
+@SET LOGOUT.REDIRECT.SECONDS = 60@
+@SET LOGOUT.REDIRECT.URL     = "/"@
+
+@SET LOGOUT.BROWSER.WARNING  = 0@
+@IF HTTP.AUTHORIZATION <> "" && HTTP.COOKIE.SESSIONID = "" && HTTP.COOKIE.WCAUTH = ""@
+@SET LOGOUT.BROWSER.WARNING = 1@
+@ENDIF@
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Logged Out</title>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1">
+@IF !LOGOUT.BROWSER.WARNING && LOGOUT.REDIRECT.SECONDS@
+<meta http-equiv="Refresh" content="@SUB LOGOUT.REDIRECT.SECONDS@;url=@SUB LOGOUT.REDIRECT.URL@"/>
+@ENDIF@
+
+<style>
+body { font-family: Verdana, Arial;font-size : 10pt;}
+table#logout {
+  font-family: Verdana, Arial; font-size : 10pt;
+  background: WhiteSmoke; border: 3px outset silver;
+}
+table#logout a {
+  color: black; background: silver;
+  font-family: Verdana,Arial; font-size : 8pt; font-weight: bold;
+  padding: 3pt; border: 3px outset black; text-decoration: none;
+}
+table#logout td       { color: blue; padding: 10pt;}
+table#logout a:hover  { color: yellow; background: silver;}
+table#logout a:active { color: black;  background: silver; }
+table#logout h1       { color: black;}
+table#logout h2#alert { color: red; text-align: center;}
+table#logout p#note1  { color: black; font-weight: bold;}
+table#logout p#note2  { color: red; font-weight: bold; font-size: 12pt; text-align: center;}
+table#logout p#note3  { color: black; font-weight: bold;}
+table#logout div#Warning { padding: 0 20 10 10; border: 1px solid silver; background: lightYellow; text-align: justify;}
+.ErrorMsg2 {
+  width: 60%; border: 1px solid black;
+  padding: 10px; margin:5px; margin-left:10%; margin-right:10%;
+  text-align: center; color: Black; background: red;
+  font-family: Arial, Helvetica, sans-serif; font-size: 12pt; font-weight: Bold;
+}
+</style>
+
+</head>
+
+<body>
+
+@ExistInclude "wc:\http\template\Logout-Header.wct"@
+
+<br>
+<table id="logout" width="80%" border="0" align="center">
+<tr>
+<td>
+  <h1 align="center">@SYSTEM.BBSNAME@</h1>
+
+@IF QUERY.OutOfTime@
+  <center><p class="ErrorMsg2">Your account is out of time for today.</p></center>
+@ENDIF@
+@IF QUERY.IdleTimeout@
+  <center><p class="ErrorMsg2">You haved timed out for idleness.</p></center>
+@ENDIF@
+
+  <h3 align="center">You have been logged off our system.<br>Thank you and see you later!</h3>
+
+@IF LOGOUT.BROWSER.WARNING@
+
+  <div id="warning">
+  <h2 id="alert">Warning! Browser Authentication Alert!!!</h2>
+
+  <p id="note1"><b>We are unable to log out your web browser!</b>  You
+  have logged in using a standard BASIC/DIGEST browser login authentication
+  method.  Your web browser will retain your login credentials until you
+  have closed ALL the web browser windows. </p>
+
+  <p id="note2">If you continue to access the web site,<br>you will be
+  automatically re-authenticated (logged in).
+  </p>
+
+
+  <p id="note3">
+
+  <b>NOTE:</b> This is not an error. This is the normal behavior of web
+  browsers using the BASIC/DIGEST browser login authentication method
+  which will not release your credentials until you close the
+  browser.<br><br>
+
+  If you wish to avoid the need to close your web browser, enable
+  session cookies for this host in your browser options, then try to
+  <b>logoff</b> again. If this doesn't work, you may need to close the browser.
+  </p>
+
+  <p align="center">
+  <a href="/logout" onClick='document.cookie="sessionid=signedoff";' target="_top">Logoff</a>
+  </p>
+
+  </div>
+
+@ENDIF@
+
+  <br>
+  <p align="center"><a href="/" target="_top">Return to Home Page</a></p>
+
+@IF !LOGOUT.BROWSER.WARNING && LOGOUT.REDIRECT.SECONDS@
+  <br>
+  <center>
+  <button style="background:green; color: white; margin: 0;"
+          onClick="clearInterval(idTimer); idTimer=null; this.style.display='none';">
+  <b>Automatic redirection to home page in <span id="seconds" style="color:yellow;">@SUB LOGOUT.REDIRECT.SECONDS@</span> seconds ... Click To Stop</b>
+  </button>
+  </center>
+  <script>var idTimer = setInterval(function(){document.getElementById("seconds").innerHTML--;},1000);</script>
+@ENDIF@
+
+</td>
+</tr>
+</table>
+<br>
+@ExistInclude "wc:\http\template\Logout-Footer.wct"@
+
+
+</body>
+</html>

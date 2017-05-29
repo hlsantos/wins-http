@@ -1,0 +1,95 @@
+<!-- WcWEB redirection to HTTPS: Stock HTML page  -->
+
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1">
+
+<script>
+
+  //------------------------------------------
+  var setup = {
+     CountDown:     10,                    // set 0 for no countdown
+     SystemName:    "@SYSTEM.BBSNAME@",    // Your BBS name
+     reserved:      null
+  };
+  //------------------------------------------
+
+  var url = "";
+  function goNow(o)
+  {
+    clearInterval(idTimer);
+    document.location = url;
+  }
+  function goTimer()
+  {
+    var e = document.getElementById("SystemName");
+    e.innerHTML = setup.SystemName;
+    e = document.getElementById("seconds");
+    e.innerHTML = setup.CountDown;
+    idTimer = setInterval(function(){e.innerHTML--; if (e.innerHTML == 0) goNow();},1000);
+  }
+
+  function RedirectCheck()
+  {
+     if (document.location.protocol == "http:") {
+        var e = document.getElementById("divCountDown");
+        if (e) e.style.display = "block";
+        url = document.location.href;
+        url = url.replace(/http:/,"https:");
+        if (setup.CountDown <= 0) {
+           document.location = url;
+           return;
+        }
+        goTimer();
+     }
+  }
+
+</script>
+
+<style>
+  #Redirect {
+      border: 3px outset silver;
+      background: lightYellow;
+      text-align: center;
+      color: black;
+      font-weight: bold;
+  }
+  #Redirect h3 { color: red; }
+</style>
+</head>
+<body>
+
+<noscript>
+<center><h2>No JavaScript: You need to enabled Javascript for this website.</h2></center>
+</noscript>
+
+<center>
+<table id="redirect" width="60%">
+<tr>
+<td>
+<p>
+<h2><span id="SystemName"></span></h2>
+<H3 align="center">Secured socket connections is required.</H3>
+Please change all your bookmarks and references to this web site<br>
+to use HTTPS:// instead of HTTP:// url address.
+</p>
+
+<div id="divCountDown" style="display:none;">
+<center>
+<button style="background:green; color: white; margin: 0;" onClick="goNow(this);">
+<b>Automatic redirection to secured web site in
+<span id="seconds" style="color:yellow;">&nbsp;&nbsp;</span> seconds ... Click To Switch Now</b>
+</button>
+</center>
+</div>
+<br>
+</td>
+</tr>
+</table>
+</center>
+<script>RedirectCheck();</script>
+
+</body>
+</html>
+
